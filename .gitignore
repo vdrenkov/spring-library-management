@@ -18,6 +18,8 @@ target
 *.iml
 .env
 logs
+application.properties
+application.yml
 
 # AWS User-specific
 .idea/**/aws.xml
