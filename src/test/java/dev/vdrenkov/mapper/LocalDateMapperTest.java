@@ -7,16 +7,16 @@ import java.time.LocalDate;
 
 import static dev.vdrenkov.util.Constants.LOCAL_DATE;
 
-public class LocalDateMapperTest {
+class LocalDateMapperTest {
 
-  private final LocalDateMapper mapper = new LocalDateMapper();
+    private final LocalDateMapper mapper = new LocalDateMapper();
 
-  @Test
-  public void testMapStringToDate() {
-    LocalDate response = mapper.mapStringToDate("01-JANUARY-2000");
+    @Test
+    void testMapStringToDate() {
+        LocalDate response = mapper.mapStringToDate("01-JANUARY-2000");
 
-    Assertions.assertEquals(LOCAL_DATE.toString(), response.toString());
-  }
+        Assertions.assertEquals(LOCAL_DATE.toString(), response.toString());
+    }
 }
 
 

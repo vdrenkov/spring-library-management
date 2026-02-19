@@ -8,7 +8,7 @@ import dev.vdrenkov.exception.OrderNotFoundException;
 import dev.vdrenkov.request.OrderRequest;
 import dev.vdrenkov.service.OrderService;
 import dev.vdrenkov.util.BookFactory;
-import tools.jackson.databind.ObjectMapper;
+import jakarta.validation.UnexpectedTypeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,8 +21,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import tools.jackson.databind.ObjectMapper;
 
-import jakarta.validation.UnexpectedTypeException;
 import java.time.format.DateTimeParseException;
 
 import static dev.vdrenkov.util.Constants.CHOICE;
@@ -37,162 +37,173 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class GlobalExceptionHandlerTest {
+class GlobalExceptionHandlerTest {
 
-  private final String URI = "/orders";
-  private final String ROOT = "$";
+    private static final String URI = "/orders";
+    private static final String ROOT = "$";
 
-  private MockMvc mockMvc;
+    private MockMvc mockMvc;
 
-  @Mock
-  private OrderService orderService;
+    @Mock
+    private OrderService orderService;
 
-  @InjectMocks
-  private OrderController orderController;
+    @InjectMocks
+    private OrderController orderController;
 
-  @BeforeEach
-  public void setup() {
-    mockMvc = MockMvcBuilders
-      .standaloneSetup(orderController)
-      .setControllerAdvice(new GlobalExceptionHandler())
-      .build();
-  }
+    @BeforeEach
+    void setup() {
+        mockMvc = MockMvcBuilders
+            .standaloneSetup(orderController)
+            .setControllerAdvice(new GlobalExceptionHandler())
+            .build();
+    }
 
-  @Test
-  public void handleMethodArgumentNotValidException_onEndpointGetAllOrders_badRequest() throws Exception {
-    ObjectMapper objectMapper = new ObjectMapper();
-    String json = objectMapper.writeValueAsString(new OrderRequest(0, BookFactory.getDefaultBooksIdsList()));
+    @Test
+    void handleMethodArgumentNotValidException_onEndpointGetAllOrders_badRequest() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(new OrderRequest(0, BookFactory.getDefaultBooksIdsList()));
 
-    mockMvc.perform(post(URI)
-                      .contentType(MediaType.APPLICATION_JSON)
-                      .content(json))
-           .andExpect(status().isBadRequest())
-           .andExpect(jsonPath(ROOT, is("The client id must be a positive digit")));
-  }
+        mockMvc
+            .perform(post(URI).contentType(MediaType.APPLICATION_JSON).content(json))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath(ROOT, is("The client ID must be a positive digit")));
+    }
 
-  @Test
-  public void testHandleNullPointerException_onEndpointGetAllOrders_badRequest() throws Exception {
-    when(orderService.getAllOrdersDto()).thenThrow(NullPointerException.class);
+    @Test
+    void testHandleNullPointerException_onEndpointGetAllOrders_badRequest() throws Exception {
+        when(orderService.getAllOrdersDto()).thenThrow(NullPointerException.class);
 
-    mockMvc.perform(get(URI))
-           .andExpect(status().isBadRequest())
-           .andExpect(jsonPath(ROOT, is("Missing or incorrect data entered")));
-  }
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath(ROOT, is("Missing or incorrect data entered")));
+    }
 
-  @Test
-  public void testHandleUnexpectedTypeException_onEndpointGetAllOrders_badRequest() throws Exception {
-    when(orderService.getAllOrdersDto()).thenThrow(UnexpectedTypeException.class);
+    @Test
+    void testHandleUnexpectedTypeException_onEndpointGetAllOrders_badRequest() throws Exception {
+        when(orderService.getAllOrdersDto()).thenThrow(UnexpectedTypeException.class);
 
-    mockMvc.perform(get(URI))
-           .andExpect(status().isBadRequest())
-           .andExpect(jsonPath(ROOT, is("Wrong data entered")));
-  }
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath(ROOT, is("Wrong data entered")));
+    }
 
-  @Test
-  public void testHandleHttpMessageNotReadableException_onEndpointGetAllOrders_badRequest() throws Exception {
-    when(orderService.getAllOrdersDto()).thenThrow(HttpMessageNotReadableException.class);
+    @Test
+    void testHandleHttpMessageNotReadableException_onEndpointGetAllOrders_badRequest() throws Exception {
+        when(orderService.getAllOrdersDto()).thenThrow(HttpMessageNotReadableException.class);
 
-    mockMvc.perform(get(URI))
-           .andExpect(status().isBadRequest())
-           .andExpect(jsonPath(ROOT, is("Incorrect data entered")));
-  }
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath(ROOT, is("Incorrect data entered")));
+    }
 
-  @Test
-  public void testHandleHttpRequestMethodNotSupportedException_onEndpointGetAllOrders_badRequest() throws Exception {
-    mockMvc.perform(put(URI))
-           .andExpect(status().isBadRequest())
-           .andExpect(jsonPath(ROOT, is("HTTP method not supported")));
-  }
+    @Test
+    void testHandleHttpRequestMethodNotSupportedException_onEndpointGetAllOrders_badRequest() throws Exception {
+        mockMvc
+            .perform(put(URI))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath(ROOT, is("HTTP method not supported")));
+    }
 
-  @Test
-  public void testHandleIllegalArgumentException_onEndpointGetAllOrders_badRequest() throws Exception {
-    when(orderService.getAllOrdersDto()).thenThrow(IllegalArgumentException.class);
+    @Test
+    void testHandleIllegalArgumentException_onEndpointGetAllOrders_badRequest() throws Exception {
+        when(orderService.getAllOrdersDto()).thenThrow(IllegalArgumentException.class);
 
-    mockMvc.perform(get(URI))
-           .andExpect(status().isBadRequest())
-           .andExpect(jsonPath(ROOT, is("Illegal argument provided")));
-  }
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath(ROOT, is("Illegal argument provided")));
+    }
 
-  @Test
-  public void testHandleMissingServletRequestParameterException_onEndpointGetAllOrders_badRequest() throws Exception {
-    mockMvc.perform(put(URI + "/" + ID))
-           .andExpect(status().isBadRequest())
-           .andExpect(jsonPath(ROOT, is("Invalid parameter provided")));
-  }
+    @Test
+    void testHandleMissingServletRequestParameterException_onEndpointGetAllOrders_badRequest() throws Exception {
+        mockMvc
+            .perform(put(URI + "/" + ID))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath(ROOT, is("Invalid parameter provided")));
+    }
 
-  @Test
-  public void testHandleDateTimeParseException_onEndpointGetAllOrders_badRequest() throws Exception {
-    when(orderService.getAllOrdersDtoByDate(CHOICE, "mistake")).thenThrow(DateTimeParseException.class);
+    @Test
+    void testHandleDateTimeParseException_onEndpointGetAllOrders_badRequest() throws Exception {
+        when(orderService.getAllOrdersDtoByDate(CHOICE, "mistake")).thenThrow(DateTimeParseException.class);
 
-    mockMvc.perform(get(URI)
-                      .queryParam("choice", CHOICE_STRING)
-                      .queryParam("date", "mistake"))
-           .andExpect(status().isBadRequest())
-           .andExpect(jsonPath(ROOT, is("Invalid date provided")));
-  }
+        mockMvc
+            .perform(get(URI).queryParam("choice", CHOICE_STRING).queryParam("date", "mistake"))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath(ROOT, is("Invalid date provided")));
+    }
 
-  @Test
-  public void testHandleMethodArgumentTypeMismatchException_onEndpointGetAllOrders_badRequest() throws Exception {
-    when(orderService.getAllOrdersDto()).thenThrow(MethodArgumentTypeMismatchException.class);
+    @Test
+    void testHandleMethodArgumentTypeMismatchException_onEndpointGetAllOrders_badRequest() throws Exception {
+        when(orderService.getAllOrdersDto()).thenThrow(MethodArgumentTypeMismatchException.class);
 
-    mockMvc.perform(get(URI))
-           .andExpect(status().isBadRequest())
-           .andExpect(jsonPath(ROOT, is("Invalid URL provided")));
-  }
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath(ROOT, is("Invalid URL provided")));
+    }
 
-  @Test
-  public void testHandleDataIntegrityViolationException_onEndpointGetAllOrders_badRequest() throws Exception {
-    when(orderService.getAllOrdersDto()).thenThrow(DataIntegrityViolationException.class);
+    @Test
+    void testHandleDataIntegrityViolationException_onEndpointGetAllOrders_badRequest() throws Exception {
+        when(orderService.getAllOrdersDto()).thenThrow(DataIntegrityViolationException.class);
 
-    mockMvc.perform(get(URI))
-           .andExpect(status().isBadRequest())
-           .andExpect(jsonPath(ROOT, is("You are violating database rule/s")));
-  }
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath(ROOT, is("Violation of database rules!")));
+    }
 
-  @Test
-  public void testHandleAuthorNotFoundException_onEndpointGetAllOrders_notFound() throws Exception {
-    when(orderService.getAllOrdersDto()).thenThrow(AuthorNotFoundException.class);
+    @Test
+    void testHandleAuthorNotFoundException_onEndpointGetAllOrders_notFound() throws Exception {
+        when(orderService.getAllOrdersDto()).thenThrow(AuthorNotFoundException.class);
 
-    mockMvc.perform(get(URI))
-           .andExpect(status().isNotFound())
-           .andExpect(jsonPath(ROOT, is("No such author was found in the database")));
-  }
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath(ROOT, is("No such author found in the database")));
+    }
 
-  @Test
-  public void testHandleBookNotFoundException_onEndpointGetAllOrders_notFound() throws Exception {
-    when(orderService.getAllOrdersDto()).thenThrow(BookNotFoundException.class);
+    @Test
+    void testHandleBookNotFoundException_onEndpointGetAllOrders_notFound() throws Exception {
+        when(orderService.getAllOrdersDto()).thenThrow(BookNotFoundException.class);
 
-    mockMvc.perform(get(URI))
-           .andExpect(status().isNotFound())
-           .andExpect(jsonPath(ROOT, is("No such book was found in the database")));
-  }
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath(ROOT, is("No such book found in the database")));
+    }
 
-  @Test
-  public void testHandleClientNotFoundException_onEndpointGetAllOrders_notFound() throws Exception {
-    when(orderService.getAllOrdersDto()).thenThrow(ClientNotFoundException.class);
+    @Test
+    void testHandleClientNotFoundException_onEndpointGetAllOrders_notFound() throws Exception {
+        when(orderService.getAllOrdersDto()).thenThrow(ClientNotFoundException.class);
 
-    mockMvc.perform(get(URI))
-           .andExpect(status().isNotFound())
-           .andExpect(jsonPath(ROOT, is("No such client was found in the database")));
-  }
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath(ROOT, is("No such client found in the database")));
+    }
 
-  @Test
-  public void testHandleOrderNotFoundException_onEndpointGetAllOrders_notFound() throws Exception {
-    when(orderService.getAllOrdersDto()).thenThrow(OrderNotFoundException.class);
+    @Test
+    void testHandleOrderNotFoundException_onEndpointGetAllOrders_notFound() throws Exception {
+        when(orderService.getAllOrdersDto()).thenThrow(OrderNotFoundException.class);
 
-    mockMvc.perform(get(URI))
-           .andExpect(status().isNotFound())
-           .andExpect(jsonPath(ROOT, is("No such order was found in the database")));
-  }
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath(ROOT, is("No such order found in the database")));
+    }
 
-  @Test
-  public void testHandleException_onEndpointGetAllOrders_internalServerError() throws Exception {
-    when(orderService.getAllOrdersDto()).thenThrow(IllegalStateException.class);
+    @Test
+    void testHandleException_onEndpointGetAllOrders_internalServerError() throws Exception {
+        when(orderService.getAllOrdersDto()).thenThrow(IllegalStateException.class);
 
-    mockMvc.perform(get(URI))
-           .andExpect(status().isInternalServerError())
-           .andExpect(jsonPath(ROOT, is("Something went wrong")));
-  }
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isInternalServerError())
+            .andExpect(jsonPath(ROOT, is("Something went wrong")));
+    }
 }
 
 

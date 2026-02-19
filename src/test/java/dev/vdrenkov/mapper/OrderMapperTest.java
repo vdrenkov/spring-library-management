@@ -16,30 +16,30 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class OrderMapperTest {
+class OrderMapperTest {
 
-  @Mock
-  private ClientMapper clientMapper;
+    @Mock
+    private ClientMapper clientMapper;
 
-  @InjectMocks
-  private OrderMapper mapper;
+    @InjectMocks
+    private OrderMapper mapper;
 
-  @Test
-  public void testMapBooksToBooksDto() {
-    when(clientMapper.mapClientToClientDto(any())).thenReturn(ClientFactory.getDefaultClientDto());
+    @Test
+    void testMapBooksToBooksDto() {
+        when(clientMapper.mapClientToClientDto(any())).thenReturn(ClientFactory.getDefaultClientDto());
 
-    List<OrderDto> ordersDto = mapper.mapOrdersToOrdersDto(OrderFactory.getDefaultOrdersList());
+        List<OrderDto> ordersDto = mapper.mapOrdersToOrdersDto(OrderFactory.getDefaultOrdersList());
 
-    assertNotNull(ordersDto);
-  }
+        assertNotNull(ordersDto);
+    }
 
-  @Test
-  public void testMapClientToClientDto() {
-    when(clientMapper.mapClientToClientDto(any())).thenReturn(ClientFactory.getDefaultClientDto());
+    @Test
+    void testMapClientToClientDto() {
+        when(clientMapper.mapClientToClientDto(any())).thenReturn(ClientFactory.getDefaultClientDto());
 
-    OrderDto orderDto = mapper.mapOrderToOrderDto(OrderFactory.getDefaultOrder());
+        OrderDto orderDto = mapper.mapOrderToOrderDto(OrderFactory.getDefaultOrder());
 
-    assertNotNull(orderDto);
-  }
+        assertNotNull(orderDto);
+    }
 }
 

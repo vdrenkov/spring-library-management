@@ -1,19 +1,18 @@
 package dev.vdrenkov.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import jakarta.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Getter
 public class UserRequest {
 
-  @NotNull(message = "The username can not be null")
-  private String username;
+    @NotNull(message = "The username cannot be null")
+    private String username;
 
-  @NotNull(message = "The password can not be null")
-  private String password;
+    @NotNull(message = "The password cannot be null")
+    private String password;
 }
 
 

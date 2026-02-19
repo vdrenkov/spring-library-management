@@ -16,30 +16,30 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class BookMapperTest {
+class BookMapperTest {
 
-  @Mock
-  private AuthorMapper authorMapper;
+    @Mock
+    private AuthorMapper authorMapper;
 
-  @InjectMocks
-  private BookMapper mapper;
+    @InjectMocks
+    private BookMapper mapper;
 
-  @Test
-  public void testMapBooksToBooksDto() {
-    when(authorMapper.mapAuthorToAuthorDto(any())).thenReturn(AuthorFactory.getDefaultAuthorDto());
+    @Test
+    void testMapBooksToBooksDto() {
+        when(authorMapper.mapAuthorToAuthorDto(any())).thenReturn(AuthorFactory.getDefaultAuthorDto());
 
-    List<BookDto> booksDto = mapper.mapBooksToBooksDto(BookFactory.getDefaultBooksList());
+        List<BookDto> booksDto = mapper.mapBooksToBooksDto(BookFactory.getDefaultBooksList());
 
-    assertNotNull(booksDto);
-  }
+        assertNotNull(booksDto);
+    }
 
-  @Test
-  public void testMapBookToBookDto() {
-    when(authorMapper.mapAuthorToAuthorDto(any())).thenReturn(AuthorFactory.getDefaultAuthorDto());
+    @Test
+    void testMapBookToBookDto() {
+        when(authorMapper.mapAuthorToAuthorDto(any())).thenReturn(AuthorFactory.getDefaultAuthorDto());
 
-    BookDto bookDto = mapper.mapBookToBookDto(BookFactory.getDefaultBook());
+        BookDto bookDto = mapper.mapBookToBookDto(BookFactory.getDefaultBook());
 
-    assertNotNull(bookDto);
-  }
+        assertNotNull(bookDto);
+    }
 }
 

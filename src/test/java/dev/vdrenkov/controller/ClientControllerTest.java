@@ -2,7 +2,6 @@ package dev.vdrenkov.controller;
 
 import dev.vdrenkov.service.ClientService;
 import dev.vdrenkov.util.ClientFactory;
-import tools.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import tools.jackson.databind.ObjectMapper;
 
 import static dev.vdrenkov.util.Constants.EMAIL;
 import static dev.vdrenkov.util.Constants.ID;
@@ -28,72 +28,72 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class ClientControllerTest {
+class ClientControllerTest {
 
-  private final String URI = "/clients";
+    private static final String URI = "/clients";
 
-  private MockMvc mockMvc;
+    private MockMvc mockMvc;
 
-  @Mock
-  private ClientService clientService;
+    @Mock
+    private ClientService clientService;
 
-  @InjectMocks
-  private ClientController clientController;
+    @InjectMocks
+    private ClientController clientController;
 
-  @BeforeEach
-  public void setup() {
-    mockMvc = MockMvcBuilders
-      .standaloneSetup(clientController)
-      .build();
-  }
+    @BeforeEach
+    void setup() {
+        mockMvc = MockMvcBuilders.standaloneSetup(clientController).build();
+    }
 
-  @Test
-  public void testAddClient_noExceptions_success() throws Exception {
-    ObjectMapper objectMapper = new ObjectMapper();
-    String json = objectMapper.writeValueAsString(ClientFactory.getDefaultClientRequest());
-    when(clientService.addClient(any())).thenReturn(ClientFactory.getDefaultClient());
+    @Test
+    void testAddClient_noExceptions_success() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(ClientFactory.getDefaultClientRequest());
+        when(clientService.addClient(any())).thenReturn(ClientFactory.getDefaultClient());
 
-    mockMvc.perform(post(URI)
-                      .contentType(MediaType.APPLICATION_JSON)
-                      .content(json))
-           .andExpect(status().isCreated())
-           .andExpect(header().string("Location", URI + "/" + ID));
-  }
+        mockMvc
+            .perform(post(URI).contentType(MediaType.APPLICATION_JSON).content(json))
+            .andExpect(status().isCreated())
+            .andExpect(header().string("Location", URI + "/" + ID));
+    }
 
-  @Test
-  public void testGetAllClients_singleItem_success() throws Exception {
-    when(clientService.getAllClientsDto()).thenReturn(ClientFactory.getDefaultClientsDtoList());
+    @Test
+    void testGetAllClients_singleItem_success() throws Exception {
+        when(clientService.getAllClientsDto()).thenReturn(ClientFactory.getDefaultClientsDtoList());
 
-    mockMvc.perform(get(URI))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$[0]").exists())
-           .andExpect(jsonPath("$[0].id").value(ID))
-           .andExpect(jsonPath("$[0].name").value(NAME))
-           .andExpect(jsonPath("$[0].surname").value(SURNAME))
-           .andExpect(jsonPath("$[0].phoneNumber").value(PHONE_NUMBER))
-           .andExpect(jsonPath("$[0].email").value(EMAIL));
-  }
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0]").exists())
+            .andExpect(jsonPath("$[0].id").value(ID))
+            .andExpect(jsonPath("$[0].name").value(NAME))
+            .andExpect(jsonPath("$[0].surname").value(SURNAME))
+            .andExpect(jsonPath("$[0].phoneNumber").value(PHONE_NUMBER))
+            .andExpect(jsonPath("$[0].email").value(EMAIL));
+    }
 
-  @Test
-  public void testGetAllClients_emptyList_success() throws Exception {
-    mockMvc.perform(get(URI))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$").exists())
-           .andExpect(jsonPath("$[0]").doesNotExist());
-  }
+    @Test
+    void testGetAllClients_emptyList_success() throws Exception {
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").exists())
+            .andExpect(jsonPath("$[0]").doesNotExist());
+    }
 
-  @Test
-  public void testGetClientById_clientFound_success() throws Exception {
-    when(clientService.getClientDtoById(anyInt())).thenReturn(ClientFactory.getDefaultClientDto());
+    @Test
+    void testGetClientById_clientFound_success() throws Exception {
+        when(clientService.getClientDtoById(anyInt())).thenReturn(ClientFactory.getDefaultClientDto());
 
-    mockMvc.perform(get(URI + "/" + ID))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$.id").value(ID))
-           .andExpect(jsonPath("$.name").value(NAME))
-           .andExpect(jsonPath("$.surname").value(SURNAME))
-           .andExpect(jsonPath("$.phoneNumber").value(PHONE_NUMBER))
-           .andExpect(jsonPath("$.email").value(EMAIL));
-  }
+        mockMvc
+            .perform(get(URI + "/" + ID))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(ID))
+            .andExpect(jsonPath("$.name").value(NAME))
+            .andExpect(jsonPath("$.surname").value(SURNAME))
+            .andExpect(jsonPath("$.phoneNumber").value(PHONE_NUMBER))
+            .andExpect(jsonPath("$.email").value(EMAIL));
+    }
 }
 
 

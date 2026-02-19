@@ -38,240 +38,240 @@ import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class OrderServiceTest {
+class OrderServiceTest {
 
-  @Mock
-  private BookService bookService;
+    @Mock
+    private BookService bookService;
 
-  @Mock
-  private ClientService clientService;
+    @Mock
+    private ClientService clientService;
 
-  @Mock
-  private OrderRepository orderRepository;
+    @Mock
+    private OrderRepository orderRepository;
 
-  @Mock
-  private LocalDateMapper localDateMapper;
+    @Mock
+    private LocalDateMapper localDateMapper;
 
-  @Mock
-  private OrderMapper orderMapper;
+    @Mock
+    private OrderMapper orderMapper;
 
-  @InjectMocks
-  private OrderService orderService;
+    @InjectMocks
+    private OrderService orderService;
 
-  @Test
-  public void testAddOrder_success() {
-    when(clientService.getClientById(anyInt())).thenReturn(ClientFactory.getDefaultClient());
-    when(bookService.isBookAvailable(anyInt())).thenReturn(true);
-    when(bookService.updateBookQuantity(anyInt())).thenReturn(BookFactory.getDefaultBook());
-    when(orderRepository.save(any())).thenReturn(new Order());
+    @Test
+    void testAddOrder_success() {
+        when(clientService.getClientById(anyInt())).thenReturn(ClientFactory.getDefaultClient());
+        when(bookService.isBookAvailable(anyInt())).thenReturn(true);
+        when(bookService.updateBookQuantity(anyInt())).thenReturn(BookFactory.getDefaultBook());
+        when(orderRepository.save(any())).thenReturn(new Order());
 
-    Order order = orderService.addOrder(OrderFactory.getDefaultOrderRequest());
+        Order order = orderService.addOrder(OrderFactory.getDefaultOrderRequest());
 
-    assertNotNull(order);
-  }
+        assertNotNull(order);
+    }
 
-  @Test
-  public void testAddOrder_clientNull() {
-    when(clientService.getClientById(ID)).thenReturn(null);
+    @Test
+    void testAddOrder_clientNull() {
+        when(clientService.getClientById(ID)).thenReturn(null);
 
-    Order order = orderService.addOrder(OrderFactory.getDefaultOrderRequest());
+        Order order = orderService.addOrder(OrderFactory.getDefaultOrderRequest());
 
-    assertNull(order);
-  }
+        assertNull(order);
+    }
 
-  @Test
-  public void testAddOrder_noBooksIds() {
-    when(clientService.getClientById(anyInt())).thenReturn(ClientFactory.getDefaultClient());
+    @Test
+    void testAddOrder_noBooksIds() {
+        when(clientService.getClientById(anyInt())).thenReturn(ClientFactory.getDefaultClient());
 
-    Order order = orderService.addOrder(OrderFactory.getDefaultOrderRequest());
+        Order order = orderService.addOrder(OrderFactory.getDefaultOrderRequest());
 
-    assertNull(order);
-  }
+        assertNull(order);
+    }
 
-  @Test
-  public void testUpdateBookQuantity_success() {
-    when(bookService.isBookAvailable(anyInt())).thenReturn(true);
-    when(bookService.updateBookQuantity(anyInt())).thenReturn(BookFactory.getDefaultBook());
+    @Test
+    void testUpdateBookQuantity_success() {
+        when(bookService.isBookAvailable(anyInt())).thenReturn(true);
+        when(bookService.updateBookQuantity(anyInt())).thenReturn(BookFactory.getDefaultBook());
 
-    boolean result = orderService.updateBookQuantity(BookFactory.getDefaultBooksIdsList());
+        boolean result = orderService.updateBookQuantity(BookFactory.getDefaultBooksIdsList());
 
-    assertTrue(result);
-  }
+        assertTrue(result);
+    }
 
-  @Test
-  public void testUpdateBookQuantity_noBooksIds() {
-    boolean result = orderService.updateBookQuantity(Collections.emptyList());
+    @Test
+    void testUpdateBookQuantity_noBooksIds() {
+        boolean result = orderService.updateBookQuantity(Collections.emptyList());
 
-    assertFalse(result);
-  }
+        assertFalse(result);
+    }
 
-  @Test
-  public void testUpdateBookQuantity_bookNotAvailable() {
-    when(bookService.isBookAvailable(anyInt())).thenReturn(false);
+    @Test
+    void testUpdateBookQuantity_bookNotAvailable() {
+        when(bookService.isBookAvailable(anyInt())).thenReturn(false);
 
-    boolean result = orderService.updateBookQuantity(BookFactory.getDefaultBooksIdsList());
+        boolean result = orderService.updateBookQuantity(BookFactory.getDefaultBooksIdsList());
 
-    assertFalse(result);
-  }
+        assertFalse(result);
+    }
 
-  @Test
-  public void testUpdateBookQuantity_bookNotUpdated() {
-    when(bookService.isBookAvailable(anyInt())).thenReturn(true);
-    when(bookService.updateBookQuantity(anyInt())).thenReturn(null);
+    @Test
+    void testUpdateBookQuantity_bookNotUpdated() {
+        when(bookService.isBookAvailable(anyInt())).thenReturn(true);
+        when(bookService.updateBookQuantity(anyInt())).thenReturn(null);
 
-    boolean result = orderService.updateBookQuantity(BookFactory.getDefaultBooksIdsList());
+        boolean result = orderService.updateBookQuantity(BookFactory.getDefaultBooksIdsList());
 
-    assertFalse(result);
-  }
+        assertFalse(result);
+    }
 
-  @Test
-  public void testGetAllOrders() {
-    when(orderRepository.findAll()).thenReturn(OrderFactory.getDefaultOrdersList());
+    @Test
+    void testGetAllOrders() {
+        when(orderRepository.findAll()).thenReturn(OrderFactory.getDefaultOrdersList());
 
-    List<Order> testOrders = orderService.getAllOrders();
+        List<Order> testOrders = orderService.getAllOrders();
 
-    assertNotNull(testOrders);
-  }
+        assertNotNull(testOrders);
+    }
 
-  @Test
-  public void testGetAllOrdersDto() {
-    when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
+    @Test
+    void testGetAllOrdersDto() {
+        when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
 
-    List<OrderDto> result = orderService.getAllOrdersDto();
+        List<OrderDto> result = orderService.getAllOrdersDto();
 
-    assertNotNull(result);
-  }
+        assertNotNull(result);
+    }
 
-  @Test
-  public void testGetAllOrdersByClient() {
-    when(orderService.getAllOrders()).thenReturn(OrderFactory.getDefaultOrdersList());
+    @Test
+    void testGetAllOrdersByClient() {
+        when(orderService.getAllOrders()).thenReturn(OrderFactory.getDefaultOrdersList());
 
-    List<Order> testOrders = orderService.getAllOrdersByClient(ID);
+        List<Order> testOrders = orderService.getAllOrdersByClient(ID);
 
-    assertNotNull(testOrders);
-  }
+        assertNotNull(testOrders);
+    }
 
-  @Test
-  public void testGetAllOrdersDtoByClient() {
-    when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
+    @Test
+    void testGetAllOrdersDtoByClient() {
+        when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
 
-    List<OrderDto> result = orderService.getAllOrdersDtoByClient(ID);
+        List<OrderDto> result = orderService.getAllOrdersDtoByClient(ID);
 
-    assertNotNull(result);
-  }
+        assertNotNull(result);
+    }
 
-  @Test
-  public void testGetAllOrdersByDate() {
-    when(orderService.getAllOrders()).thenReturn(OrderFactory.getDefaultOrdersList());
+    @Test
+    void testGetAllOrdersByDate() {
+        when(orderService.getAllOrders()).thenReturn(OrderFactory.getDefaultOrdersList());
 
-    List<Order> testOrders = orderService.getAllOrdersByDate(ONE, LocalDate.of(YEAR, MONTH, DAY));
+        List<Order> testOrders = orderService.getAllOrdersByDate(ONE, LocalDate.of(YEAR, MONTH, DAY));
 
-    assertNotNull(testOrders);
-  }
+        assertNotNull(testOrders);
+    }
 
-  @Test
-  public void testGetAllOrdersDtoByDate() {
-    when(localDateMapper.mapStringToDate(DATE_STRING)).thenReturn(LOCAL_DATE);
+    @Test
+    void testGetAllOrdersDtoByDate() {
+        when(localDateMapper.mapStringToDate(DATE_STRING)).thenReturn(LOCAL_DATE);
 
-    List<OrderDto> result = orderService.getAllOrdersDtoByDate(CHOICE, DATE_STRING);
+        List<OrderDto> result = orderService.getAllOrdersDtoByDate(CHOICE, DATE_STRING);
 
-    assertNotNull(result);
-  }
+        assertNotNull(result);
+    }
 
-  @Test
-  public void testGetOrderByDateFilter_case1() {
-    LocalDate date = LocalDate.of(2000, 1, 1);
+    @Test
+    void testGetOrderByDateFilter_case1() {
+        LocalDate date = LocalDate.of(2000, 1, 1);
 
-    Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 1, date);
+        Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 1, date);
 
-    assertNotNull(testOrder);
-  }
+        assertNotNull(testOrder);
+    }
 
-  @Test
-  public void testGetOrderByDateFilter_case2() {
-    LocalDate date = LocalDate.of(2000, 1, 2);
+    @Test
+    void testGetOrderByDateFilter_case2() {
+        LocalDate date = LocalDate.of(2000, 1, 2);
 
-    Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 2, date);
+        Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 2, date);
 
-    assertNotNull(testOrder);
-  }
+        assertNotNull(testOrder);
+    }
 
-  @Test
-  public void testGetOrderByDateFilter_case3() {
-    LocalDate date = LocalDate.of(1999, 1, 1);
+    @Test
+    void testGetOrderByDateFilter_case3() {
+        LocalDate date = LocalDate.of(1999, 1, 1);
 
-    Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 3, date);
+        Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 3, date);
 
-    assertNotNull(testOrder);
-  }
+        assertNotNull(testOrder);
+    }
 
-  @Test
-  public void testGetOrderByDateFilter_case4() {
-    LocalDate date = LocalDate.of(2000, 1, 1);
+    @Test
+    void testGetOrderByDateFilter_case4() {
+        LocalDate date = LocalDate.of(2000, 1, 1);
 
-    Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 4, date);
+        Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 4, date);
 
-    assertNotNull(testOrder);
-  }
+        assertNotNull(testOrder);
+    }
 
-  @Test
-  public void testGetOrderByDateFilter_case5() {
-    LocalDate date = LocalDate.of(2000, 1, 2);
+    @Test
+    void testGetOrderByDateFilter_case5() {
+        LocalDate date = LocalDate.of(2000, 1, 2);
 
-    Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 5, date);
+        Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 5, date);
 
-    assertNotNull(testOrder);
-  }
+        assertNotNull(testOrder);
+    }
 
-  @Test
-  public void testGetOrderByDateFilter_case6() {
-    LocalDate date = LocalDate.of(1999, 1, 1);
+    @Test
+    void testGetOrderByDateFilter_case6() {
+        LocalDate date = LocalDate.of(1999, 1, 1);
 
-    Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 6, date);
+        Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 6, date);
 
-    assertNotNull(testOrder);
-  }
+        assertNotNull(testOrder);
+    }
 
-  @Test
-  public void testGetOrderByDateFilter_caseNull() {
-    LocalDate date = LocalDate.of(1999, 1, 1);
+    @Test
+    void testGetOrderByDateFilter_caseNull() {
+        LocalDate date = LocalDate.of(1999, 1, 1);
 
-    Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 1, date);
+        Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 1, date);
 
-    assertNull(testOrder);
-  }
+        assertNull(testOrder);
+    }
 
-  @Test
-  public void testGetOrderById() {
-    when(orderRepository.findById(anyInt())).thenReturn(Optional.of(OrderFactory.getDefaultOrder()));
+    @Test
+    void testGetOrderById() {
+        when(orderRepository.findById(anyInt())).thenReturn(Optional.of(OrderFactory.getDefaultOrder()));
 
-    Order order = orderService.getOrderById(ID);
+        Order order = orderService.getOrderById(ID);
 
-    assertNotNull(order);
-  }
+        assertNotNull(order);
+    }
 
-  @Test
-  public void testGetOrderDtoById() {
-    when(orderRepository.findById(anyInt())).thenReturn(Optional.of(OrderFactory.getDefaultOrder()));
-    when(orderMapper.mapOrderToOrderDto(any())).thenReturn(OrderFactory.getDefaultOrderDto());
+    @Test
+    void testGetOrderDtoById() {
+        when(orderRepository.findById(anyInt())).thenReturn(Optional.of(OrderFactory.getDefaultOrder()));
+        when(orderMapper.mapOrderToOrderDto(any())).thenReturn(OrderFactory.getDefaultOrderDto());
 
-    OrderDto orderDto = orderService.getOrderDtoById(ID);
+        OrderDto orderDto = orderService.getOrderDtoById(ID);
 
-    assertNotNull(orderDto);
-  }
+        assertNotNull(orderDto);
+    }
 
-  @Test
-  public void testExtendOrderDueByDate_success() {
-    when(orderRepository.findById(anyInt())).thenReturn(Optional.of(OrderFactory.getDefaultOrder()));
-    when(orderRepository.save(any())).thenReturn(OrderFactory.getDefaultOrder());
-    when(orderMapper.mapOrderToOrderDto(any())).thenReturn(OrderFactory.getDefaultOrderDto());
+    @Test
+    void testExtendOrderDueByDate_success() {
+        when(orderRepository.findById(anyInt())).thenReturn(Optional.of(OrderFactory.getDefaultOrder()));
+        when(orderRepository.save(any())).thenReturn(OrderFactory.getDefaultOrder());
+        when(orderMapper.mapOrderToOrderDto(any())).thenReturn(OrderFactory.getDefaultOrderDto());
 
-    OrderDto orderDto1 = orderService.extendOrderDueByDate(ID, 1, PERIOD);
-    OrderDto orderDto2 = orderService.extendOrderDueByDate(ID, 2, PERIOD);
-    OrderDto orderDto3 = orderService.extendOrderDueByDate(ID, 3, PERIOD);
-    boolean result = orderDto1 != null && orderDto2 != null && orderDto3 != null;
+        OrderDto orderDto1 = orderService.extendOrderDueByDate(ID, 1, PERIOD);
+        OrderDto orderDto2 = orderService.extendOrderDueByDate(ID, 2, PERIOD);
+        OrderDto orderDto3 = orderService.extendOrderDueByDate(ID, 3, PERIOD);
+        boolean result = orderDto1 != null && orderDto2 != null && orderDto3 != null;
 
-    assertTrue(result);
-  }
+        assertTrue(result);
+    }
 }
 

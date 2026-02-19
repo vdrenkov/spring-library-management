@@ -2,7 +2,6 @@ package dev.vdrenkov.controller;
 
 import dev.vdrenkov.service.OrderService;
 import dev.vdrenkov.util.OrderFactory;
-import tools.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import tools.jackson.databind.ObjectMapper;
 
 import static dev.vdrenkov.util.Constants.CHOICE_STRING;
 import static dev.vdrenkov.util.Constants.DATE_STRING;
@@ -35,149 +35,152 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class OrderControllerTest {
+class OrderControllerTest {
 
-  private final String URI = "/orders";
-  private MockMvc mockMvc;
+    private static final String URI = "/orders";
+    private MockMvc mockMvc;
 
-  @Mock
-  private OrderService orderService;
+    @Mock
+    private OrderService orderService;
 
-  @InjectMocks
-  private OrderController orderController;
+    @InjectMocks
+    private OrderController orderController;
 
-  @BeforeEach
-  public void setup() {
-    mockMvc = MockMvcBuilders
-      .standaloneSetup(orderController)
-      .build();
-  }
+    @BeforeEach
+    void setup() {
+        mockMvc = MockMvcBuilders.standaloneSetup(orderController).build();
+    }
 
-  @Test
-  public void testAddOrder_noExceptions_success() throws Exception {
-    ObjectMapper objectMapper = new ObjectMapper();
-    String json = objectMapper.writeValueAsString(OrderFactory.getDefaultOrderRequest());
-    when(orderService.addOrder(any())).thenReturn(OrderFactory.getDefaultOrder());
+    @Test
+    void testAddOrder_noExceptions_success() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(OrderFactory.getDefaultOrderRequest());
+        when(orderService.addOrder(any())).thenReturn(OrderFactory.getDefaultOrder());
 
-    mockMvc.perform(post(URI)
-                      .contentType(MediaType.APPLICATION_JSON)
-                      .content(json))
-           .andExpect(status().isCreated())
-           .andExpect(header().string("Location", URI + "/" + ID));
-  }
+        mockMvc
+            .perform(post(URI).contentType(MediaType.APPLICATION_JSON).content(json))
+            .andExpect(status().isCreated())
+            .andExpect(header().string("Location", URI + "/" + ID));
+    }
 
-  @Test
-  public void testGetAllOrders_singleOrder_success() throws Exception {
-    when(orderService.getAllOrdersDto()).thenReturn(OrderFactory.getDefaultOrdersDtoList());
+    @Test
+    void testGetAllOrders_singleOrder_success() throws Exception {
+        when(orderService.getAllOrdersDto()).thenReturn(OrderFactory.getDefaultOrdersDtoList());
 
-    mockMvc.perform(get(URI))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$[0].id").value(ID))
-           .andExpect(jsonPath("$[0].clientDto.name").value(NAME))
-           .andExpect(jsonPath("$[0].clientDto.surname").value(SURNAME))
-           .andExpect(jsonPath("$[0].clientDto.phoneNumber").value(PHONE_NUMBER))
-           .andExpect(jsonPath("$[0].clientDto.email").value(EMAIL))
-           .andExpect(jsonPath("$[0].booksNames", hasSize(ONE)))
-           .andExpect(jsonPath("$[0].issueDate").value(DATE_STRING))
-           .andExpect(jsonPath("$[0].dueDate").value(DATE_STRING));
-  }
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].id").value(ID))
+            .andExpect(jsonPath("$[0].clientDto.name").value(NAME))
+            .andExpect(jsonPath("$[0].clientDto.surname").value(SURNAME))
+            .andExpect(jsonPath("$[0].clientDto.phoneNumber").value(PHONE_NUMBER))
+            .andExpect(jsonPath("$[0].clientDto.email").value(EMAIL))
+            .andExpect(jsonPath("$[0].booksNames", hasSize(ONE)))
+            .andExpect(jsonPath("$[0].issueDate").value(DATE_STRING))
+            .andExpect(jsonPath("$[0].dueDate").value(DATE_STRING));
+    }
 
-  @Test
-  public void testGetAllOrders_emptyList_success() throws Exception {
-    mockMvc.perform(get(URI))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$").exists())
-           .andExpect(jsonPath("$[0]").doesNotExist());
-  }
+    @Test
+    void testGetAllOrders_emptyList_success() throws Exception {
+        mockMvc
+            .perform(get(URI))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").exists())
+            .andExpect(jsonPath("$[0]").doesNotExist());
+    }
 
-  @Test
-  public void testGetALlOrdersByClient_singleOrder_success() throws Exception {
-    when(orderService.getAllOrdersDtoByClient(anyInt())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
+    @Test
+    void testGetALlOrdersByClient_singleOrder_success() throws Exception {
+        when(orderService.getAllOrdersDtoByClient(anyInt())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
 
-    mockMvc.perform(get("/clients/" + ID + URI))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$[0].id").value(ID))
-           .andExpect(jsonPath("$[0].clientDto.name").value(NAME))
-           .andExpect(jsonPath("$[0].clientDto.surname").value(SURNAME))
-           .andExpect(jsonPath("$[0].clientDto.phoneNumber").value(PHONE_NUMBER))
-           .andExpect(jsonPath("$[0].clientDto.email").value(EMAIL))
-           .andExpect(jsonPath("$[0].booksNames", hasSize(ONE)))
-           .andExpect(jsonPath("$[0].issueDate").value(DATE_STRING))
-           .andExpect(jsonPath("$[0].dueDate").value(DATE_STRING));
-  }
+        mockMvc
+            .perform(get("/clients/" + ID + URI))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].id").value(ID))
+            .andExpect(jsonPath("$[0].clientDto.name").value(NAME))
+            .andExpect(jsonPath("$[0].clientDto.surname").value(SURNAME))
+            .andExpect(jsonPath("$[0].clientDto.phoneNumber").value(PHONE_NUMBER))
+            .andExpect(jsonPath("$[0].clientDto.email").value(EMAIL))
+            .andExpect(jsonPath("$[0].booksNames", hasSize(ONE)))
+            .andExpect(jsonPath("$[0].issueDate").value(DATE_STRING))
+            .andExpect(jsonPath("$[0].dueDate").value(DATE_STRING));
+    }
 
-  @Test
-  public void testGetAllOrdersByClient_emptyList_success() throws Exception {
-    mockMvc.perform(get("/clients/" + ID + URI))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$").exists())
-           .andExpect(jsonPath("$[0]").doesNotExist());
-  }
+    @Test
+    void testGetAllOrdersByClient_emptyList_success() throws Exception {
+        mockMvc
+            .perform(get("/clients/" + ID + URI))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").exists())
+            .andExpect(jsonPath("$[0]").doesNotExist());
+    }
 
-  @Test
-  public void testGetALlOrdersByDate_singleOrder_success() throws Exception {
-    when(orderService.getAllOrdersDtoByDate(anyInt(), anyString())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
+    @Test
+    void testGetALlOrdersByDate_singleOrder_success() throws Exception {
+        when(orderService.getAllOrdersDtoByDate(anyInt(), anyString())).thenReturn(
+            OrderFactory.getDefaultOrdersDtoList());
 
-    mockMvc.perform(get(URI)
-                      .queryParam("choice", CHOICE_STRING)
-                      .queryParam("date", DATE_STRING))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$[0].id").value(ID))
-           .andExpect(jsonPath("$[0].clientDto.name").value(NAME))
-           .andExpect(jsonPath("$[0].clientDto.surname").value(SURNAME))
-           .andExpect(jsonPath("$[0].clientDto.phoneNumber").value(PHONE_NUMBER))
-           .andExpect(jsonPath("$[0].clientDto.email").value(EMAIL))
-           .andExpect(jsonPath("$[0].booksNames", hasSize(ONE)))
-           .andExpect(jsonPath("$[0].issueDate").value(DATE_STRING))
-           .andExpect(jsonPath("$[0].dueDate").value(DATE_STRING));
-  }
+        mockMvc
+            .perform(get(URI).queryParam("choice", CHOICE_STRING).queryParam("date", DATE_STRING))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].id").value(ID))
+            .andExpect(jsonPath("$[0].clientDto.name").value(NAME))
+            .andExpect(jsonPath("$[0].clientDto.surname").value(SURNAME))
+            .andExpect(jsonPath("$[0].clientDto.phoneNumber").value(PHONE_NUMBER))
+            .andExpect(jsonPath("$[0].clientDto.email").value(EMAIL))
+            .andExpect(jsonPath("$[0].booksNames", hasSize(ONE)))
+            .andExpect(jsonPath("$[0].issueDate").value(DATE_STRING))
+            .andExpect(jsonPath("$[0].dueDate").value(DATE_STRING));
+    }
 
-  @Test
-  public void testGetAllOrdersByDate_emptyList_success() throws Exception {
-    mockMvc.perform(get(URI)
-                      .queryParam("choice", CHOICE_STRING)
-                      .queryParam("dateValue", DATE_STRING))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$").exists())
-           .andExpect(jsonPath("$[0]").doesNotExist());
-  }
+    @Test
+    void testGetAllOrdersByDate_emptyList_success() throws Exception {
+        mockMvc
+            .perform(get(URI).queryParam("choice", CHOICE_STRING).queryParam("dateValue", DATE_STRING))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").exists())
+            .andExpect(jsonPath("$[0]").doesNotExist());
+    }
 
-  @Test
-  public void testGetOrderById_noExceptions_success() throws Exception {
-    when(orderService.getOrderDtoById(anyInt())).thenReturn(OrderFactory.getDefaultOrderDto());
+    @Test
+    void testGetOrderById_noExceptions_success() throws Exception {
+        when(orderService.getOrderDtoById(anyInt())).thenReturn(OrderFactory.getDefaultOrderDto());
 
-    mockMvc.perform(get(URI + "/" + ID))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$.id").value(ID))
-           .andExpect(jsonPath("$.clientDto.name").value(NAME))
-           .andExpect(jsonPath("$.clientDto.surname").value(SURNAME))
-           .andExpect(jsonPath("$.clientDto.phoneNumber").value(PHONE_NUMBER))
-           .andExpect(jsonPath("$.clientDto.email").value(EMAIL))
-           .andExpect(jsonPath("$.booksNames", hasSize(ONE)))
-           .andExpect(jsonPath("$.issueDate").value(DATE_STRING))
-           .andExpect(jsonPath("$.dueDate").value(DATE_STRING));
-  }
+        mockMvc
+            .perform(get(URI + "/" + ID))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(ID))
+            .andExpect(jsonPath("$.clientDto.name").value(NAME))
+            .andExpect(jsonPath("$.clientDto.surname").value(SURNAME))
+            .andExpect(jsonPath("$.clientDto.phoneNumber").value(PHONE_NUMBER))
+            .andExpect(jsonPath("$.clientDto.email").value(EMAIL))
+            .andExpect(jsonPath("$.booksNames", hasSize(ONE)))
+            .andExpect(jsonPath("$.issueDate").value(DATE_STRING))
+            .andExpect(jsonPath("$.dueDate").value(DATE_STRING));
+    }
 
-  @Test
-  public void testExtendOrderDueByDate_requestedResponse_success() throws Exception {
-    when(orderService.extendOrderDueByDate(anyInt(), anyInt(), anyInt())).thenReturn(OrderFactory.getDefaultOrderDto());
+    @Test
+    void testExtendOrderDueByDate_requestedResponse_success() throws Exception {
+        when(orderService.extendOrderDueByDate(anyInt(), anyInt(), anyInt())).thenReturn(
+            OrderFactory.getDefaultOrderDto());
 
-    mockMvc.perform(put(URI + "/" + ID)
-                      .queryParam("choice", CHOICE_STRING)
-                      .queryParam("period", PERIOD_STRING)
-                      .queryParam("returnOld", "true"))
-           .andExpect(status().isOk());
-  }
+        mockMvc
+            .perform(put(URI + "/" + ID)
+                .queryParam("choice", CHOICE_STRING)
+                .queryParam("period", PERIOD_STRING)
+                .queryParam("returnOld", "true"))
+            .andExpect(status().isOk());
+    }
 
-  @Test
-  public void testExtendOrderDueByDate_noResponse_success() throws Exception {
-    when(orderService.extendOrderDueByDate(anyInt(), anyInt(), anyInt())).thenReturn(OrderFactory.getDefaultOrderDto());
+    @Test
+    void testExtendOrderDueByDate_noResponse_success() throws Exception {
+        when(orderService.extendOrderDueByDate(anyInt(), anyInt(), anyInt())).thenReturn(
+            OrderFactory.getDefaultOrderDto());
 
-    mockMvc.perform(put(URI + "/" + ID)
-                      .queryParam("choice", CHOICE_STRING)
-                      .queryParam("period", PERIOD_STRING))
-           .andExpect(status().isNoContent());
-  }
+        mockMvc
+            .perform(put(URI + "/" + ID).queryParam("choice", CHOICE_STRING).queryParam("period", PERIOD_STRING))
+            .andExpect(status().isNoContent());
+    }
 }
 
 

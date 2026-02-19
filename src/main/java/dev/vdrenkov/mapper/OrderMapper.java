@@ -31,7 +31,7 @@ public class OrderMapper {
       ordersDto.add(mapOrderToOrderDto(order));
     }
 
-    ordersDto.sort(Comparator.comparing(OrderDto::getId));
+    ordersDto.sort(Comparator.comparing(OrderDto::id));
     log.info("Orders' list mapped to orders' DTOs list");
     return ordersDto;
   }

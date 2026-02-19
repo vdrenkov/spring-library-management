@@ -24,63 +24,63 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthorServiceTest {
+class AuthorServiceTest {
 
-  @InjectMocks
-  private AuthorService authorService;
+    @InjectMocks
+    private AuthorService authorService;
 
-  @Mock
-  private AuthorRepository authorRepository;
+    @Mock
+    private AuthorRepository authorRepository;
 
-  @Mock
-  private AuthorMapper authorMapper;
+    @Mock
+    private AuthorMapper authorMapper;
 
-  @Test
-  public void testAddAuthor() {
-    when(authorRepository.save(any())).thenReturn(new Author());
+    @Test
+    void testAddAuthor() {
+        when(authorRepository.save(any())).thenReturn(new Author());
 
-    Author author = authorService.addAuthor(AuthorFactory.getDefaultAuthorRequest());
+        Author author = authorService.addAuthor(AuthorFactory.getDefaultAuthorRequest());
 
-    Assertions.assertNotNull(author);
-  }
+        Assertions.assertNotNull(author);
+    }
 
-  @Test
-  public void testGetAllAuthors() {
-    when(authorRepository.findAll()).thenReturn(AuthorFactory.getDefaultAuthorsList());
+    @Test
+    void testGetAllAuthors() {
+        when(authorRepository.findAll()).thenReturn(AuthorFactory.getDefaultAuthorsList());
 
-    List<Author> result = authorService.getAllAuthors();
+        List<Author> result = authorService.getAllAuthors();
 
-    assertFalse(result.isEmpty());
-  }
+        assertFalse(result.isEmpty());
+    }
 
-  @Test
-  public void testGetAllAuthorsDto() {
-    when(authorRepository.findAll()).thenReturn(AuthorFactory.getDefaultAuthorsList());
-    when(authorMapper.mapAuthorsToAuthorsDto(anyList())).thenReturn(AuthorFactory.getDefaultAuthorsDtoList());
+    @Test
+    void testGetAllAuthorsDto() {
+        when(authorRepository.findAll()).thenReturn(AuthorFactory.getDefaultAuthorsList());
+        when(authorMapper.mapAuthorsToAuthorsDto(anyList())).thenReturn(AuthorFactory.getDefaultAuthorsDtoList());
 
-    List<AuthorDto> result = authorService.getAllAuthorsDto();
+        List<AuthorDto> result = authorService.getAllAuthorsDto();
 
-    assertFalse(result.isEmpty());
-  }
+        assertFalse(result.isEmpty());
+    }
 
-  @Test
-  public void testGetAuthorById() {
-    when(authorRepository.findById(anyInt())).thenReturn(Optional.of(AuthorFactory.getDefaultAuthor()));
+    @Test
+    void testGetAuthorById() {
+        when(authorRepository.findById(anyInt())).thenReturn(Optional.of(AuthorFactory.getDefaultAuthor()));
 
-    Author result = authorService.getAuthorById(ID);
+        Author result = authorService.getAuthorById(ID);
 
-    assertNotNull(result.getName());
-  }
+        assertNotNull(result.getName());
+    }
 
-  @Test
-  public void testGetAuthorDtoById() {
-    when(authorRepository.findById(anyInt())).thenReturn(Optional.of(AuthorFactory.getDefaultAuthor()));
-    when(authorMapper.mapAuthorToAuthorDto(any())).thenReturn(AuthorFactory.getDefaultAuthorDto());
+    @Test
+    void testGetAuthorDtoById() {
+        when(authorRepository.findById(anyInt())).thenReturn(Optional.of(AuthorFactory.getDefaultAuthor()));
+        when(authorMapper.mapAuthorToAuthorDto(any())).thenReturn(AuthorFactory.getDefaultAuthorDto());
 
-    AuthorDto result = authorService.getAuthorDtoById(ID);
+        AuthorDto result = authorService.getAuthorDtoById(ID);
 
-    assertNotNull(result.getName());
-  }
+        assertNotNull(result.getName());
+    }
 }
 
 

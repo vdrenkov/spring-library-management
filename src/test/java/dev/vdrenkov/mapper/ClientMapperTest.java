@@ -8,22 +8,22 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ClientMapperTest {
+class ClientMapperTest {
 
-  private final ClientMapper mapper = new ClientMapper();
+    private final ClientMapper mapper = new ClientMapper();
 
-  @Test
-  public void testMapClientsToClientsDto() {
-    List<ClientDto> clientsDto = mapper.mapClientsToClientsDto(ClientFactory.getDefaultClientsList());
+    @Test
+    void testMapClientsToClientsDto() {
+        List<ClientDto> clientsDto = mapper.mapClientsToClientsDto(ClientFactory.getDefaultClientsList());
 
-    assertNotNull(clientsDto);
-  }
+        assertNotNull(clientsDto);
+    }
 
-  @Test
-  public void testMapClientToClientDto() {
-    ClientDto clientDto = mapper.mapClientToClientDto(ClientFactory.getDefaultClient());
+    @Test
+    void testMapClientToClientDto() {
+        ClientDto clientDto = mapper.mapClientToClientDto(ClientFactory.getDefaultClient());
 
-    assertNotNull(clientDto);
-  }
+        assertNotNull(clientDto);
+    }
 }
 

@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ClientServiceTest {
+ class ClientServiceTest {
 
   @Mock
   private ClientRepository clientRepository;
@@ -35,8 +35,8 @@ public class ClientServiceTest {
   private ClientService clientService;
 
   @Test
-  public void testAddClient() {
-    when(clientRepository.save(any())).thenReturn(new Client());
+   void testAddClient() {
+   when(clientRepository.save(any())).thenReturn(new Client());
 
     Client client = clientService.addClient(ClientFactory.getDefaultClientRequest());
 
@@ -44,7 +44,7 @@ public class ClientServiceTest {
   }
 
   @Test
-  public void testGetAllClients() {
+   void testGetAllClients() {
     when(clientRepository.findAll()).thenReturn(ClientFactory.getDefaultClientsList());
 
     List<Client> result = clientService.getAllClients();
@@ -53,7 +53,7 @@ public class ClientServiceTest {
   }
 
   @Test
-  public void testGetAllClientsDto() {
+   void testGetAllClientsDto() {
     when(clientRepository.findAll()).thenReturn(ClientFactory.getDefaultClientsList());
     when(clientMapper.mapClientsToClientsDto(anyList())).thenReturn(ClientFactory.getDefaultClientsDtoList());
 
@@ -63,7 +63,7 @@ public class ClientServiceTest {
   }
 
   @Test
-  public void testGetClientById() {
+   void testGetClientById() {
     when(clientRepository.findById(anyInt())).thenReturn(Optional.of(ClientFactory.getDefaultClient()));
 
     Client result = clientService.getClientById(ID);
@@ -72,7 +72,7 @@ public class ClientServiceTest {
   }
 
   @Test
-  public void testGetClientDtoById() {
+   void testGetClientDtoById() {
     when(clientRepository.findById(anyInt())).thenReturn(Optional.of(ClientFactory.getDefaultClient()));
     when(clientMapper.mapClientToClientDto(any())).thenReturn(ClientFactory.getDefaultClientDto());
 

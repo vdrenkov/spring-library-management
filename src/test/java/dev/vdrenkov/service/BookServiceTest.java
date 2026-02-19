@@ -27,7 +27,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class BookServiceTest {
+ class BookServiceTest {
 
   @Mock
   private AuthorService authorService;
@@ -42,17 +42,17 @@ public class BookServiceTest {
   private BookService bookService;
 
   @Test
-  public void testAddBook_success() {
+   void testAddBook_success() {
     when(authorService.getAuthorById(anyInt())).thenReturn(AuthorFactory.getDefaultAuthor());
     when(bookRepository.save(any())).thenReturn(new Book());
 
-    Book book = bookService.addBook(BookFactory.getDefaultBookRequest());
+   Book book = bookService.addBook(BookFactory.getDefaultBookRequest());
 
     assertNotNull(book);
   }
 
   @Test
-  public void testAddBook_failure() {
+   void testAddBook_failure() {
     when(authorService.getAuthorById(anyInt())).thenReturn(null);
 
     Book book = bookService.addBook(BookFactory.getDefaultBookRequest());
@@ -61,7 +61,7 @@ public class BookServiceTest {
   }
 
   @Test
-  public void testGetAllBooks() {
+   void testGetAllBooks() {
     when(bookRepository.findAll()).thenReturn(BookFactory.getDefaultBooksList());
 
     List<Book> testList = bookService.getAllBooks();
@@ -70,7 +70,7 @@ public class BookServiceTest {
   }
 
   @Test
-  public void testGetAllAvailableBooks() {
+   void testGetAllAvailableBooks() {
     when(bookRepository.findAll()).thenReturn(BookFactory.getDefaultBooksList());
 
     List<Book> testList = bookService.getAllAvailableBooks();
@@ -79,14 +79,14 @@ public class BookServiceTest {
   }
 
   @Test
-  public void testFilterBooksByAvailability() {
+   void testFilterBooksByAvailability() {
     List<Book> testBooks = bookService.filterBooksByAvailability(BookFactory.getDefaultBooksList());
 
     assertNotNull(testBooks);
   }
 
   @Test
-  public void testGetAllAvailableBooksDto() {
+   void testGetAllAvailableBooksDto() {
     when(bookMapper.mapBooksToBooksDto(anyList())).thenReturn(BookFactory.getDefaultBooksDtoList());
 
     List<BookDto> testList = bookService.getAllAvailableBooksDto();
@@ -95,7 +95,7 @@ public class BookServiceTest {
   }
 
   @Test
-  public void testGetAllBooksByAuthor() {
+   void testGetAllBooksByAuthor() {
     when(bookService.getAllBooks()).thenReturn(BookFactory.getDefaultBooksList());
 
     List<Book> testList = bookService.getAllBooksByAuthor(ID);
@@ -104,7 +104,7 @@ public class BookServiceTest {
   }
 
   @Test
-  public void testGetAllBooksDtoByAuthor() {
+   void testGetAllBooksDtoByAuthor() {
     when(bookService.getAllBooks()).thenReturn(BookFactory.getDefaultBooksList());
 
     List<BookDto> testList = bookService.getAllBooksDtoByAuthor(ID);
@@ -113,7 +113,7 @@ public class BookServiceTest {
   }
 
   @Test
-  public void testGetBookById() {
+   void testGetBookById() {
     when(bookRepository.findById(anyInt())).thenReturn(Optional.of(BookFactory.getDefaultBook()));
 
     Book book = bookService.getBookById(ID);
@@ -122,7 +122,7 @@ public class BookServiceTest {
   }
 
   @Test
-  public void testGetBookDtoById() {
+   void testGetBookDtoById() {
     when(bookRepository.findById(anyInt())).thenReturn(Optional.of(BookFactory.getDefaultBook()));
     when(bookMapper.mapBookToBookDto(any())).thenReturn(BookFactory.getDefaultBookDto());
 
@@ -132,7 +132,7 @@ public class BookServiceTest {
   }
 
   @Test
-  public void testIsBookAvailable_true() {
+   void testIsBookAvailable_true() {
     when(bookService.getAllBooks()).thenReturn(BookFactory.getDefaultBooksList());
 
     boolean result = bookService.isBookAvailable(ID);
@@ -141,7 +141,7 @@ public class BookServiceTest {
   }
 
   @Test
-  public void testIsBookAvailable_false() {
+   void testIsBookAvailable_false() {
     when(bookService.getAllBooks()).thenReturn(BookFactory.getDefaultBooksList());
 
     boolean result = bookService.isBookAvailable(ZERO);
@@ -150,7 +150,7 @@ public class BookServiceTest {
   }
 
   @Test
-  public void testUpdateBook_returnsTrue() {
+   void testUpdateBook_returnsTrue() {
     when(bookRepository.findById(anyInt())).thenReturn(Optional.of(BookFactory.getDefaultBook()));
     when(bookRepository.save(any())).thenReturn(BookFactory.getDefaultBook());
 

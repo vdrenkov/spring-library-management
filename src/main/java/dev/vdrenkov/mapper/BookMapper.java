@@ -30,7 +30,7 @@ public class BookMapper {
       booksDto.add(mapBookToBookDto(book));
     }
 
-    booksDto.sort(Comparator.comparing(BookDto::getId));
+    booksDto.sort(Comparator.comparing(BookDto::id));
     log.info("Books' list mapped to books' DTOs list");
     return booksDto;
   }

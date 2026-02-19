@@ -16,44 +16,44 @@ import java.util.List;
 @Service
 public class UserRoleService {
 
-  private static final Logger log = LoggerFactory.getLogger(UserRoleService.class);
+    private static final Logger log = LoggerFactory.getLogger(UserRoleService.class);
 
-  private final UserRoleRepository userRepository;
-  private final UserRoleMapper userMapper;
+    private final UserRoleRepository userRepository;
+    private final UserRoleMapper userMapper;
 
-  @Autowired
-  public UserRoleService(UserRoleRepository userRepository, UserRoleMapper userMapper) {
-    this.userRepository = userRepository;
-    this.userMapper = userMapper;
-  }
+    @Autowired
+    public UserRoleService(UserRoleRepository userRepository, UserRoleMapper userMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+    }
 
-  public UserRole addUserRole(UserRoleRequest userRoleRequest) {
-    UserRole userRole = new UserRole(userRoleRequest.getRole());
+    public UserRole addUserRole(UserRoleRequest userRoleRequest) {
+        UserRole userRole = new UserRole(userRoleRequest.getRole());
 
-    log.info("Trying to add a new role");
-    return userRepository.save(userRole);
-  }
+        log.info("Trying to add a new role");
+        return userRepository.save(userRole);
+    }
 
-  public List<UserRole> getAllUserRoles() {
-    log.info("Trying to retrieve all roles");
-    return userRepository.findAll();
-  }
+    public List<UserRole> getAllUserRoles() {
+        log.info("Trying to retrieve all roles");
+        return userRepository.findAll();
+    }
 
-  public List<UserRoleDto> getAllUserRolesDto() {
-    return userMapper.mapUserRolesToUserRolesDto(getAllUserRoles());
-  }
+    public List<UserRoleDto> getAllUserRolesDto() {
+        return userMapper.mapUserRolesToUserRolesDto(getAllUserRoles());
+    }
 
-  public UserRole getUserRoleById(int id) {
-    log.info(String.format("Trying to retrieve role with id %d", id));
-    return userRepository.findById(id).orElseThrow(UserRoleNotFoundException::new);
-  }
+    public UserRole getUserRoleById(int id) {
+        log.info("Trying to retrieve role with an ID {}", id);
+        return userRepository.findById(id).orElseThrow(UserRoleNotFoundException::new);
+    }
 
-  public UserRoleDto getUserRoleDtoById(int id) {
-    return userMapper.mapUserRoleToUserRoleDto(getUserRoleById(id));
-  }
+    public UserRoleDto getUserRoleDtoById(int id) {
+        return userMapper.mapUserRoleToUserRoleDto(getUserRoleById(id));
+    }
 
-  public UserRole getUserRoleByRole(String role) {
-    return userRepository.findUserRoleByRole(role);
-  }
+    public UserRole getUserRoleByRole(String role) {
+        return userRepository.findUserRoleByRole(role);
+    }
 }
 
