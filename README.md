@@ -22,22 +22,6 @@ RESTful Spring Boot service for running a small library catalogue and lending wo
 - Maven
 - JUnit 5, Mockito JUnit Jupiter, Spring Test, MockMvc
 
-## Modernization Status
-
-Completed:
-- Migrated from Spring Boot 2.x / Java 11 to Spring Boot 4.0.2 / Java 25.
-- Migrated `javax.*` imports to `jakarta.*`.
-- Upgraded Spring Security configuration to modern `SecurityFilterChain` and `requestMatchers`.
-- Upgraded JWT implementation to current `jjwt` API (0.12.7).
-- Upgraded test stack to JUnit 5 + Mockito JUnit Jupiter.
-
-Recommended next pass:
-- Upgrade to `jjwt` 0.13.0 and PostgreSQL driver 42.7.10.
-- Add `maven-enforcer-plugin` and Maven Wrapper (`mvnw`) for reproducible builds.
-- Move all secrets/credentials out of `application.properties` for local/dev usage.
-- Harden JWT cookie settings (`Secure`, `SameSite`, explicit `Path`) for production HTTPS deployments.
-- Keep Spring Boot on stable releases (next detected line is 4.1.0 milestone, not GA).
-
 ## Project Layout
 
 ```
@@ -86,6 +70,7 @@ set JWT_SECRET=<64+-char-secret>
 ```
 
 For production-like environments, prefer:
+
 - `spring.jpa.hibernate.ddl-auto=validate` (or managed migrations).
 - HTTPS-only cookies (`Secure`) and restrictive `SameSite`.
 
@@ -122,34 +107,35 @@ When bootstrapping the system, insert an initial ADMIN user directly in the data
 
 ## API Overview
 
-| Method | Path | Description | Access |
-| ------ | ---- | ----------- | ------ |
-| POST | `/login` | Authenticate an existing user and receive JWT cookie | Public |
-| POST | `/register` | Self-register a librarian account | Public |
-| POST | `/admins/register` | Register a user with roles (ADMIN creates others) | ADMIN |
-| GET | `/authors` | List authors | ADMIN, LIBRARIAN |
-| POST | `/authors` | Create author | ADMIN, LIBRARIAN |
-| GET | `/authors/{id}` | Get author details | ADMIN, LIBRARIAN |
-| GET | `/books` | List available books | ADMIN, LIBRARIAN |
-| POST | `/books` | Add book to catalogue | ADMIN, LIBRARIAN |
-| GET | `/authors/{authorId}/books` | Books written by author | ADMIN, LIBRARIAN |
-| GET | `/books/{id}` | Get book details | ADMIN, LIBRARIAN |
-| POST | `/clients` | Register client | ADMIN, LIBRARIAN |
-| GET | `/clients` | List clients | ADMIN, LIBRARIAN |
-| GET | `/clients/{id}` | Client details | ADMIN, LIBRARIAN |
-| DELETE | `/clients/{id}?returnOld={bool}` | Delete client and optionally return removed payload | ADMIN |
-| POST | `/orders` | Create borrowing order (checks stock & decrements quantity) | ADMIN, LIBRARIAN |
-| GET | `/orders` | List orders | ADMIN, LIBRARIAN |
-| GET | `/clients/{clientId}/orders` | Orders placed by client | ADMIN, LIBRARIAN |
-| GET | `/orders?choice={1-6}&date={yyyy-MM-dd}` | Filter orders by issue/due date rule | ADMIN, LIBRARIAN |
-| PUT | `/orders/{id}?choice={1-3}&period={n}&returnOld={bool}` | Extend due date by days, weeks, or months | ADMIN, LIBRARIAN |
-| GET | `/users` | List users | ADMIN |
-| GET | `/users/{id}` | User details | ADMIN |
-| POST | `/roles` | Create role | ADMIN |
-| GET | `/roles` | List roles | ADMIN |
-| GET | `/roles/{id}` | Role details | ADMIN |
+| Method | Path                                                    | Description                                                 | Access           |
+| ------ | ------------------------------------------------------- | ----------------------------------------------------------- | ---------------- |
+| POST   | `/login`                                                | Authenticate an existing user and receive JWT cookie        | Public           |
+| POST   | `/register`                                             | Self-register a librarian account                           | Public           |
+| POST   | `/admins/register`                                      | Register a user with roles (ADMIN creates others)           | ADMIN            |
+| GET    | `/authors`                                              | List authors                                                | ADMIN, LIBRARIAN |
+| POST   | `/authors`                                              | Create author                                               | ADMIN, LIBRARIAN |
+| GET    | `/authors/{id}`                                         | Get author details                                          | ADMIN, LIBRARIAN |
+| GET    | `/books`                                                | List available books                                        | ADMIN, LIBRARIAN |
+| POST   | `/books`                                                | Add book to catalogue                                       | ADMIN, LIBRARIAN |
+| GET    | `/authors/{authorId}/books`                             | Books written by author                                     | ADMIN, LIBRARIAN |
+| GET    | `/books/{id}`                                           | Get book details                                            | ADMIN, LIBRARIAN |
+| POST   | `/clients`                                              | Register client                                             | ADMIN, LIBRARIAN |
+| GET    | `/clients`                                              | List clients                                                | ADMIN, LIBRARIAN |
+| GET    | `/clients/{id}`                                         | Client details                                              | ADMIN, LIBRARIAN |
+| DELETE | `/clients/{id}?returnOld={bool}`                        | Delete client and optionally return removed payload         | ADMIN            |
+| POST   | `/orders`                                               | Create borrowing order (checks stock & decrements quantity) | ADMIN, LIBRARIAN |
+| GET    | `/orders`                                               | List orders                                                 | ADMIN, LIBRARIAN |
+| GET    | `/clients/{clientId}/orders`                            | Orders placed by client                                     | ADMIN, LIBRARIAN |
+| GET    | `/orders?choice={1-6}&date={yyyy-MM-dd}`                | Filter orders by issue/due date rule                        | ADMIN, LIBRARIAN |
+| PUT    | `/orders/{id}?choice={1-3}&period={n}&returnOld={bool}` | Extend due date by days, weeks, or months                   | ADMIN, LIBRARIAN |
+| GET    | `/users`                                                | List users                                                  | ADMIN            |
+| GET    | `/users/{id}`                                           | User details                                                | ADMIN            |
+| POST   | `/roles`                                                | Create role                                                 | ADMIN            |
+| GET    | `/roles`                                                | List roles                                                  | ADMIN            |
+| GET    | `/roles/{id}`                                           | Role details                                                | ADMIN            |
 
 `choice` query parameters drive filter/extend behaviour:
+
 - Orders by date: `1` issue date equals, `2` issue before, `3` issue after, `4` due equals, `5` due before, `6` due after.
 - Extend due date: `1` add days, `2` add weeks, `3` add months.
 
@@ -164,8 +150,6 @@ mvn test
 ```
 
 The suite uses JUnit 5 (Jupiter), Mockito JUnit Jupiter, and Spring’s test utilities to cover controller endpoints, service logic, DTO mappers, and exception handling.
-
-On JDK 25 you may see a Mockito dynamic-agent warning during tests. This is currently non-blocking, but adding Mockito as an explicit test JVM agent is recommended for future JDK compatibility.
 
 ## Logging
 
