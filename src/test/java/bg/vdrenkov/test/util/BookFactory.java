@@ -48,3 +48,4 @@ public final class BookFactory {
     return Collections.singletonList(ONE);
   }
 }
+

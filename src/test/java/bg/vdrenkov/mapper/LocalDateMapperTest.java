@@ -1,7 +1,7 @@
 package bg.vdrenkov.mapper;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
@@ -15,6 +15,8 @@ public class LocalDateMapperTest {
   public void testMapStringToDate() {
     LocalDate response = mapper.mapStringToDate("01-JANUARY-2000");
 
-    Assert.assertEquals(LOCAL_DATE.toString(), response.toString());
+    Assertions.assertEquals(LOCAL_DATE.toString(), response.toString());
   }
 }
+
+

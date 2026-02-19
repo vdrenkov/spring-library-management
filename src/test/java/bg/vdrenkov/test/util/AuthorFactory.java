@@ -37,3 +37,4 @@ public final class AuthorFactory {
     return new AuthorRequest(NAME, SURNAME);
   }
 }
+

@@ -2,11 +2,11 @@ package bg.vdrenkov.mapper;
 
 import bg.vdrenkov.dto.AuthorDto;
 import bg.vdrenkov.test.util.AuthorFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AuthorMapperTest {
 
@@ -26,3 +26,4 @@ public class AuthorMapperTest {
     assertNotNull(authorDto);
   }
 }
+

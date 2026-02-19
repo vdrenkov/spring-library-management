@@ -8,11 +8,11 @@ import bg.vdrenkov.repository.OrderRepository;
 import bg.vdrenkov.test.util.BookFactory;
 import bg.vdrenkov.test.util.ClientFactory;
 import bg.vdrenkov.test.util.OrderFactory;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -28,16 +28,16 @@ import static bg.vdrenkov.util.Constants.MONTH;
 import static bg.vdrenkov.util.Constants.ONE;
 import static bg.vdrenkov.util.Constants.PERIOD;
 import static bg.vdrenkov.util.Constants.YEAR;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class OrderServiceTest {
 
   @Mock
@@ -274,3 +274,4 @@ public class OrderServiceTest {
     assertTrue(result);
   }
 }
+

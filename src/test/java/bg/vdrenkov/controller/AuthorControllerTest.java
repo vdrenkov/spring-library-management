@@ -2,14 +2,13 @@ package bg.vdrenkov.controller;
 
 import bg.vdrenkov.service.AuthorService;
 import bg.vdrenkov.test.util.AuthorFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import tools.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,8 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AuthorControllerTest {
 
   private final String URI = "/authors";
@@ -40,7 +38,7 @@ public class AuthorControllerTest {
   @InjectMocks
   private AuthorController authorController;
 
-  @Before
+  @BeforeEach
   public void setup() {
     mockMvc = MockMvcBuilders
       .standaloneSetup(authorController)
@@ -92,3 +90,5 @@ public class AuthorControllerTest {
            .andExpect(jsonPath("$.surname").value(SURNAME));
   }
 }
+
+

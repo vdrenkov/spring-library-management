@@ -8,15 +8,13 @@ import bg.vdrenkov.exception.OrderNotFoundException;
 import bg.vdrenkov.request.OrderRequest;
 import bg.vdrenkov.service.OrderService;
 import bg.vdrenkov.test.util.BookFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import tools.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -24,7 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import javax.validation.UnexpectedTypeException;
+import jakarta.validation.UnexpectedTypeException;
 import java.time.format.DateTimeParseException;
 
 import static bg.vdrenkov.util.Constants.CHOICE;
@@ -38,8 +36,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class GlobalExceptionHandlerTest {
 
   private final String URI = "/orders";
@@ -53,7 +50,7 @@ public class GlobalExceptionHandlerTest {
   @InjectMocks
   private OrderController orderController;
 
-  @Before
+  @BeforeEach
   public void setup() {
     mockMvc = MockMvcBuilders
       .standaloneSetup(orderController)
@@ -64,7 +61,6 @@ public class GlobalExceptionHandlerTest {
   @Test
   public void handleMethodArgumentNotValidException_onEndpointGetAllOrders_badRequest() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new JavaTimeModule());
     String json = objectMapper.writeValueAsString(new OrderRequest(0, BookFactory.getDefaultBooksIdsList()));
 
     mockMvc.perform(post(URI)
@@ -198,3 +194,7 @@ public class GlobalExceptionHandlerTest {
            .andExpect(jsonPath(ROOT, is("Something went wrong")));
   }
 }
+
+
+
+

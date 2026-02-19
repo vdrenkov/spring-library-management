@@ -2,15 +2,13 @@ package bg.vdrenkov.controller;
 
 import bg.vdrenkov.service.BookService;
 import bg.vdrenkov.test.util.BookFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import tools.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -31,8 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class BookControllerTest {
 
   private final String URI = "/books";
@@ -45,7 +42,7 @@ public class BookControllerTest {
   @InjectMocks
   private BookController bookController;
 
-  @Before
+  @BeforeEach
   public void setup() {
     mockMvc = MockMvcBuilders
       .standaloneSetup(bookController)
@@ -55,7 +52,6 @@ public class BookControllerTest {
   @Test
   public void addBook() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new JavaTimeModule());
     String json = objectMapper.writeValueAsString(BookFactory.getDefaultBookRequest());
     when(bookService.addBook(any())).thenReturn(BookFactory.getDefaultBook());
 
@@ -74,9 +70,7 @@ public class BookControllerTest {
            .andExpect(status().isOk())
            .andExpect(jsonPath("$[0].id").value(ID))
            .andExpect(jsonPath("$[0].name").value(NAME))
-           .andExpect(jsonPath("$[0].publishDate[0]").value(YEAR))
-           .andExpect(jsonPath("$[0].publishDate[1]").value(MONTH))
-           .andExpect(jsonPath("$[0].publishDate[2]").value(DAY))
+           .andExpect(jsonPath("$[0].publishDate").value("2000-01-01"))
            .andExpect(jsonPath("$[0].authorDto.name").value(NAME))
            .andExpect(jsonPath("$[0].authorDto.surname").value(SURNAME))
            .andExpect(jsonPath("$[0].quantity").value(QUANTITY));
@@ -98,9 +92,7 @@ public class BookControllerTest {
            .andExpect(status().isOk())
            .andExpect(jsonPath("$[0].id").value(ID))
            .andExpect(jsonPath("$[0].name").value(NAME))
-           .andExpect(jsonPath("$[0].publishDate[0]").value(YEAR))
-           .andExpect(jsonPath("$[0].publishDate[1]").value(MONTH))
-           .andExpect(jsonPath("$[0].publishDate[2]").value(DAY))
+           .andExpect(jsonPath("$[0].publishDate").value("2000-01-01"))
            .andExpect(jsonPath("$[0].authorDto.name").value(NAME))
            .andExpect(jsonPath("$[0].authorDto.surname").value(SURNAME))
            .andExpect(jsonPath("$[0].quantity").value(QUANTITY));
@@ -114,11 +106,12 @@ public class BookControllerTest {
            .andExpect(status().isOk())
            .andExpect(jsonPath("$.id").value(ID))
            .andExpect(jsonPath("$.name").value(NAME))
-           .andExpect(jsonPath("$.publishDate[0]").value(YEAR))
-           .andExpect(jsonPath("$.publishDate[1]").value(MONTH))
-           .andExpect(jsonPath("$.publishDate[2]").value(DAY))
+           .andExpect(jsonPath("$.publishDate").value("2000-01-01"))
            .andExpect(jsonPath("$.authorDto.name").value(NAME))
            .andExpect(jsonPath("$.authorDto.surname").value(SURNAME))
            .andExpect(jsonPath("$.quantity").value(QUANTITY));
   }
 }
+
+
+

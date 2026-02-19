@@ -3,19 +3,19 @@ package bg.vdrenkov.mapper;
 import bg.vdrenkov.dto.OrderDto;
 import bg.vdrenkov.test.util.ClientFactory;
 import bg.vdrenkov.test.util.OrderFactory;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class OrderMapperTest {
 
   @Mock
@@ -42,3 +42,4 @@ public class OrderMapperTest {
     assertNotNull(orderDto);
   }
 }
+
