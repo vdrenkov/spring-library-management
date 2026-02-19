@@ -9,3 +9,4 @@ public class AuthorRequest extends PersonRequest {
     super(name, surname);
   }
 }
+

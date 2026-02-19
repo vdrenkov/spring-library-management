@@ -2,16 +2,19 @@ package bg.vdrenkov.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import javax.crypto.SecretKey;
 
 import static bg.vdrenkov.util.Constants.JWT_TOKEN_VALIDITY;
 
@@ -35,7 +38,15 @@ public class JwtTokenUtil implements Serializable {
   }
 
   private Claims getAllClaimsFromToken(String token) {
-    return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+    return Jwts.parser()
+               .verifyWith(getSigningKey())
+               .build()
+               .parseSignedClaims(token)
+               .getPayload();
+  }
+
+  private SecretKey getSigningKey() {
+    return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
   }
 
   private Boolean isTokenExpired(String token) {
@@ -50,9 +61,13 @@ public class JwtTokenUtil implements Serializable {
 
   private String doGenerateToken(Map<String, Object> claims, String subject) {
 
-    return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-               .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-               .signWith(SignatureAlgorithm.HS512, secret).compact();
+    return Jwts.builder()
+               .claims(claims)
+               .subject(subject)
+               .issuedAt(new Date(System.currentTimeMillis()))
+               .expiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+               .signWith(getSigningKey(), Jwts.SIG.HS512)
+               .compact();
   }
 
   public Boolean validateToken(String token, UserDetails userDetails) {
@@ -60,3 +75,4 @@ public class JwtTokenUtil implements Serializable {
     return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
   }
 }
+

@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import javax.validation.UnexpectedTypeException;
+import jakarta.validation.UnexpectedTypeException;
 import java.time.format.DateTimeParseException;
 
 @RestControllerAdvice
@@ -167,3 +167,5 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
+
+

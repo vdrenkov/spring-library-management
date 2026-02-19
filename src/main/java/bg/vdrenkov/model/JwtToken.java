@@ -9,3 +9,4 @@ public class JwtToken {
 
   private String token;
 }
+

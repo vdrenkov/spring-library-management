@@ -9,3 +9,4 @@ public class AuthorNotFoundException extends RuntimeException {
     return AUTHOR_NOT_FOUND_MESSAGE;
   }
 }
+

@@ -3,8 +3,8 @@ package bg.vdrenkov.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @NoArgsConstructor
 @Getter
@@ -23,3 +23,4 @@ public class ClientRequest extends PersonRequest {
     this.email = email;
   }
 }
+

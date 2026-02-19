@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import java.util.List;
 
 @AllArgsConstructor
@@ -24,3 +24,4 @@ public class AdminRequest {
   @NotNull(message = "The roles' ids can not be null")
   private List<Integer> rolesIds;
 }
+

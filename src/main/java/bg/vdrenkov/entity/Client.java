@@ -3,9 +3,9 @@ package bg.vdrenkov.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @NoArgsConstructor
 @Getter
@@ -31,3 +31,5 @@ public class Client extends Person {
     this.email = email;
   }
 }
+
+

@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,3 +17,4 @@ public class UserRoleRequest {
   @NotNull(message = "The role can not be null")
   private String role;
 }
+

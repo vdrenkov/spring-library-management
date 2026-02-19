@@ -52,3 +52,4 @@ public class AuthorService {
     return authorMapper.mapAuthorToAuthorDto(getAuthorById(id));
   }
 }
+

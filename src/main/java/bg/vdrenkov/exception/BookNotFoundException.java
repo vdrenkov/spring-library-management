@@ -9,3 +9,4 @@ public class BookNotFoundException extends RuntimeException {
     return BOOK_NOT_FOUND_MESSAGE;
   }
 }
+

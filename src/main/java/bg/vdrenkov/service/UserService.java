@@ -16,7 +16,7 @@ import org.springframework.http.HttpCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class UserService {
 
   private static final Logger log = LoggerFactory.getLogger(UserService.class);
   private final AuthenticationManager authenticationManager;
-  private final BCryptPasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
   private final JwtCookieUtil jwtCookieUtil;
   private final UserRepository userRepository;
   private final UserRoleService userRoleService;
@@ -36,7 +36,7 @@ public class UserService {
 
   @Autowired
   public UserService(
-    AuthenticationManager authenticationManager, BCryptPasswordEncoder passwordEncoder, JwtCookieUtil jwtCookieUtil,
+    AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtCookieUtil jwtCookieUtil,
     UserRepository userRepository, UserRoleService userRoleService, UserMapper userMapper) {
     this.authenticationManager = authenticationManager;
     this.passwordEncoder = passwordEncoder;
@@ -122,3 +122,4 @@ public class UserService {
     return userRepository.findUserByUsername(username);
   }
 }
+

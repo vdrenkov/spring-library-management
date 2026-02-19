@@ -3,7 +3,7 @@ package bg.vdrenkov.request;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Getter
@@ -15,3 +15,5 @@ public class UserRequest {
   @NotNull(message = "The password can not be null")
   private String password;
 }
+
+

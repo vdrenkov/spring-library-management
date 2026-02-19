@@ -1,7 +1,6 @@
 package bg.vdrenkov.configuration;
 
 import bg.vdrenkov.jwt.JwtRequestFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import static bg.vdrenkov.util.Constants.JWT_COOKIE_NAME;
 
@@ -51,7 +50,6 @@ public class WebSecurityConfiguration {
 
   private final JwtRequestFilter jwtRequestFilter;
 
-  @Autowired
   public WebSecurityConfiguration(JwtRequestFilter jwtRequestFilter) {
     this.jwtRequestFilter = jwtRequestFilter;
   }
@@ -59,27 +57,22 @@ public class WebSecurityConfiguration {
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
-      .csrf()
-      .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-      .and()
-      .authorizeRequests()
-      .antMatchers(AUTH_PATH).permitAll()
-      .antMatchers(ADMIN_LIST).hasAuthority(ADMIN)
-      .antMatchers(HttpMethod.POST, LIBRARIAN_LIST).hasAnyAuthority(ADMIN, LIBRARIAN)
-      .antMatchers(HttpMethod.GET, LIBRARIAN_LIST).hasAnyAuthority(ADMIN, LIBRARIAN)
-      .antMatchers(HttpMethod.PUT, LIBRARIAN_LIST).hasAnyAuthority(ADMIN, LIBRARIAN)
-      .antMatchers(HttpMethod.DELETE, LIBRARIAN_LIST).hasAuthority(ADMIN)
-      .anyRequest()
-      .authenticated()
-      .and()
-      .sessionManagement()
-      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-      .and()
+      .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+      .authorizeHttpRequests(auth -> auth
+        .requestMatchers(AUTH_PATH).permitAll()
+        .requestMatchers(ADMIN_LIST).hasAuthority(ADMIN)
+        .requestMatchers(HttpMethod.POST, LIBRARIAN_LIST).hasAnyAuthority(ADMIN, LIBRARIAN)
+        .requestMatchers(HttpMethod.GET, LIBRARIAN_LIST).hasAnyAuthority(ADMIN, LIBRARIAN)
+        .requestMatchers(HttpMethod.PUT, LIBRARIAN_LIST).hasAnyAuthority(ADMIN, LIBRARIAN)
+        .requestMatchers(HttpMethod.DELETE, LIBRARIAN_LIST).hasAuthority(ADMIN)
+        .anyRequest().authenticated()
+      )
+      .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-      .logout()
-      .logoutUrl("/logout")
-      .deleteCookies(JWT_COOKIE_NAME)
-    .logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK));
+      .logout(logout -> logout
+        .logoutUrl("/logout")
+        .deleteCookies(JWT_COOKIE_NAME)
+        .logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK)));
     return httpSecurity.build();
   }
 
@@ -94,3 +87,4 @@ public class WebSecurityConfiguration {
     return authenticationConfiguration.getAuthenticationManager();
   }
 }
+

@@ -32,3 +32,4 @@ public class AuthorMapper {
     return new AuthorDto(author.getId(), author.getName(), author.getSurname());
   }
 }
+

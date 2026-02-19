@@ -9,3 +9,4 @@ public class ClientNotFoundException extends RuntimeException {
     return CLIENT_NOT_FOUND_MESSAGE;
   }
 }
+
