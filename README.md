@@ -14,12 +14,29 @@ RESTful Spring Boot service for running a small library catalogue and lending wo
 
 ## Tech Stack
 
-- Java 11
-- Spring Boot 2.4 (Web, Data JPA, Validation, Security)
-- Hibernate & PostgreSQL
-- JSON Web Tokens via `jjwt`
+- Java 25 (LTS)
+- Spring Boot 4.0.2 (Web, Data JPA, Validation, Security)
+- Spring Framework 7 / Jakarta EE (`jakarta.*` namespaces)
+- Hibernate ORM 7 & PostgreSQL
+- JSON Web Tokens via `jjwt` 0.12.7
 - Maven
-- JUnit 4, Mockito, Spring Test, MockMvc
+- JUnit 5, Mockito JUnit Jupiter, Spring Test, MockMvc
+
+## Modernization Status
+
+Completed:
+- Migrated from Spring Boot 2.x / Java 11 to Spring Boot 4.0.2 / Java 25.
+- Migrated `javax.*` imports to `jakarta.*`.
+- Upgraded Spring Security configuration to modern `SecurityFilterChain` and `requestMatchers`.
+- Upgraded JWT implementation to current `jjwt` API (0.12.7).
+- Upgraded test stack to JUnit 5 + Mockito JUnit Jupiter.
+
+Recommended next pass:
+- Upgrade to `jjwt` 0.13.0 and PostgreSQL driver 42.7.10.
+- Add `maven-enforcer-plugin` and Maven Wrapper (`mvnw`) for reproducible builds.
+- Move all secrets/credentials out of `application.properties` for local/dev usage.
+- Harden JWT cookie settings (`Secure`, `SameSite`, explicit `Path`) for production HTTPS deployments.
+- Keep Spring Boot on stable releases (next detected line is 4.1.0 milestone, not GA).
 
 ## Project Layout
 
@@ -45,8 +62,8 @@ logs/                   # Log output destination (configured in properties)
 
 ## Prerequisites
 
-- Java 11 or newer
-- Maven 3.6+
+- Java 25
+- Maven 3.9+
 - PostgreSQL running locally (default config expects `localhost:7070/SpringLibraryManagement`)
 - Optional: Postman for API exploration (`src/main/resources/SpringLibraryManagement.postman_collection.json`)
 
@@ -55,18 +72,22 @@ logs/                   # Log output destination (configured in properties)
 The default configuration lives in `src/main/resources/application.properties`:
 
 - `spring.datasource.*` points to a PostgreSQL instance.
-- `spring.jpa.hibernate.ddl-auto=update` lets JPA create/update tables automatically.
-- `jwt.secret` provides the signing key for tokens.
+- `spring.jpa.hibernate.ddl-auto=update` lets JPA create/update tables automatically in local development.
+- `jwt.secret` provides the signing key for tokens (use a strong 64+ character secret for HS512).
 - `logging.file.name=logs/log.log` routes logs to the `/logs` folder.
 
-Override sensitive values with environment variables or a profile-specific properties file instead of editing source directly:
+Do not commit real credentials. Override sensitive values with environment variables or a profile-specific properties file instead of editing source directly:
 
 ```bash
 set SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:7070/SpringLibraryManagement
 set SPRING_DATASOURCE_USERNAME=postgres
 set SPRING_DATASOURCE_PASSWORD=<your-password>
-set JWT_SECRET=<your-secret>
+set JWT_SECRET=<64+-char-secret>
 ```
+
+For production-like environments, prefer:
+- `spring.jpa.hibernate.ddl-auto=validate` (or managed migrations).
+- HTTPS-only cookies (`Secure`) and restrictive `SameSite`.
 
 Use the bundled `DDL_Scripts.sql` when you prefer explicit schema management or need to recreate tables from scratch.
 
@@ -142,7 +163,9 @@ Run the automated test suite with:
 mvn test
 ```
 
-The suite uses JUnit 4, Mockito, and Spring’s test utilities to cover controller endpoints, service logic, DTO mappers, and exception handling.
+The suite uses JUnit 5 (Jupiter), Mockito JUnit Jupiter, and Spring’s test utilities to cover controller endpoints, service logic, DTO mappers, and exception handling.
+
+On JDK 25 you may see a Mockito dynamic-agent warning during tests. This is currently non-blocking, but adding Mockito as an explicit test JVM agent is recommended for future JDK compatibility.
 
 ## Logging
 
