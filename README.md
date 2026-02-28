@@ -15,10 +15,10 @@ RESTful Spring Boot service for running a small library catalogue and lending wo
 ## Tech Stack
 
 - Java 25 (LTS)
-- Spring Boot 4.0.2 (Web, Data JPA, Validation, Security)
+- Spring Boot 4.0.3 (Web, Data JPA, Validation, Security)
 - Spring Framework 7 / Jakarta EE (`jakarta.*` namespaces)
 - Hibernate ORM 7 & PostgreSQL
-- JSON Web Tokens via `jjwt` 0.12.7
+- JSON Web Tokens via `jjwt` 0.13.0
 - Maven
 - JUnit 5, Mockito JUnit Jupiter, Spring Test, MockMvc
 
@@ -56,7 +56,7 @@ logs/                   # Log output destination (configured in properties)
 The default configuration lives in `src/main/resources/application.properties`:
 
 - `spring.datasource.*` points to a PostgreSQL instance.
-- `spring.jpa.hibernate.ddl-auto=update` lets JPA create/update tables automatically in local development.
+- `spring.jpa.hibernate.ddl-auto=update` is intentionally kept for this project long-term to auto-evolve schema during development/demo deployment.
 - `jwt.secret` provides the signing key for tokens (use a strong 64+ character secret for HS512).
 - `jwt.cookie.secure` and `jwt.cookie.same-site` control cookie hardening options.
 - `logging.file.name=logs/log.log` routes logs to the `/logs` folder.
@@ -72,9 +72,8 @@ set SPRING_DATASOURCE_PASSWORD=<your-password>
 set JWT_SECRET=<64+-char-secret>
 ```
 
-For production-like environments, prefer:
+For tighter production hardening, keep:
 
-- `spring.jpa.hibernate.ddl-auto=validate` (or managed migrations).
 - HTTPS-only cookies (`jwt.cookie.secure=true`) and restrictive `SameSite` as needed.
 
 Use the bundled `DDL_Scripts.sql` when you prefer explicit schema management or need to recreate tables from scratch.
