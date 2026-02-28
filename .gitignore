@@ -1,5 +1,6 @@
 # Personally added paths to be excluded
 .idea/
+.vscode
 target/
 logs/
 *.iml
