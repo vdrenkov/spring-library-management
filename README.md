@@ -146,6 +146,7 @@ set APP_BOOTSTRAP_ADMIN_PASSWORD=<strong-password>
 
 - Orders by date: `1` issue date equals, `2` issue before, `3` issue after, `4` due equals, `5` due before, `6` due after.
 - Extend due date: `1` add days, `2` add weeks, `3` add months.
+- Unsupported HTTP methods return `405 Method Not Allowed`.
 
 Import the Postman collection for ready-made requests (`src/main/resources/SpringLibraryManagement.postman_collection.json`). Remember to capture the `Cookie` header returned by authentication calls.
 
