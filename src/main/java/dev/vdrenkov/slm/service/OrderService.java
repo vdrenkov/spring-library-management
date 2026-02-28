@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -44,6 +45,7 @@ public class OrderService {
         if (orderRequest.getBooksIds().isEmpty()) {
             throw new IllegalArgumentException("At least one book ID is required to create an order");
         }
+        validateNoDuplicateBookIds(orderRequest.getBooksIds());
 
         Client client = clientService.getClientById(orderRequest.getClientId());
         List<Book> books = new ArrayList<>();
@@ -58,6 +60,12 @@ public class OrderService {
 
         log.info("Trying to add a new order");
         return orderRepository.save(new Order(client, books, issueDate, issueDate.plusMonths(1)));
+    }
+
+    private void validateNoDuplicateBookIds(List<Integer> booksIds) {
+        if (new HashSet<>(booksIds).size() != booksIds.size()) {
+            throw new IllegalArgumentException("Duplicate book IDs are not allowed in a single order");
+        }
     }
 
     private void decreaseBooksQuantities(List<Integer> booksIds) {

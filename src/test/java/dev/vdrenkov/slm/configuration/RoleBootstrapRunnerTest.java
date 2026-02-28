@@ -80,4 +80,42 @@ class RoleBootstrapRunnerTest {
         assertEquals("encoded-password", savedUser.getPassword());
         assertTrue(savedUser.getUserRoles().stream().anyMatch(role -> "ADMIN".equals(role.getRole())));
     }
+
+    @Test
+    void testRun_bootstrapDisabled_doesNothing() {
+        RoleBootstrapRunner runner = new RoleBootstrapRunner(
+            userRoleRepository,
+            userRepository,
+            passwordEncoder,
+            false,
+            "admin",
+            "password123"
+        );
+
+        runner.run();
+
+        verify(userRoleRepository, never()).existsByRole(any());
+        verify(userRoleRepository, never()).save(any(UserRole.class));
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void testRun_adminAlreadyExists_doesNotCreateAgain() {
+        when(userRoleRepository.existsByRole("ADMIN")).thenReturn(true);
+        when(userRoleRepository.existsByRole("LIBRARIAN")).thenReturn(true);
+        when(userRepository.existsByUsername("admin")).thenReturn(true);
+
+        RoleBootstrapRunner runner = new RoleBootstrapRunner(
+            userRoleRepository,
+            userRepository,
+            passwordEncoder,
+            true,
+            "admin",
+            "password123"
+        );
+
+        runner.run();
+
+        verify(userRepository, never()).save(any(User.class));
+    }
 }

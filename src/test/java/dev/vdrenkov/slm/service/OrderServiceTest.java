@@ -82,6 +82,12 @@ class OrderServiceTest {
     }
 
     @Test
+    void testAddOrder_duplicateBookIds_throws() {
+        assertThrows(IllegalArgumentException.class, () ->
+            orderService.addOrder(new dev.vdrenkov.slm.request.OrderRequest(ID, List.of(ID, ID))));
+    }
+
+    @Test
     void testGetAllOrders() {
         when(orderRepository.findAll()).thenReturn(OrderFactory.getDefaultOrdersList());
 
