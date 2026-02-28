@@ -1,61 +1,72 @@
-CREATE SCHEMA IF NOT EXISTS springlibrarymanagement;
-
-CREATE TABLE IF NOT EXISTS springlibrarymanagement.authors
+CREATE TABLE IF NOT EXISTS authors
 (
-    id serial,
-    name character varying(255),
-    surname character varying(255),
-	UNIQUE (name,surname),
-    CONSTRAINT authors_pkey PRIMARY KEY (id)
+    id      SERIAL PRIMARY KEY,
+    name    VARCHAR(255),
+    surname VARCHAR(255),
+    CONSTRAINT uk_authors_name_surname UNIQUE (name, surname)
 );
 
-    CREATE TABLE IF NOT EXISTS springlibrarymanagement.books
-    (
-        id serial,
-        name character varying(255) UNIQUE,
-        publish_date date,
-        quantity integer,
-        author_id integer,
-        CONSTRAINT books_pkey PRIMARY KEY (id),
-        CONSTRAINT fk_author_id FOREIGN KEY (author_id)
-            REFERENCES springlibrarymanagement.authors (id)
-            ON UPDATE CASCADE
-            ON DELETE CASCADE
-    );
+CREATE TABLE IF NOT EXISTS books
+(
+    id           SERIAL PRIMARY KEY,
+    name         VARCHAR(255) UNIQUE,
+    publish_date DATE,
+    quantity     INTEGER,
+    author_id    INTEGER REFERENCES authors (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
 
-        CREATE TABLE IF NOT EXISTS springlibrarymanagement.clients
-        (
-            id serial,
-            name character varying(255),
-            surname character varying(255),
-            email character varying(255) UNIQUE,
-            phone_number character varying(255) UNIQUE,
-            CONSTRAINT clients_pkey PRIMARY KEY (id)
-        );
+CREATE TABLE IF NOT EXISTS clients
+(
+    id           SERIAL PRIMARY KEY,
+    name         VARCHAR(255),
+    surname      VARCHAR(255),
+    email        VARCHAR(255) UNIQUE,
+    phone_number VARCHAR(255) UNIQUE
+);
 
-                CREATE TABLE IF NOT EXISTS springlibrarymanagement.orders
-                (
-                    id serial,
-                    due_date date,
-                    issue_date date,
-                    client_id integer,
-                    CONSTRAINT orders_pkey PRIMARY KEY (id),
-                    CONSTRAINT fk_client_id FOREIGN KEY (client_id)
-                        REFERENCES springlibrarymanagement.clients (id)
-                        ON UPDATE CASCADE
-                        ON DELETE CASCADE
-                );
+CREATE TABLE IF NOT EXISTS orders
+(
+    id         SERIAL PRIMARY KEY,
+    issue_date DATE,
+    due_date   DATE,
+    client_id  INTEGER REFERENCES clients (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
 
-            CREATE TABLE IF NOT EXISTS springlibrarymanagement.order_books
-            (
-                order_id integer NOT NULL,
-                book_id integer NOT NULL,
-                CONSTRAINT fk_book_id FOREIGN KEY (book_id)
-                    REFERENCES springlibrarymanagement.books (id)
-                    ON UPDATE CASCADE
-                    ON DELETE CASCADE,
-                CONSTRAINT fk_order_id FOREIGN KEY (order_id)
-                    REFERENCES springlibrarymanagement.orders (id)
-                    ON UPDATE CASCADE
-                    ON DELETE CASCADE
-            );
+CREATE TABLE IF NOT EXISTS order_books
+(
+    order_id INTEGER NOT NULL REFERENCES orders (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    book_id  INTEGER NOT NULL REFERENCES books (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT pk_order_books PRIMARY KEY (order_id, book_id)
+);
+
+CREATE TABLE IF NOT EXISTS user_roles
+(
+    id   SERIAL PRIMARY KEY,
+    role VARCHAR(255) UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS users
+(
+    id       SERIAL PRIMARY KEY,
+    username VARCHAR(255) UNIQUE,
+    password VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS users_roles
+(
+    user_id INTEGER NOT NULL REFERENCES users (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    role_id INTEGER NOT NULL REFERENCES user_roles (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT pk_users_roles PRIMARY KEY (user_id, role_id)
+);

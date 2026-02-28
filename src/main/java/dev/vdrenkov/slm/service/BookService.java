@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,19 +92,12 @@ public class BookService {
         return bookMapper.mapBookToBookDto(getBookById(id));
     }
 
-    public boolean isBookAvailable(int id) {
-        List<Book> books = getAllAvailableBooks();
-
-        for (Book book : books) {
-            if (book.getId() == id) {
-                return true;
-            }
+    @Transactional
+    public Book decreaseBookQuantity(int id) {
+        Book book = bookRepository.findByIdForUpdate(id).orElseThrow(BookNotFoundException::new);
+        if (book.getQuantity() <= ZERO) {
+            throw new IllegalStateException("Book with ID " + id + " is out of stock");
         }
-        return false;
-    }
-
-    public Book updateBookQuantity(int id) {
-        Book book = getBookById(id);
 
         book.setQuantity(book.getQuantity() - 1);
 

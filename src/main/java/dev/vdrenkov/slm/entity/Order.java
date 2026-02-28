@@ -1,6 +1,5 @@
 package dev.vdrenkov.slm.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +31,7 @@ public class Order {
     @Column(name = "ID")
     private int id;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "CLIENT_ID")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Client client;

@@ -13,13 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import static dev.vdrenkov.slm.util.Constants.NOW;
 
 @Service
 public class OrderService {
@@ -41,7 +39,12 @@ public class OrderService {
         this.localDateMapper = localDateMapper;
     }
 
+    @Transactional
     public Order addOrder(OrderRequest orderRequest) {
+        if (orderRequest.getBooksIds().isEmpty()) {
+            throw new IllegalArgumentException("At least one book ID is required to create an order");
+        }
+
         Client client = clientService.getClientById(orderRequest.getClientId());
         List<Book> books = new ArrayList<>();
 
@@ -49,32 +52,18 @@ public class OrderService {
             books.add(bookService.getBookById(bookId));
         }
 
-        if (!updateBookQuantity(orderRequest.getBooksIds())) {
-            return null;
-        }
+        decreaseBooksQuantities(orderRequest.getBooksIds());
+
+        LocalDate issueDate = LocalDate.now();
 
         log.info("Trying to add a new order");
-        return orderRepository.save(new Order(client, books, NOW, NOW.plusMonths(1)));
+        return orderRepository.save(new Order(client, books, issueDate, issueDate.plusMonths(1)));
     }
 
-    public boolean updateBookQuantity(List<Integer> booksIds) {
-        if (booksIds.isEmpty()) {
-            return false;
-        }
-
+    private void decreaseBooksQuantities(List<Integer> booksIds) {
         for (int bookId : booksIds) {
-            if (!bookService.isBookAvailable(bookId)) {
-                return false;
-            }
+            bookService.decreaseBookQuantity(bookId);
         }
-
-        for (int bookId : booksIds) {
-            if (Objects.isNull(bookService.updateBookQuantity(bookId))) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public List<Order> getAllOrders() {
@@ -103,13 +92,14 @@ public class OrderService {
     }
 
     public List<Order> getAllOrdersByDate(int choice, LocalDate date) {
+        validateOrderDateChoice(choice);
+
         List<Order> ordersByDate = new ArrayList<>();
         List<Order> allOrders = getAllOrders();
 
         for (Order order : allOrders) {
-            Order desiredOrder = getOrderByDateFilter(order, choice, date);
-            if (desiredOrder != null) {
-                ordersByDate.add(desiredOrder);
+            if (matchesOrderDateFilter(order, choice, date)) {
+                ordersByDate.add(order);
             }
         }
         return ordersByDate;
@@ -119,42 +109,29 @@ public class OrderService {
         return orderMapper.mapOrdersToOrdersDto(getAllOrdersByDate(choice, localDateMapper.mapStringToDate(date)));
     }
 
-    public Order getOrderByDateFilter(Order order, int choice, LocalDate date) {
+    private boolean matchesOrderDateFilter(Order order, int choice, LocalDate date) {
         switch (choice) {
             case 1:
-                if (order.getIssueDate().isEqual(date)) {
-                    return order;
-                }
-                break;
+                return order.getIssueDate().isEqual(date);
             case 2:
-                if (order.getIssueDate().isBefore(date)) {
-                    return order;
-                }
-                break;
+                return order.getIssueDate().isBefore(date);
             case 3:
-                if (order.getIssueDate().isAfter(date)) {
-                    return order;
-                }
-                break;
+                return order.getIssueDate().isAfter(date);
             case 4:
-                if (order.getDueDate().isEqual(date)) {
-                    return order;
-                }
-                break;
+                return order.getDueDate().isEqual(date);
             case 5:
-                if (order.getDueDate().isBefore(date)) {
-                    return order;
-                }
-                break;
+                return order.getDueDate().isBefore(date);
             case 6:
-                if (order.getDueDate().isAfter(date)) {
-                    return order;
-                }
-                break;
+                return order.getDueDate().isAfter(date);
             default:
-                return null;
+                return false;
         }
-        return null;
+    }
+
+    private void validateOrderDateChoice(int choice) {
+        if (choice < 1 || choice > 6) {
+            throw new IllegalArgumentException("Choice must be between 1 and 6");
+        }
     }
 
     public Order getOrderById(int id) {
@@ -166,6 +143,7 @@ public class OrderService {
         return orderMapper.mapOrderToOrderDto(getOrderById(id));
     }
 
+    @Transactional
     public OrderDto extendOrderDueByDate(int orderId, int choice, int period) {
         Order order = getOrderById(orderId);
 
@@ -182,7 +160,7 @@ public class OrderService {
                 order.setDueDate(dueDate.plusMonths(period));
                 break;
             default:
-                return null;
+                throw new IllegalArgumentException("Choice must be between 1 and 3");
         }
         orderRepository.save(order);
         order.setDueDate(dueDate);

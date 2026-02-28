@@ -7,10 +7,10 @@ RESTful Spring Boot service for running a small library catalogue and lending wo
 - Manage authors and books, including filtering books by author and tracking available quantity per title.
 - Register clients, delete them with optional payload echo, and keep contact details unique.
 - Track borrowing orders, query them by client or date, and extend due dates in days, weeks, or months.
-- Role-based security with Spring Security and JWT (stored as an HttpOnly cookie) for stateless sessions.
+- API-first stateless security with Spring Security and JWT (stored as an HttpOnly cookie).
 - Dedicated admin endpoints for user and role management (ADMIN, LIBRARIAN authorities).
 - Centralized exception handling, request validation, and structured logging to `logs/log.log`.
-- Unit and slice tests covering controllers, services, mappers, and exception handlers.
+- Unit, slice, and MVC security tests covering controllers, services, mappers, exception handlers, and access rules.
 
 ## Tech Stack
 
@@ -25,7 +25,7 @@ RESTful Spring Boot service for running a small library catalogue and lending wo
 ## Project Layout
 
 ```
-src/main/java/bg/vdrenkov/
+src/main/java/dev/vdrenkov/slm/
   configuration/        # Security filter chain & password encoder
   controller/           # REST controllers for authors, books, clients, orders, users, roles
   dto/                  # Response DTO records
@@ -58,7 +58,10 @@ The default configuration lives in `src/main/resources/application.properties`:
 - `spring.datasource.*` points to a PostgreSQL instance.
 - `spring.jpa.hibernate.ddl-auto=update` lets JPA create/update tables automatically in local development.
 - `jwt.secret` provides the signing key for tokens (use a strong 64+ character secret for HS512).
+- `jwt.cookie.secure` and `jwt.cookie.same-site` control cookie hardening options.
 - `logging.file.name=logs/log.log` routes logs to the `/logs` folder.
+- `app.bootstrap.roles=true` auto-creates `ADMIN` and `LIBRARIAN` roles if missing.
+- `app.bootstrap.admin.username` / `app.bootstrap.admin.password` optionally create an initial admin user at startup.
 
 Do not commit real credentials. Override sensitive values with environment variables or a profile-specific properties file instead of editing source directly:
 
@@ -72,7 +75,7 @@ set JWT_SECRET=<64+-char-secret>
 For production-like environments, prefer:
 
 - `spring.jpa.hibernate.ddl-auto=validate` (or managed migrations).
-- HTTPS-only cookies (`Secure`) and restrictive `SameSite`.
+- HTTPS-only cookies (`jwt.cookie.secure=true`) and restrictive `SameSite` as needed.
 
 Use the bundled `DDL_Scripts.sql` when you prefer explicit schema management or need to recreate tables from scratch.
 
@@ -82,7 +85,7 @@ Use the bundled `DDL_Scripts.sql` when you prefer explicit schema management or 
    ```sql
    CREATE DATABASE "SpringLibraryManagement";
    ```
-2. (Optional) Execute `src/main/resources/DDL_Scripts.sql` to pre-create tables in the `springlibrarymanagement` schema.
+2. (Optional) Execute `src/main/resources/DDL_Scripts.sql` to pre-create all API tables.
 3. Build the project:
    ```bash
    mvn clean package
@@ -96,14 +99,20 @@ Use the bundled `DDL_Scripts.sql` when you prefer explicit schema management or 
 ## Authentication & Roles
 
 - `POST /register` self-registers a LIBRARIAN user.
-- `POST /login` issues a JWT stored in an HttpOnly cookie named `Cookie`; include it on subsequent requests.
+- `POST /login` authenticates a user and issues a JWT stored in an HttpOnly cookie named `Cookie`; include it on subsequent requests.
 - `POST /admins/register` lets an ADMIN create additional ADMIN or LIBRARIAN accounts.
 - `POST /logout` clears the JWT cookie.
+- CSRF is disabled to keep the API stateless and client-friendly for Postman/SPA usage.
 - Authorities:
   - **ADMIN** – full access to user/role management and all catalogue operations (including deletions).
   - **LIBRARIAN** – CRUD access to authors, books, clients, and orders (except DELETE and admin endpoints).
 
-When bootstrapping the system, insert an initial ADMIN user directly in the database or by seeding via SQL so you can access the admin endpoints.
+Roles (`ADMIN`, `LIBRARIAN`) are auto-bootstrapped on startup. To bootstrap the first admin automatically, set:
+
+```bash
+set APP_BOOTSTRAP_ADMIN_USERNAME=admin
+set APP_BOOTSTRAP_ADMIN_PASSWORD=<strong-password>
+```
 
 ## API Overview
 
@@ -149,7 +158,7 @@ Run the automated test suite with:
 mvn test
 ```
 
-The suite uses JUnit 5 (Jupiter), Mockito JUnit Jupiter, and Spring’s test utilities to cover controller endpoints, service logic, DTO mappers, and exception handling.
+The suite uses JUnit 5 (Jupiter), Mockito JUnit Jupiter, and Spring’s test utilities to cover controller endpoints, service logic, DTO mappers, exception handling, and security access rules.
 
 ## Logging
 

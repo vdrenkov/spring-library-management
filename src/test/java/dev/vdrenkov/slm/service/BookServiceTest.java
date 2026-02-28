@@ -16,147 +16,131 @@ import java.util.List;
 import java.util.Optional;
 
 import static dev.vdrenkov.slm.util.Constants.ID;
-import static dev.vdrenkov.slm.util.Constants.ZERO;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
- class BookServiceTest {
+class BookServiceTest {
 
-  @Mock
-  private AuthorService authorService;
+    @Mock
+    private AuthorService authorService;
 
-  @Mock
-  private BookRepository bookRepository;
+    @Mock
+    private BookRepository bookRepository;
 
-  @Mock
-  private BookMapper bookMapper;
+    @Mock
+    private BookMapper bookMapper;
 
-  @InjectMocks
-  private BookService bookService;
+    @InjectMocks
+    private BookService bookService;
 
-  @Test
-   void testAddBook_success() {
-    when(authorService.getAuthorById(anyInt())).thenReturn(AuthorFactory.getDefaultAuthor());
-    when(bookRepository.save(any())).thenReturn(new Book());
+    @Test
+    void testAddBook_success() {
+        when(authorService.getAuthorById(anyInt())).thenReturn(AuthorFactory.getDefaultAuthor());
+        when(bookRepository.save(any())).thenReturn(new Book());
 
-   Book book = bookService.addBook(BookFactory.getDefaultBookRequest());
+        Book book = bookService.addBook(BookFactory.getDefaultBookRequest());
 
-    assertNotNull(book);
-  }
+        assertNotNull(book);
+    }
 
-  @Test
-   void testAddBook_failure() {
-    when(authorService.getAuthorById(anyInt())).thenReturn(null);
+    @Test
+    void testGetAllBooks() {
+        when(bookRepository.findAll()).thenReturn(BookFactory.getDefaultBooksList());
 
-    Book book = bookService.addBook(BookFactory.getDefaultBookRequest());
+        List<Book> testList = bookService.getAllBooks();
 
-    assertNull(book);
-  }
+        assertNotNull(testList);
+    }
 
-  @Test
-   void testGetAllBooks() {
-    when(bookRepository.findAll()).thenReturn(BookFactory.getDefaultBooksList());
+    @Test
+    void testGetAllAvailableBooks() {
+        when(bookRepository.findAll()).thenReturn(BookFactory.getDefaultBooksList());
 
-    List<Book> testList = bookService.getAllBooks();
+        List<Book> testList = bookService.getAllAvailableBooks();
 
-    assertNotNull(testList);
-  }
+        assertNotNull(testList);
+    }
 
-  @Test
-   void testGetAllAvailableBooks() {
-    when(bookRepository.findAll()).thenReturn(BookFactory.getDefaultBooksList());
+    @Test
+    void testFilterBooksByAvailability() {
+        List<Book> testBooks = bookService.filterBooksByAvailability(BookFactory.getDefaultBooksList());
 
-    List<Book> testList = bookService.getAllAvailableBooks();
+        assertNotNull(testBooks);
+    }
 
-    assertNotNull(testList);
-  }
+    @Test
+    void testGetAllAvailableBooksDto() {
+        when(bookMapper.mapBooksToBooksDto(anyList())).thenReturn(BookFactory.getDefaultBooksDtoList());
 
-  @Test
-   void testFilterBooksByAvailability() {
-    List<Book> testBooks = bookService.filterBooksByAvailability(BookFactory.getDefaultBooksList());
+        List<BookDto> testList = bookService.getAllAvailableBooksDto();
 
-    assertNotNull(testBooks);
-  }
+        assertNotNull(testList);
+    }
 
-  @Test
-   void testGetAllAvailableBooksDto() {
-    when(bookMapper.mapBooksToBooksDto(anyList())).thenReturn(BookFactory.getDefaultBooksDtoList());
+    @Test
+    void testGetAllBooksByAuthor() {
+        when(bookRepository.findAll()).thenReturn(BookFactory.getDefaultBooksList());
 
-    List<BookDto> testList = bookService.getAllAvailableBooksDto();
+        List<Book> testList = bookService.getAllBooksByAuthor(ID);
 
-    assertNotNull(testList);
-  }
+        assertNotNull(testList);
+    }
 
-  @Test
-   void testGetAllBooksByAuthor() {
-    when(bookService.getAllBooks()).thenReturn(BookFactory.getDefaultBooksList());
+    @Test
+    void testGetAllBooksDtoByAuthor() {
+        when(bookRepository.findAll()).thenReturn(BookFactory.getDefaultBooksList());
 
-    List<Book> testList = bookService.getAllBooksByAuthor(ID);
+        List<BookDto> testList = bookService.getAllBooksDtoByAuthor(ID);
 
-    assertNotNull(testList);
-  }
+        assertNotNull(testList);
+    }
 
-  @Test
-   void testGetAllBooksDtoByAuthor() {
-    when(bookService.getAllBooks()).thenReturn(BookFactory.getDefaultBooksList());
+    @Test
+    void testGetBookById() {
+        when(bookRepository.findById(anyInt())).thenReturn(Optional.of(BookFactory.getDefaultBook()));
 
-    List<BookDto> testList = bookService.getAllBooksDtoByAuthor(ID);
+        Book book = bookService.getBookById(ID);
 
-    assertNotNull(testList);
-  }
+        assertNotNull(book);
+    }
 
-  @Test
-   void testGetBookById() {
-    when(bookRepository.findById(anyInt())).thenReturn(Optional.of(BookFactory.getDefaultBook()));
+    @Test
+    void testGetBookDtoById() {
+        when(bookRepository.findById(anyInt())).thenReturn(Optional.of(BookFactory.getDefaultBook()));
+        when(bookMapper.mapBookToBookDto(any())).thenReturn(BookFactory.getDefaultBookDto());
 
-    Book book = bookService.getBookById(ID);
+        BookDto bookDto = bookService.getBookDtoById(ID);
 
-    assertNotNull(book);
-  }
+        assertNotNull(bookDto);
+    }
 
-  @Test
-   void testGetBookDtoById() {
-    when(bookRepository.findById(anyInt())).thenReturn(Optional.of(BookFactory.getDefaultBook()));
-    when(bookMapper.mapBookToBookDto(any())).thenReturn(BookFactory.getDefaultBookDto());
+    @Test
+    void testDecreaseBookQuantity_success() {
+        Book book = BookFactory.getDefaultBook();
+        when(bookRepository.findByIdForUpdate(anyInt())).thenReturn(Optional.of(book));
+        when(bookRepository.save(any())).thenReturn(book);
 
-    BookDto bookDto = bookService.getBookDtoById(ID);
+        Book updatedBook = bookService.decreaseBookQuantity(ID);
 
-    assertNotNull(bookDto);
-  }
+        assertNotNull(updatedBook);
+    }
 
-  @Test
-   void testIsBookAvailable_true() {
-    when(bookService.getAllBooks()).thenReturn(BookFactory.getDefaultBooksList());
+    @Test
+    void testDecreaseBookQuantity_outOfStock_throws() {
+        Book outOfStockBook = new Book(
+            ID,
+            BookFactory.getDefaultBook().getName(),
+            BookFactory.getDefaultBook().getPublishDate(),
+            BookFactory.getDefaultBook().getAuthor(),
+            0
+        );
+        when(bookRepository.findByIdForUpdate(anyInt())).thenReturn(Optional.of(outOfStockBook));
 
-    boolean result = bookService.isBookAvailable(ID);
-
-    assertTrue(result);
-  }
-
-  @Test
-   void testIsBookAvailable_false() {
-    when(bookService.getAllBooks()).thenReturn(BookFactory.getDefaultBooksList());
-
-    boolean result = bookService.isBookAvailable(ZERO);
-
-    assertFalse(result);
-  }
-
-  @Test
-   void testUpdateBook_returnsTrue() {
-    when(bookRepository.findById(anyInt())).thenReturn(Optional.of(BookFactory.getDefaultBook()));
-    when(bookRepository.save(any())).thenReturn(BookFactory.getDefaultBook());
-
-    Book book = bookService.updateBookQuantity(ID);
-
-    assertNotNull(book);
-  }
+        assertThrows(IllegalStateException.class, () -> bookService.decreaseBookQuantity(ID));
+    }
 }
-

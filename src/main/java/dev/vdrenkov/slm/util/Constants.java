@@ -1,7 +1,6 @@
 package dev.vdrenkov.slm.util;
 
 import lombok.Generated;
-
 import java.time.LocalDate;
 
 public final class Constants {
@@ -18,8 +17,6 @@ public final class Constants {
     public static final long JWT_TOKEN_VALIDITY = 60L * 60L;
     public static final String CHOICE_STRING = "3";
     public static final String PERIOD_STRING = "5";
-    public static final LocalDate NOW = LocalDate.now();
-
     public static final LocalDate LOCAL_DATE = LocalDate.of(2000, 1, 1);
     public static final String DATE_STRING = LOCAL_DATE.toString();
     public static final String NAME = "Name";

@@ -25,11 +25,11 @@ public class BookRequest {
 
     @Positive(message = "The author ID must be a positive digit")
     @NotNull(message = "The author ID cannot be null")
-    private int authorId;
+    private Integer authorId;
 
     @Positive(message = "The quantity must be a positive digit")
     @NotNull(message = "The quantity cannot be null")
-    private int quantity;
+    private Integer quantity;
 }
 
 

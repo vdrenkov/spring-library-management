@@ -1,0 +1,36 @@
+package dev.vdrenkov.slm.jwt;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpCookie;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+class JwtCookieUtilTest {
+
+    @Mock
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Mock
+    private UserDetails userDetails;
+
+    @Test
+    void testCreateJWTCookie_appliesSecurityAttributes() {
+        when(jwtTokenUtil.generateToken(userDetails)).thenReturn("jwt-token");
+        JwtCookieUtil jwtCookieUtil = new JwtCookieUtil(jwtTokenUtil, true, "Strict");
+
+        HttpCookie cookie = jwtCookieUtil.createJWTCookie(userDetails);
+        String cookieHeader = cookie.toString();
+
+        assertTrue(cookieHeader.contains("Cookie=jwt-token"));
+        assertTrue(cookieHeader.contains("Path=/"));
+        assertTrue(cookieHeader.contains("HttpOnly"));
+        assertTrue(cookieHeader.contains("Secure"));
+        assertTrue(cookieHeader.contains("SameSite=Strict"));
+    }
+}

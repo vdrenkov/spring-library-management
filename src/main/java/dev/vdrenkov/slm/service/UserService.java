@@ -27,6 +27,7 @@ import java.util.List;
 public class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    private static final String LIBRARIAN_ROLE = "LIBRARIAN";
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final JwtCookieUtil jwtCookieUtil;
@@ -62,6 +63,7 @@ public class UserService {
 
     public void addUser(UserRequest userRequest) {
         String username = userRequest.getUsername();
+        validateUsernameIsAvailable(username);
 
         String password = passwordEncoder.encode(userRequest.getPassword());
 
@@ -72,8 +74,7 @@ public class UserService {
     }
 
     public List<UserRole> getLibrarianRole() {
-        String role = "LIBRARIAN";
-        return Collections.singletonList(userRoleService.getUserRoleByRole(role));
+        return Collections.singletonList(userRoleService.getUserRoleByRole(LIBRARIAN_ROLE));
     }
 
     public HttpCookie registerByAdmin(AdminRequest adminRequest) {
@@ -83,12 +84,20 @@ public class UserService {
     }
 
     public void addUserByAdmin(AdminRequest adminRequest) {
+        validateUsernameIsAvailable(adminRequest.getUsername());
+
         String password = passwordEncoder.encode(adminRequest.getPassword());
 
         User user = new User(adminRequest.getUsername(), password, getUserRoles(adminRequest.getRolesIds()));
 
         log.info("Trying to add a new admin");
         userRepository.save(user);
+    }
+
+    private void validateUsernameIsAvailable(String username) {
+        if (userRepository.existsByUsername(username)) {
+            throw new IllegalArgumentException("A user with this username already exists");
+        }
     }
 
     public List<UserRole> getUserRoles(List<Integer> rolesIds) {

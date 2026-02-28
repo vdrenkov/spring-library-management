@@ -1,5 +1,6 @@
 package dev.vdrenkov.slm.controller;
 
+import dev.vdrenkov.slm.handler.GlobalExceptionHandler;
 import dev.vdrenkov.slm.service.OrderService;
 import dev.vdrenkov.slm.util.OrderFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +49,10 @@ class OrderControllerTest {
 
     @BeforeEach
     void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(orderController).build();
+        mockMvc = MockMvcBuilders
+            .standaloneSetup(orderController)
+            .setControllerAdvice(new GlobalExceptionHandler())
+            .build();
     }
 
     @Test
@@ -135,11 +139,23 @@ class OrderControllerTest {
 
     @Test
     void testGetAllOrdersByDate_emptyList_success() throws Exception {
+        when(orderService.getAllOrdersDtoByDate(anyInt(), anyString())).thenReturn(java.util.Collections.emptyList());
+
         mockMvc
-            .perform(get(URI).queryParam("choice", CHOICE_STRING).queryParam("dateValue", DATE_STRING))
+            .perform(get(URI).queryParam("choice", CHOICE_STRING).queryParam("date", DATE_STRING))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").exists())
             .andExpect(jsonPath("$[0]").doesNotExist());
+    }
+
+    @Test
+    void testGetAllOrdersByDate_invalidChoice_badRequest() throws Exception {
+        when(orderService.getAllOrdersDtoByDate(anyInt(), anyString()))
+            .thenThrow(new IllegalArgumentException("Choice must be between 1 and 6"));
+
+        mockMvc
+            .perform(get(URI).queryParam("choice", "99").queryParam("date", DATE_STRING))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -180,6 +196,16 @@ class OrderControllerTest {
         mockMvc
             .perform(put(URI + "/" + ID).queryParam("choice", CHOICE_STRING).queryParam("period", PERIOD_STRING))
             .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testExtendOrderDueByDate_invalidChoice_badRequest() throws Exception {
+        when(orderService.extendOrderDueByDate(anyInt(), anyInt(), anyInt()))
+            .thenThrow(new IllegalArgumentException("Choice must be between 1 and 3"));
+
+        mockMvc
+            .perform(put(URI + "/" + ID).queryParam("choice", "99").queryParam("period", PERIOD_STRING))
+            .andExpect(status().isBadRequest());
     }
 }
 

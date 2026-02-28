@@ -4,24 +4,29 @@ import dev.vdrenkov.slm.dto.OrderDto;
 import dev.vdrenkov.slm.entity.Order;
 import dev.vdrenkov.slm.request.OrderRequest;
 import dev.vdrenkov.slm.service.OrderService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
 
-@Controller
+@RestController
+@Validated
 public class OrderController {
 
     private static final Logger log = LoggerFactory.getLogger(OrderController.class);
@@ -56,7 +61,11 @@ public class OrderController {
     }
 
     @GetMapping(value = URI, params = { "choice", "date" })
-    public ResponseEntity<List<OrderDto>> getALlOrdersByDate(@RequestParam int choice, @RequestParam String date) {
+    public ResponseEntity<List<OrderDto>> getALlOrdersByDate(
+        @RequestParam @Min(value = 1, message = "Choice must be between 1 and 6")
+        @Max(value = 6, message = "Choice must be between 1 and 6") int choice,
+        @RequestParam String date
+    ) {
         log.info("All orders by date requested from the database.");
         return ResponseEntity.ok(orderService.getAllOrdersDtoByDate(choice, date));
     }
@@ -68,8 +77,13 @@ public class OrderController {
     }
 
     @PutMapping(URI + "/{id}")
-    public ResponseEntity<OrderDto> extendOrderDueByDate(@PathVariable int id, @RequestParam int choice,
-        @RequestParam int period, @RequestParam(required = false) Boolean returnOld) {
+    public ResponseEntity<OrderDto> extendOrderDueByDate(
+        @PathVariable int id,
+        @RequestParam @Min(value = 1, message = "Choice must be between 1 and 3")
+        @Max(value = 3, message = "Choice must be between 1 and 3") int choice,
+        @RequestParam @Positive(message = "Period must be a positive number") int period,
+        @RequestParam(required = false) Boolean returnOld
+    ) {
 
         OrderDto oldOrder = orderService.extendOrderDueByDate(id, choice, period);
 

@@ -53,7 +53,7 @@ public class UserRoleService {
     }
 
     public UserRole getUserRoleByRole(String role) {
-        return userRepository.findUserRoleByRole(role);
+        return userRepository.findUserRoleByRole(role).orElseThrow(UserRoleNotFoundException::new);
     }
 }
 

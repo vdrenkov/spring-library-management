@@ -606,7 +606,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/orders?choice=3&date=23-APRIL-2023",
+							"raw": "http://localhost:8080/orders?choice=3&date=2023-04-23",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -622,7 +622,7 @@
 								},
 								{
 									"key": "date",
-									"value": "23-APRIL-2023"
+									"value": "2023-04-23"
 								}
 							]
 						}

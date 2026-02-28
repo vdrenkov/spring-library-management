@@ -4,6 +4,7 @@ import dev.vdrenkov.slm.dto.UserDto;
 import dev.vdrenkov.slm.request.AdminRequest;
 import dev.vdrenkov.slm.request.UserRequest;
 import dev.vdrenkov.slm.service.UserService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +36,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody UserRequest request) {
+    public ResponseEntity<Void> login(@RequestBody @Valid UserRequest request) {
         HttpCookie cookie = userService.login(request);
         log.info("A login request submitted");
 
-        return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> registerUser(@RequestBody UserRequest request) {
+    public ResponseEntity<Void> registerUser(@RequestBody @Valid UserRequest request) {
         HttpCookie cookie = userService.registerUser(request);
         log.info("A register request submitted");
 
@@ -51,7 +52,7 @@ public class UserController {
     }
 
     @PostMapping(ADMIN_PATH + "/register")
-    public ResponseEntity<Void> registerAdmin(@RequestBody AdminRequest request) {
+    public ResponseEntity<Void> registerAdmin(@RequestBody @Valid AdminRequest request) {
         HttpCookie cookie = userService.registerByAdmin(request);
         log.info("An admin register request submitted");
 

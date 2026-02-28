@@ -6,6 +6,7 @@ import dev.vdrenkov.slm.exception.ClientNotFoundException;
 import dev.vdrenkov.slm.exception.OrderNotFoundException;
 import dev.vdrenkov.slm.exception.UserNotFoundException;
 import dev.vdrenkov.slm.exception.UserRoleNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.UnexpectedTypeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.format.DateTimeParseException;
@@ -78,7 +80,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
-        String message = "Illegal argument provided";
+        String message = exception.getMessage() != null ? exception.getMessage() : "Illegal argument provided";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
@@ -105,17 +107,29 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException exception) {
+        log.error(CAUGHT_EXCEPTION, exception);
+        return new ResponseEntity<>("Request validation failed", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<String> handleHandlerMethodValidationException(HandlerMethodValidationException exception) {
+        log.error(CAUGHT_EXCEPTION, exception);
+        return new ResponseEntity<>("Request validation failed", HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     public ResponseEntity<String> handleInternalAuthenticationServiceException(
         InternalAuthenticationServiceException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

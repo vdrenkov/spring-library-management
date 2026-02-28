@@ -13,7 +13,7 @@ class LocalDateMapperTest {
 
     @Test
     void testMapStringToDate() {
-        LocalDate response = mapper.mapStringToDate("01-JANUARY-2000");
+        LocalDate response = mapper.mapStringToDate("2000-01-01");
 
         Assertions.assertEquals(LOCAL_DATE.toString(), response.toString());
     }

@@ -21,20 +21,16 @@ import java.util.Optional;
 
 import static dev.vdrenkov.slm.util.Constants.CHOICE;
 import static dev.vdrenkov.slm.util.Constants.DATE_STRING;
-import static dev.vdrenkov.slm.util.Constants.DAY;
 import static dev.vdrenkov.slm.util.Constants.ID;
 import static dev.vdrenkov.slm.util.Constants.LOCAL_DATE;
-import static dev.vdrenkov.slm.util.Constants.MONTH;
-import static dev.vdrenkov.slm.util.Constants.ONE;
 import static dev.vdrenkov.slm.util.Constants.PERIOD;
-import static dev.vdrenkov.slm.util.Constants.YEAR;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.anyList;
+import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,8 +57,8 @@ class OrderServiceTest {
     @Test
     void testAddOrder_success() {
         when(clientService.getClientById(anyInt())).thenReturn(ClientFactory.getDefaultClient());
-        when(bookService.isBookAvailable(anyInt())).thenReturn(true);
-        when(bookService.updateBookQuantity(anyInt())).thenReturn(BookFactory.getDefaultBook());
+        when(bookService.getBookById(anyInt())).thenReturn(BookFactory.getDefaultBook());
+        when(bookService.decreaseBookQuantity(anyInt())).thenReturn(BookFactory.getDefaultBook());
         when(orderRepository.save(any())).thenReturn(new Order());
 
         Order order = orderService.addOrder(OrderFactory.getDefaultOrderRequest());
@@ -71,57 +67,18 @@ class OrderServiceTest {
     }
 
     @Test
-    void testAddOrder_clientNull() {
-        when(clientService.getClientById(ID)).thenReturn(null);
-
-        Order order = orderService.addOrder(OrderFactory.getDefaultOrderRequest());
-
-        assertNull(order);
+    void testAddOrder_noBooksIds_throws() {
+        assertThrows(IllegalArgumentException.class, () ->
+            orderService.addOrder(new dev.vdrenkov.slm.request.OrderRequest(ID, Collections.emptyList())));
     }
 
     @Test
-    void testAddOrder_noBooksIds() {
+    void testAddOrder_bookOutOfStock_throws() {
         when(clientService.getClientById(anyInt())).thenReturn(ClientFactory.getDefaultClient());
+        when(bookService.getBookById(anyInt())).thenReturn(BookFactory.getDefaultBook());
+        when(bookService.decreaseBookQuantity(anyInt())).thenThrow(new IllegalStateException("Book is out of stock"));
 
-        Order order = orderService.addOrder(OrderFactory.getDefaultOrderRequest());
-
-        assertNull(order);
-    }
-
-    @Test
-    void testUpdateBookQuantity_success() {
-        when(bookService.isBookAvailable(anyInt())).thenReturn(true);
-        when(bookService.updateBookQuantity(anyInt())).thenReturn(BookFactory.getDefaultBook());
-
-        boolean result = orderService.updateBookQuantity(BookFactory.getDefaultBooksIdsList());
-
-        assertTrue(result);
-    }
-
-    @Test
-    void testUpdateBookQuantity_noBooksIds() {
-        boolean result = orderService.updateBookQuantity(Collections.emptyList());
-
-        assertFalse(result);
-    }
-
-    @Test
-    void testUpdateBookQuantity_bookNotAvailable() {
-        when(bookService.isBookAvailable(anyInt())).thenReturn(false);
-
-        boolean result = orderService.updateBookQuantity(BookFactory.getDefaultBooksIdsList());
-
-        assertFalse(result);
-    }
-
-    @Test
-    void testUpdateBookQuantity_bookNotUpdated() {
-        when(bookService.isBookAvailable(anyInt())).thenReturn(true);
-        when(bookService.updateBookQuantity(anyInt())).thenReturn(null);
-
-        boolean result = orderService.updateBookQuantity(BookFactory.getDefaultBooksIdsList());
-
-        assertFalse(result);
+        assertThrows(IllegalStateException.class, () -> orderService.addOrder(OrderFactory.getDefaultOrderRequest()));
     }
 
     @Test
@@ -144,7 +101,7 @@ class OrderServiceTest {
 
     @Test
     void testGetAllOrdersByClient() {
-        when(orderService.getAllOrders()).thenReturn(OrderFactory.getDefaultOrdersList());
+        when(orderRepository.findAll()).thenReturn(OrderFactory.getDefaultOrdersList());
 
         List<Order> testOrders = orderService.getAllOrdersByClient(ID);
 
@@ -153,6 +110,7 @@ class OrderServiceTest {
 
     @Test
     void testGetAllOrdersDtoByClient() {
+        when(orderRepository.findAll()).thenReturn(OrderFactory.getDefaultOrdersList());
         when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
 
         List<OrderDto> result = orderService.getAllOrdersDtoByClient(ID);
@@ -162,83 +120,27 @@ class OrderServiceTest {
 
     @Test
     void testGetAllOrdersByDate() {
-        when(orderService.getAllOrders()).thenReturn(OrderFactory.getDefaultOrdersList());
+        when(orderRepository.findAll()).thenReturn(OrderFactory.getDefaultOrdersList());
 
-        List<Order> testOrders = orderService.getAllOrdersByDate(ONE, LocalDate.of(YEAR, MONTH, DAY));
+        List<Order> testOrders = orderService.getAllOrdersByDate(1, LOCAL_DATE);
 
         assertNotNull(testOrders);
     }
 
     @Test
+    void testGetAllOrdersByDate_invalidChoice_throws() {
+        assertThrows(IllegalArgumentException.class, () -> orderService.getAllOrdersByDate(99, LOCAL_DATE));
+    }
+
+    @Test
     void testGetAllOrdersDtoByDate() {
-        when(localDateMapper.mapStringToDate(DATE_STRING)).thenReturn(LOCAL_DATE);
+        when(localDateMapper.mapStringToDate(anyString())).thenReturn(LOCAL_DATE);
+        when(orderRepository.findAll()).thenReturn(OrderFactory.getDefaultOrdersList());
+        when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
 
         List<OrderDto> result = orderService.getAllOrdersDtoByDate(CHOICE, DATE_STRING);
 
         assertNotNull(result);
-    }
-
-    @Test
-    void testGetOrderByDateFilter_case1() {
-        LocalDate date = LocalDate.of(2000, 1, 1);
-
-        Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 1, date);
-
-        assertNotNull(testOrder);
-    }
-
-    @Test
-    void testGetOrderByDateFilter_case2() {
-        LocalDate date = LocalDate.of(2000, 1, 2);
-
-        Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 2, date);
-
-        assertNotNull(testOrder);
-    }
-
-    @Test
-    void testGetOrderByDateFilter_case3() {
-        LocalDate date = LocalDate.of(1999, 1, 1);
-
-        Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 3, date);
-
-        assertNotNull(testOrder);
-    }
-
-    @Test
-    void testGetOrderByDateFilter_case4() {
-        LocalDate date = LocalDate.of(2000, 1, 1);
-
-        Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 4, date);
-
-        assertNotNull(testOrder);
-    }
-
-    @Test
-    void testGetOrderByDateFilter_case5() {
-        LocalDate date = LocalDate.of(2000, 1, 2);
-
-        Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 5, date);
-
-        assertNotNull(testOrder);
-    }
-
-    @Test
-    void testGetOrderByDateFilter_case6() {
-        LocalDate date = LocalDate.of(1999, 1, 1);
-
-        Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 6, date);
-
-        assertNotNull(testOrder);
-    }
-
-    @Test
-    void testGetOrderByDateFilter_caseNull() {
-        LocalDate date = LocalDate.of(1999, 1, 1);
-
-        Order testOrder = orderService.getOrderByDateFilter(OrderFactory.getDefaultOrder(), 1, date);
-
-        assertNull(testOrder);
     }
 
     @Test
@@ -273,5 +175,11 @@ class OrderServiceTest {
 
         assertTrue(result);
     }
-}
 
+    @Test
+    void testExtendOrderDueByDate_invalidChoice_throws() {
+        when(orderRepository.findById(anyInt())).thenReturn(Optional.of(OrderFactory.getDefaultOrder()));
+
+        assertThrows(IllegalArgumentException.class, () -> orderService.extendOrderDueByDate(ID, 99, PERIOD));
+    }
+}
