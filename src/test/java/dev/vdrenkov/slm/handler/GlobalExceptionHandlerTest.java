@@ -100,10 +100,10 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void testHandleHttpRequestMethodNotSupportedException_onEndpointGetAllOrders_badRequest() throws Exception {
+    void testHandleHttpRequestMethodNotSupportedException_onEndpointGetAllOrders_methodNotAllowed() throws Exception {
         mockMvc
             .perform(put(URI))
-            .andExpect(status().isBadRequest())
+            .andExpect(status().isMethodNotAllowed())
             .andExpect(jsonPath(ROOT, is("HTTP method not supported")));
     }
 

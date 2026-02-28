@@ -107,7 +107,7 @@ class OrderServiceTest {
 
     @Test
     void testGetAllOrdersByClient() {
-        when(orderRepository.findAll()).thenReturn(OrderFactory.getDefaultOrdersList());
+        when(orderRepository.findByClientId(anyInt())).thenReturn(OrderFactory.getDefaultOrdersList());
 
         List<Order> testOrders = orderService.getAllOrdersByClient(ID);
 
@@ -116,7 +116,7 @@ class OrderServiceTest {
 
     @Test
     void testGetAllOrdersDtoByClient() {
-        when(orderRepository.findAll()).thenReturn(OrderFactory.getDefaultOrdersList());
+        when(orderRepository.findByClientId(anyInt())).thenReturn(OrderFactory.getDefaultOrdersList());
         when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
 
         List<OrderDto> result = orderService.getAllOrdersDtoByClient(ID);
@@ -126,7 +126,7 @@ class OrderServiceTest {
 
     @Test
     void testGetAllOrdersByDate() {
-        when(orderRepository.findAll()).thenReturn(OrderFactory.getDefaultOrdersList());
+        when(orderRepository.findByIssueDate(any(LocalDate.class))).thenReturn(OrderFactory.getDefaultOrdersList());
 
         List<Order> testOrders = orderService.getAllOrdersByDate(1, LOCAL_DATE);
 
@@ -141,7 +141,7 @@ class OrderServiceTest {
     @Test
     void testGetAllOrdersDtoByDate() {
         when(localDateMapper.mapStringToDate(anyString())).thenReturn(LOCAL_DATE);
-        when(orderRepository.findAll()).thenReturn(OrderFactory.getDefaultOrdersList());
+        when(orderRepository.findByIssueDateAfter(any(LocalDate.class))).thenReturn(OrderFactory.getDefaultOrdersList());
         when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
 
         List<OrderDto> result = orderService.getAllOrdersDtoByDate(CHOICE, DATE_STRING);

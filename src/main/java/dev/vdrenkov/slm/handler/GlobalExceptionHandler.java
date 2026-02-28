@@ -74,7 +74,7 @@ public class GlobalExceptionHandler {
         HttpRequestMethodNotSupportedException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
         String message = "HTTP method not supported";
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(message, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

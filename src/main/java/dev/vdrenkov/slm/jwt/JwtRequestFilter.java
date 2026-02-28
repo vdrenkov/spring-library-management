@@ -42,7 +42,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         try {
             if (token != null && !token.isEmpty()) {
-                log.info("JWT found");
+                log.debug("JWT cookie detected on request");
                 username = tokenUtil.getUsernameFromToken(token);
             }
 
@@ -76,4 +76,3 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         return null;
     }
 }
-

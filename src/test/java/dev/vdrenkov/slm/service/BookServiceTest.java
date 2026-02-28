@@ -59,7 +59,7 @@ class BookServiceTest {
 
     @Test
     void testGetAllAvailableBooks() {
-        when(bookRepository.findAll()).thenReturn(BookFactory.getDefaultBooksList());
+        when(bookRepository.findByQuantityGreaterThan(anyInt())).thenReturn(BookFactory.getDefaultBooksList());
 
         List<Book> testList = bookService.getAllAvailableBooks();
 
@@ -67,14 +67,8 @@ class BookServiceTest {
     }
 
     @Test
-    void testFilterBooksByAvailability() {
-        List<Book> testBooks = bookService.filterBooksByAvailability(BookFactory.getDefaultBooksList());
-
-        assertNotNull(testBooks);
-    }
-
-    @Test
     void testGetAllAvailableBooksDto() {
+        when(bookRepository.findByQuantityGreaterThan(anyInt())).thenReturn(BookFactory.getDefaultBooksList());
         when(bookMapper.mapBooksToBooksDto(anyList())).thenReturn(BookFactory.getDefaultBooksDtoList());
 
         List<BookDto> testList = bookService.getAllAvailableBooksDto();
@@ -84,7 +78,8 @@ class BookServiceTest {
 
     @Test
     void testGetAllBooksByAuthor() {
-        when(bookRepository.findAll()).thenReturn(BookFactory.getDefaultBooksList());
+        when(bookRepository.findByAuthorIdAndQuantityGreaterThan(anyInt(), anyInt())).thenReturn(
+            BookFactory.getDefaultBooksList());
 
         List<Book> testList = bookService.getAllBooksByAuthor(ID);
 
@@ -93,7 +88,9 @@ class BookServiceTest {
 
     @Test
     void testGetAllBooksDtoByAuthor() {
-        when(bookRepository.findAll()).thenReturn(BookFactory.getDefaultBooksList());
+        when(bookRepository.findByAuthorIdAndQuantityGreaterThan(anyInt(), anyInt())).thenReturn(
+            BookFactory.getDefaultBooksList());
+        when(bookMapper.mapBooksToBooksDto(anyList())).thenReturn(BookFactory.getDefaultBooksDtoList());
 
         List<BookDto> testList = bookService.getAllBooksDtoByAuthor(ID);
 

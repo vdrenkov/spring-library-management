@@ -84,15 +84,7 @@ public class OrderService {
     }
 
     public List<Order> getAllOrdersByClient(int clientId) {
-        List<Order> ordersByClient = new ArrayList<>();
-        List<Order> allOrders = getAllOrders();
-
-        for (Order order : allOrders) {
-            if (order.getClient().getId() == clientId) {
-                ordersByClient.add(order);
-            }
-        }
-        return ordersByClient;
+        return orderRepository.findByClientId(clientId);
     }
 
     public List<OrderDto> getAllOrdersDtoByClient(int clientId) {
@@ -101,39 +93,19 @@ public class OrderService {
 
     public List<Order> getAllOrdersByDate(int choice, LocalDate date) {
         validateOrderDateChoice(choice);
-
-        List<Order> ordersByDate = new ArrayList<>();
-        List<Order> allOrders = getAllOrders();
-
-        for (Order order : allOrders) {
-            if (matchesOrderDateFilter(order, choice, date)) {
-                ordersByDate.add(order);
-            }
-        }
-        return ordersByDate;
+        return switch (choice) {
+            case 1 -> orderRepository.findByIssueDate(date);
+            case 2 -> orderRepository.findByIssueDateBefore(date);
+            case 3 -> orderRepository.findByIssueDateAfter(date);
+            case 4 -> orderRepository.findByDueDate(date);
+            case 5 -> orderRepository.findByDueDateBefore(date);
+            case 6 -> orderRepository.findByDueDateAfter(date);
+            default -> List.of();
+        };
     }
 
     public List<OrderDto> getAllOrdersDtoByDate(int choice, String date) {
         return orderMapper.mapOrdersToOrdersDto(getAllOrdersByDate(choice, localDateMapper.mapStringToDate(date)));
-    }
-
-    private boolean matchesOrderDateFilter(Order order, int choice, LocalDate date) {
-        switch (choice) {
-            case 1:
-                return order.getIssueDate().isEqual(date);
-            case 2:
-                return order.getIssueDate().isBefore(date);
-            case 3:
-                return order.getIssueDate().isAfter(date);
-            case 4:
-                return order.getDueDate().isEqual(date);
-            case 5:
-                return order.getDueDate().isBefore(date);
-            case 6:
-                return order.getDueDate().isAfter(date);
-            default:
-                return false;
-        }
     }
 
     private void validateOrderDateChoice(int choice) {

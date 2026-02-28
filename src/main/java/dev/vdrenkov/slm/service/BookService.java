@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static dev.vdrenkov.slm.util.Constants.ZERO;
@@ -48,19 +47,7 @@ public class BookService {
     }
 
     public List<Book> getAllAvailableBooks() {
-        List<Book> books = getAllBooks();
-        return filterBooksByAvailability(books);
-    }
-
-    public List<Book> filterBooksByAvailability(List<Book> books) {
-        List<Book> availableBooks = new ArrayList<>();
-
-        for (Book book : books) {
-            if (book.getQuantity() > ZERO) {
-                availableBooks.add(book);
-            }
-        }
-        return availableBooks;
+        return bookRepository.findByQuantityGreaterThan(ZERO);
     }
 
     public List<BookDto> getAllAvailableBooksDto() {
@@ -68,15 +55,7 @@ public class BookService {
     }
 
     public List<Book> getAllBooksByAuthor(int authorId) {
-        List<Book> allAvailableBooksByAuthor = new ArrayList<>();
-        List<Book> allBooks = getAllAvailableBooks();
-
-        for (Book book : allBooks) {
-            if (book.getAuthor().getId() == authorId) {
-                allAvailableBooksByAuthor.add(book);
-            }
-        }
-        return allAvailableBooksByAuthor;
+        return bookRepository.findByAuthorIdAndQuantityGreaterThan(authorId, ZERO);
     }
 
     public List<BookDto> getAllBooksDtoByAuthor(int authorId) {
