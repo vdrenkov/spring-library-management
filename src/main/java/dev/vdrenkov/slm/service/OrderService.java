@@ -126,6 +126,7 @@ public class OrderService {
     @Transactional
     public OrderDto extendOrderDueByDate(final int orderId, final int choice, final int period) {
         final Order order = getOrderById(orderId);
+        final OrderDto oldOrder = orderMapper.mapOrderToOrderDto(order);
 
         final LocalDate dueDate = order.getDueDate();
 
@@ -143,8 +144,7 @@ public class OrderService {
                 throw new IllegalArgumentException("Choice must be between 1 and 3");
         }
         orderRepository.save(order);
-        order.setDueDate(dueDate);
         log.info("Order due date successfully updated");
-        return orderMapper.mapOrderToOrderDto(order);
+        return oldOrder;
     }
 }

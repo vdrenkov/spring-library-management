@@ -24,19 +24,19 @@ public class UserMapper {
   }
 
   public List<UserDto> mapUsersToUsersDto(final List<User> users) {
-      final List<UserDto> usersDto = new ArrayList<>();
+    final List<UserDto> usersDto = new ArrayList<>();
 
     for (final User user : users) {
       usersDto.add(mapUserToUserDto(user));
     }
 
     usersDto.sort(Comparator.comparing(UserDto::getUsername));
-    log.info("Users' list mapped to users' DTOs list");
+    log.debug("Users' list mapped to users' DTOs list");
     return usersDto;
   }
 
   public UserDto mapUserToUserDto(final User user) {
-    log.info("User mapped to user DTO");
+    log.debug("User mapped to user DTO");
     return new UserDto(user.getUsername(), userRoleMapper.mapUserRolesToUserRolesDto(user.getUserRoles()));
   }
 }

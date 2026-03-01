@@ -25,25 +25,25 @@ public class OrderMapper {
   }
 
   public List<OrderDto> mapOrdersToOrdersDto(final List<Order> orders) {
-      final List<OrderDto> ordersDto = new ArrayList<>();
+    final List<OrderDto> ordersDto = new ArrayList<>();
 
     for (final Order order : orders) {
       ordersDto.add(mapOrderToOrderDto(order));
     }
 
     ordersDto.sort(Comparator.comparing(OrderDto::id));
-    log.info("Orders' list mapped to orders' DTOs list");
+    log.debug("Orders' list mapped to orders' DTOs list");
     return ordersDto;
   }
 
   public OrderDto mapOrderToOrderDto(final Order order) {
-      final List<String> booksNames = new ArrayList<>();
+    final List<String> booksNames = new ArrayList<>();
 
     for (final Book book : order.getBooks()) {
       booksNames.add(book.getName());
     }
 
-    log.info("Order mapped to order DTO");
+    log.debug("Order mapped to order DTO");
     return new OrderDto(order.getId(), clientMapper.mapClientToClientDto(order.getClient()),
                         booksNames, order.getIssueDate(), order.getDueDate());
   }

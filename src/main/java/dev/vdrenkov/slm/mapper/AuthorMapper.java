@@ -16,19 +16,19 @@ public class AuthorMapper {
   private static final Logger log = LoggerFactory.getLogger(AuthorMapper.class);
 
   public List<AuthorDto> mapAuthorsToAuthorsDto(final List<Author> authors) {
-      final List<AuthorDto> authorsDto = new ArrayList<>();
+    final List<AuthorDto> authorsDto = new ArrayList<>();
 
     for (final Author author : authors) {
       authorsDto.add(mapAuthorToAuthorDto(author));
     }
 
     authorsDto.sort(Comparator.comparing(AuthorDto::getId));
-    log.info("Authors' list mapped to authors' DTOs list");
+    log.debug("Authors' list mapped to authors' DTOs list");
     return authorsDto;
   }
 
   public AuthorDto mapAuthorToAuthorDto(final Author author) {
-    log.info("Author mapped to author DTO");
+    log.debug("Author mapped to author DTO");
     return new AuthorDto(author.getId(), author.getName(), author.getSurname());
   }
 }

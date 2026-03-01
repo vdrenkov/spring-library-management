@@ -24,19 +24,19 @@ public class BookMapper {
   }
 
   public List<BookDto> mapBooksToBooksDto(final List<Book> books) {
-      final List<BookDto> booksDto = new ArrayList<>();
+    final List<BookDto> booksDto = new ArrayList<>();
 
     for (final Book book : books) {
       booksDto.add(mapBookToBookDto(book));
     }
 
     booksDto.sort(Comparator.comparing(BookDto::id));
-    log.info("Books' list mapped to books' DTOs list");
+    log.debug("Books' list mapped to books' DTOs list");
     return booksDto;
   }
 
   public BookDto mapBookToBookDto(final Book book) {
-    log.info("Book mapped to book DTO");
+    log.debug("Book mapped to book DTO");
     return new BookDto(book.getId(), book.getName(), book.getPublishDate(),
                        authorMapper.mapAuthorToAuthorDto(book.getAuthor()),
                        book.getQuantity());
