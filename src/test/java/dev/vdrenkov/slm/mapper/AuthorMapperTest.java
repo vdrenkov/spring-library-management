@@ -14,14 +14,14 @@ class AuthorMapperTest {
 
     @Test
     void testMapAuthorsToAuthorsDto() {
-        List<AuthorDto> authorsDto = mapper.mapAuthorsToAuthorsDto(AuthorFactory.getDefaultAuthorsList());
+        final List<AuthorDto> authorsDto = mapper.mapAuthorsToAuthorsDto(AuthorFactory.getDefaultAuthorsList());
 
         assertNotNull(authorsDto);
     }
 
     @Test
     void testMapAuthorToAuthorDto() {
-        AuthorDto authorDto = mapper.mapAuthorToAuthorDto(AuthorFactory.getDefaultAuthor());
+        final AuthorDto authorDto = mapper.mapAuthorToAuthorDto(AuthorFactory.getDefaultAuthor());
 
         assertNotNull(authorDto);
     }

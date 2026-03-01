@@ -14,14 +14,14 @@ class ClientMapperTest {
 
     @Test
     void testMapClientsToClientsDto() {
-        List<ClientDto> clientsDto = mapper.mapClientsToClientsDto(ClientFactory.getDefaultClientsList());
+        final List<ClientDto> clientsDto = mapper.mapClientsToClientsDto(ClientFactory.getDefaultClientsList());
 
         assertNotNull(clientsDto);
     }
 
     @Test
     void testMapClientToClientDto() {
-        ClientDto clientDto = mapper.mapClientToClientDto(ClientFactory.getDefaultClient());
+        final ClientDto clientDto = mapper.mapClientToClientDto(ClientFactory.getDefaultClient());
 
         assertNotNull(clientDto);
     }

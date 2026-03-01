@@ -39,7 +39,7 @@ class AuthorServiceTest {
     void testAddAuthor() {
         when(authorRepository.save(any())).thenReturn(new Author());
 
-        Author author = authorService.addAuthor(AuthorFactory.getDefaultAuthorRequest());
+        final Author author = authorService.addAuthor(AuthorFactory.getDefaultAuthorRequest());
 
         Assertions.assertNotNull(author);
     }
@@ -48,7 +48,7 @@ class AuthorServiceTest {
     void testGetAllAuthors() {
         when(authorRepository.findAll()).thenReturn(AuthorFactory.getDefaultAuthorsList());
 
-        List<Author> result = authorService.getAllAuthors();
+        final List<Author> result = authorService.getAllAuthors();
 
         assertFalse(result.isEmpty());
     }
@@ -58,7 +58,7 @@ class AuthorServiceTest {
         when(authorRepository.findAll()).thenReturn(AuthorFactory.getDefaultAuthorsList());
         when(authorMapper.mapAuthorsToAuthorsDto(anyList())).thenReturn(AuthorFactory.getDefaultAuthorsDtoList());
 
-        List<AuthorDto> result = authorService.getAllAuthorsDto();
+        final List<AuthorDto> result = authorService.getAllAuthorsDto();
 
         assertFalse(result.isEmpty());
     }
@@ -67,7 +67,7 @@ class AuthorServiceTest {
     void testGetAuthorById() {
         when(authorRepository.findById(anyInt())).thenReturn(Optional.of(AuthorFactory.getDefaultAuthor()));
 
-        Author result = authorService.getAuthorById(ID);
+        final Author result = authorService.getAuthorById(ID);
 
         assertNotNull(result.getName());
     }
@@ -77,7 +77,7 @@ class AuthorServiceTest {
         when(authorRepository.findById(anyInt())).thenReturn(Optional.of(AuthorFactory.getDefaultAuthor()));
         when(authorMapper.mapAuthorToAuthorDto(any())).thenReturn(AuthorFactory.getDefaultAuthorDto());
 
-        AuthorDto result = authorService.getAuthorDtoById(ID);
+        final AuthorDto result = authorService.getAuthorDtoById(ID);
 
         assertNotNull(result.getName());
     }

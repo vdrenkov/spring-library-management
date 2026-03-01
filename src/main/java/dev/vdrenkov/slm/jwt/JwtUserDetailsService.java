@@ -21,20 +21,20 @@ public class JwtUserDetailsService implements UserDetailsService {
   private final UserRepository userRepository;
 
   @Autowired
-  public JwtUserDetailsService(UserRepository userRepository) {
+  public JwtUserDetailsService(final UserRepository userRepository) {
     this.userRepository = userRepository;
   }
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userRepository.findUserByUsername(username);
+  public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+    final User user = userRepository.findUserByUsername(username);
 
     if (Objects.isNull(user)) {
       throw new UserNotFoundException();
     }
 
-    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-    for (UserRole role : user.getUserRoles()) {
+    final List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+    for (final UserRole role : user.getUserRoles()) {
       authorities.add(new SimpleGrantedAuthority(role.getRole()));
     }
 

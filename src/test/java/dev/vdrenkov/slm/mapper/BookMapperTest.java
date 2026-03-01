@@ -28,7 +28,7 @@ class BookMapperTest {
     void testMapBooksToBooksDto() {
         when(authorMapper.mapAuthorToAuthorDto(any())).thenReturn(AuthorFactory.getDefaultAuthorDto());
 
-        List<BookDto> booksDto = mapper.mapBooksToBooksDto(BookFactory.getDefaultBooksList());
+        final List<BookDto> booksDto = mapper.mapBooksToBooksDto(BookFactory.getDefaultBooksList());
 
         assertNotNull(booksDto);
     }
@@ -37,7 +37,7 @@ class BookMapperTest {
     void testMapBookToBookDto() {
         when(authorMapper.mapAuthorToAuthorDto(any())).thenReturn(AuthorFactory.getDefaultAuthorDto());
 
-        BookDto bookDto = mapper.mapBookToBookDto(BookFactory.getDefaultBook());
+        final BookDto bookDto = mapper.mapBookToBookDto(BookFactory.getDefaultBook());
 
         assertNotNull(bookDto);
     }

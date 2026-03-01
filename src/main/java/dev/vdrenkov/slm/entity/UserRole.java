@@ -26,7 +26,7 @@ public class UserRole {
   @Column(name = "ROLE", unique = true)
   private String role;
 
-  public UserRole(String role) {
+  public UserRole(final String role) {
     this.role = role;
   }
 }

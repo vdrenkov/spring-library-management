@@ -45,9 +45,9 @@ class JwtRequestFilterTest {
 
     @Test
     void testDoFilterInternal_validToken_setsAuthentication() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
+        final MockHttpServletRequest request = new MockHttpServletRequest();
         request.setCookies(new Cookie("Cookie", "jwt-token"));
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletResponse response = new MockHttpServletResponse();
 
         when(jwtTokenUtil.getUsernameFromToken("jwt-token")).thenReturn("librarian");
         when(jwtUserDetailsService.loadUserByUsername("librarian")).thenReturn(userDetails);
@@ -62,8 +62,8 @@ class JwtRequestFilterTest {
 
     @Test
     void testDoFilterInternal_noCookie_doesNotAuthenticate() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+        final MockHttpServletResponse response = new MockHttpServletResponse();
 
         jwtRequestFilter.doFilter(request, response, filterChain);
 
@@ -73,9 +73,9 @@ class JwtRequestFilterTest {
 
     @Test
     void testDoFilterInternal_invalidToken_doesNotAuthenticate() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
+        final MockHttpServletRequest request = new MockHttpServletRequest();
         request.setCookies(new Cookie("Cookie", "jwt-token"));
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletResponse response = new MockHttpServletResponse();
 
         when(jwtTokenUtil.getUsernameFromToken("jwt-token")).thenReturn("librarian");
         when(jwtUserDetailsService.loadUserByUsername("librarian")).thenReturn(userDetails);

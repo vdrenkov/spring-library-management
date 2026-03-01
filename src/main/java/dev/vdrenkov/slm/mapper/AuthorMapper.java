@@ -15,10 +15,10 @@ public class AuthorMapper {
 
   private static final Logger log = LoggerFactory.getLogger(AuthorMapper.class);
 
-  public List<AuthorDto> mapAuthorsToAuthorsDto(List<Author> authors) {
-    List<AuthorDto> authorsDto = new ArrayList<>();
+  public List<AuthorDto> mapAuthorsToAuthorsDto(final List<Author> authors) {
+      final List<AuthorDto> authorsDto = new ArrayList<>();
 
-    for (Author author : authors) {
+    for (final Author author : authors) {
       authorsDto.add(mapAuthorToAuthorDto(author));
     }
 
@@ -27,7 +27,7 @@ public class AuthorMapper {
     return authorsDto;
   }
 
-  public AuthorDto mapAuthorToAuthorDto(Author author) {
+  public AuthorDto mapAuthorToAuthorDto(final Author author) {
     log.info("Author mapped to author DTO");
     return new AuthorDto(author.getId(), author.getName(), author.getSurname());
   }

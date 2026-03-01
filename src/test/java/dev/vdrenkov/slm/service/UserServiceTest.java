@@ -51,16 +51,16 @@ class UserServiceTest {
 
     @Test
     void testAddUser_success() {
-        UserRole librarianRole = new UserRole(1, "LIBRARIAN");
+        final UserRole librarianRole = new UserRole(1, "LIBRARIAN");
         when(userRepository.existsByUsername("librarian")).thenReturn(false);
         when(passwordEncoder.encode("password123")).thenReturn("encoded-password");
         when(userRoleService.getUserRoleByRole("LIBRARIAN")).thenReturn(librarianRole);
 
         userService.addUser(new UserRequest("librarian", "password123"));
 
-        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        final ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userCaptor.capture());
-        User savedUser = userCaptor.getValue();
+        final User savedUser = userCaptor.getValue();
 
         assertEquals("librarian", savedUser.getUsername());
         assertEquals("encoded-password", savedUser.getPassword());
@@ -79,8 +79,8 @@ class UserServiceTest {
 
     @Test
     void testAddUserByAdmin_success() {
-        UserRole adminRole = new UserRole(1, "ADMIN");
-        UserRole librarianRole = new UserRole(2, "LIBRARIAN");
+        final UserRole adminRole = new UserRole(1, "ADMIN");
+        final UserRole librarianRole = new UserRole(2, "LIBRARIAN");
         when(userRepository.existsByUsername("admin2")).thenReturn(false);
         when(passwordEncoder.encode("password123")).thenReturn("encoded-password");
         when(userRoleService.getUserRoleById(1)).thenReturn(adminRole);
@@ -88,9 +88,9 @@ class UserServiceTest {
 
         userService.addUserByAdmin(new AdminRequest("admin2", "password123", List.of(1, 2)));
 
-        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        final ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userCaptor.capture());
-        User savedUser = userCaptor.getValue();
+        final User savedUser = userCaptor.getValue();
 
         assertEquals("admin2", savedUser.getUsername());
         assertEquals("encoded-password", savedUser.getPassword());

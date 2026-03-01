@@ -22,10 +22,10 @@ class JwtCookieUtilTest {
     @Test
     void testCreateJWTCookie_appliesSecurityAttributes() {
         when(jwtTokenUtil.generateToken(userDetails)).thenReturn("jwt-token");
-        JwtCookieUtil jwtCookieUtil = new JwtCookieUtil(jwtTokenUtil, true, "Strict");
+        final JwtCookieUtil jwtCookieUtil = new JwtCookieUtil(jwtTokenUtil, true, "Strict");
 
-        HttpCookie cookie = jwtCookieUtil.createJWTCookie(userDetails);
-        String cookieHeader = cookie.toString();
+        final HttpCookie cookie = jwtCookieUtil.createJWTCookie(userDetails);
+        final String cookieHeader = cookie.toString();
 
         assertTrue(cookieHeader.contains("Cookie=jwt-token"));
         assertTrue(cookieHeader.contains("Path=/"));

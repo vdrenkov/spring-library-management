@@ -20,14 +20,14 @@ public class OrderMapper {
   private final ClientMapper clientMapper;
 
   @Autowired
-  public OrderMapper(ClientMapper clientMapper) {
+  public OrderMapper(final ClientMapper clientMapper) {
     this.clientMapper = clientMapper;
   }
 
-  public List<OrderDto> mapOrdersToOrdersDto(List<Order> orders) {
-    List<OrderDto> ordersDto = new ArrayList<>();
+  public List<OrderDto> mapOrdersToOrdersDto(final List<Order> orders) {
+      final List<OrderDto> ordersDto = new ArrayList<>();
 
-    for (Order order : orders) {
+    for (final Order order : orders) {
       ordersDto.add(mapOrderToOrderDto(order));
     }
 
@@ -36,10 +36,10 @@ public class OrderMapper {
     return ordersDto;
   }
 
-  public OrderDto mapOrderToOrderDto(Order order) {
-    List<String> booksNames = new ArrayList<>();
+  public OrderDto mapOrderToOrderDto(final Order order) {
+      final List<String> booksNames = new ArrayList<>();
 
-    for (Book book : order.getBooks()) {
+    for (final Book book : order.getBooks()) {
       booksNames.add(book.getName());
     }
 

@@ -31,29 +31,29 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(final UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody @Valid UserRequest request) {
-        HttpCookie cookie = userService.login(request);
+    public ResponseEntity<Void> login(@RequestBody @Valid final UserRequest request) {
+        final HttpCookie cookie = userService.login(request);
         log.info("A login request submitted");
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> registerUser(@RequestBody @Valid UserRequest request) {
-        HttpCookie cookie = userService.registerUser(request);
+    public ResponseEntity<Void> registerUser(@RequestBody @Valid final UserRequest request) {
+        final HttpCookie cookie = userService.registerUser(request);
         log.info("A register request submitted");
 
         return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
     }
 
     @PostMapping(ADMIN_PATH + "/register")
-    public ResponseEntity<Void> registerAdmin(@RequestBody @Valid AdminRequest request) {
-        HttpCookie cookie = userService.registerByAdmin(request);
+    public ResponseEntity<Void> registerAdmin(@RequestBody @Valid final AdminRequest request) {
+        final HttpCookie cookie = userService.registerByAdmin(request);
         log.info("An admin register request submitted");
 
         return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
@@ -66,7 +66,7 @@ public class UserController {
     }
 
     @GetMapping(USER_PATH + "/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable int id) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable final int id) {
         log.info("User with an ID {} requested from the database.", id);
         return ResponseEntity.ok(userService.getUserDtoById(id));
     }

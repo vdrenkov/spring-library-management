@@ -10,7 +10,7 @@ public class ClientDto extends PersonDto {
     private final String phoneNumber;
     private final String email;
 
-    public ClientDto(int id, String name, String surname, String phoneNumber, String email) {
+    public ClientDto(final int id, final String name, final String surname, final String phoneNumber, final String email) {
         super(id, name, surname);
         this.phoneNumber = phoneNumber;
         this.email = email;

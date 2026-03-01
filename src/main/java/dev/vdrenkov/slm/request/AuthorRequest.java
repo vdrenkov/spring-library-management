@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthorRequest extends PersonRequest {
 
-  public AuthorRequest(String name, String surname) {
+  public AuthorRequest(final String name, final String surname) {
     super(name, surname);
   }
 }

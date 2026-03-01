@@ -29,15 +29,15 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @Autowired
-    public AuthorController(AuthorService authorService) {
+    public AuthorController(final AuthorService authorService) {
         this.authorService = authorService;
     }
 
     @PostMapping
-    public ResponseEntity<Void> addAuthor(@RequestBody @Valid AuthorRequest authorRequest) {
-        Author author = authorService.addAuthor(authorRequest);
+    public ResponseEntity<Void> addAuthor(@RequestBody @Valid final AuthorRequest authorRequest) {
+        final Author author = authorService.addAuthor(authorRequest);
 
-        URI location = UriComponentsBuilder.fromUriString("/authors/{id}").buildAndExpand(author.getId()).toUri();
+        final URI location = UriComponentsBuilder.fromUriString("/authors/{id}").buildAndExpand(author.getId()).toUri();
         log.info("A new author added");
         return ResponseEntity.created(location).build();
     }
@@ -49,7 +49,7 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AuthorDto> getAuthorById(@PathVariable int id) {
+    public ResponseEntity<AuthorDto> getAuthorById(@PathVariable final int id) {
         log.info("Author with an ID {} requested from the database.", id);
         return ResponseEntity.ok(authorService.getAuthorDtoById(id));
     }

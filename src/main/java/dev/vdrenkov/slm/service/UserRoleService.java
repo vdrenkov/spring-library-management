@@ -22,13 +22,13 @@ public class UserRoleService {
     private final UserRoleMapper userMapper;
 
     @Autowired
-    public UserRoleService(UserRoleRepository userRepository, UserRoleMapper userMapper) {
+    public UserRoleService(final UserRoleRepository userRepository, final UserRoleMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
 
-    public UserRole addUserRole(UserRoleRequest userRoleRequest) {
-        UserRole userRole = new UserRole(userRoleRequest.getRole());
+    public UserRole addUserRole(final UserRoleRequest userRoleRequest) {
+        final UserRole userRole = new UserRole(userRoleRequest.getRole());
 
         log.info("Trying to add a new role");
         return userRepository.save(userRole);
@@ -43,16 +43,16 @@ public class UserRoleService {
         return userMapper.mapUserRolesToUserRolesDto(getAllUserRoles());
     }
 
-    public UserRole getUserRoleById(int id) {
+    public UserRole getUserRoleById(final int id) {
         log.info("Trying to retrieve role with an ID {}", id);
         return userRepository.findById(id).orElseThrow(UserRoleNotFoundException::new);
     }
 
-    public UserRoleDto getUserRoleDtoById(int id) {
+    public UserRoleDto getUserRoleDtoById(final int id) {
         return userMapper.mapUserRoleToUserRoleDto(getUserRoleById(id));
     }
 
-    public UserRole getUserRoleByRole(String role) {
+    public UserRole getUserRoleByRole(final String role) {
         return userRepository.findUserRoleByRole(role).orElseThrow(UserRoleNotFoundException::new);
     }
 }

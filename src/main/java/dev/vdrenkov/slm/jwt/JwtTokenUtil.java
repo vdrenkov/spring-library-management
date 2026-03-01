@@ -24,20 +24,20 @@ public class JwtTokenUtil implements Serializable {
   @Value("${jwt.secret}")
   private String secret;
 
-  public String getUsernameFromToken(String token) {
+  public String getUsernameFromToken(final String token) {
     return getClaimFromToken(token, Claims::getSubject);
   }
 
-  public Date getExpirationDateFromToken(String token) {
+  public Date getExpirationDateFromToken(final String token) {
     return getClaimFromToken(token, Claims::getExpiration);
   }
 
-  public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+  public <T> T getClaimFromToken(final String token, final Function<Claims, T> claimsResolver) {
     final Claims claims = getAllClaimsFromToken(token);
     return claimsResolver.apply(claims);
   }
 
-  private Claims getAllClaimsFromToken(String token) {
+  private Claims getAllClaimsFromToken(final String token) {
     return Jwts.parser()
                .verifyWith(getSigningKey())
                .build()
@@ -49,17 +49,17 @@ public class JwtTokenUtil implements Serializable {
     return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
   }
 
-  private Boolean isTokenExpired(String token) {
+  private Boolean isTokenExpired(final String token) {
     final Date expiration = getExpirationDateFromToken(token);
     return expiration.before(new Date());
   }
 
-  public String generateToken(UserDetails userDetails) {
-    Map<String, Object> claims = new HashMap<>();
+  public String generateToken(final UserDetails userDetails) {
+    final Map<String, Object> claims = new HashMap<>();
     return doGenerateToken(claims, userDetails.getUsername());
   }
 
-  private String doGenerateToken(Map<String, Object> claims, String subject) {
+  private String doGenerateToken(final Map<String, Object> claims, final String subject) {
 
     return Jwts.builder()
                .claims(claims)
@@ -70,9 +70,8 @@ public class JwtTokenUtil implements Serializable {
                .compact();
   }
 
-  public Boolean validateToken(String token, UserDetails userDetails) {
+  public Boolean validateToken(final String token, final UserDetails userDetails) {
     final String username = getUsernameFromToken(token);
     return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
   }
 }
-

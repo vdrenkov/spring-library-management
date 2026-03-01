@@ -19,14 +19,14 @@ public class UserMapper {
   private final UserRoleMapper userRoleMapper;
 
   @Autowired
-  public UserMapper(UserRoleMapper userRoleMapper) {
+  public UserMapper(final UserRoleMapper userRoleMapper) {
     this.userRoleMapper = userRoleMapper;
   }
 
-  public List<UserDto> mapUsersToUsersDto(List<User> users) {
-    List<UserDto> usersDto = new ArrayList<>();
+  public List<UserDto> mapUsersToUsersDto(final List<User> users) {
+      final List<UserDto> usersDto = new ArrayList<>();
 
-    for (User user : users) {
+    for (final User user : users) {
       usersDto.add(mapUserToUserDto(user));
     }
 
@@ -35,7 +35,7 @@ public class UserMapper {
     return usersDto;
   }
 
-  public UserDto mapUserToUserDto(User user) {
+  public UserDto mapUserToUserDto(final User user) {
     log.info("User mapped to user DTO");
     return new UserDto(user.getUsername(), userRoleMapper.mapUserRolesToUserRolesDto(user.getUserRoles()));
   }

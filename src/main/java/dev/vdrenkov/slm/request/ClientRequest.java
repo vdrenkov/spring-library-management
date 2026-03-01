@@ -18,7 +18,7 @@ public class ClientRequest extends PersonRequest {
     @NotNull(message = "The email cannot be null")
     private String email;
 
-    public ClientRequest(String name, String surname, String phoneNumber, String email) {
+    public ClientRequest(final String name, final String surname, final String phoneNumber, final String email) {
         super(name, surname);
         this.phoneNumber = phoneNumber;
         this.email = email;

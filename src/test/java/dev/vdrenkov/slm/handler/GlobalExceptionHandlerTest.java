@@ -60,8 +60,8 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void handleMethodArgumentNotValidException_onEndpointGetAllOrders_badRequest() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(new OrderRequest(0, BookFactory.getDefaultBooksIdsList()));
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final String json = objectMapper.writeValueAsString(new OrderRequest(0, BookFactory.getDefaultBooksIdsList()));
 
         mockMvc
             .perform(post(URI).contentType(MediaType.APPLICATION_JSON).content(json))

@@ -11,7 +11,7 @@ public class LocalDateMapper {
 
   private static final Logger log = LoggerFactory.getLogger(LocalDateMapper.class);
 
-  public LocalDate mapStringToDate(String string) {
+  public LocalDate mapStringToDate(final String string) {
     log.info("Date string mapped to date");
     return LocalDate.parse(string);
   }

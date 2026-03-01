@@ -45,7 +45,7 @@ class GlobalExceptionHandlerAuthTest {
     @Test
     void testBadCredentials_returnsUnauthorized() throws Exception {
         when(userService.login(any(UserRequest.class))).thenThrow(new BadCredentialsException("bad credentials"));
-        String json = new ObjectMapper().writeValueAsString(new UserRequest("user123", "password123"));
+        final String json = new ObjectMapper().writeValueAsString(new UserRequest("user123", "password123"));
 
         mockMvc
             .perform(post("/login").contentType(MediaType.APPLICATION_JSON).content(json))
@@ -57,7 +57,7 @@ class GlobalExceptionHandlerAuthTest {
     void testInternalAuthenticationService_returnsUnauthorized() throws Exception {
         when(userService.login(any(UserRequest.class)))
             .thenThrow(new InternalAuthenticationServiceException("user not found"));
-        String json = new ObjectMapper().writeValueAsString(new UserRequest("user123", "password123"));
+        final String json = new ObjectMapper().writeValueAsString(new UserRequest("user123", "password123"));
 
         mockMvc
             .perform(post("/login").contentType(MediaType.APPLICATION_JSON).content(json))

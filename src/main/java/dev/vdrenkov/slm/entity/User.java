@@ -40,7 +40,7 @@ public class User {
              inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
   private List<UserRole> userRoles;
 
-  public User(String username, String password, List<UserRole> userRoles) {
+  public User(final String username, final String password, final List<UserRole> userRoles) {
     this.username = username;
     this.password = password;
     this.userRoles = userRoles;

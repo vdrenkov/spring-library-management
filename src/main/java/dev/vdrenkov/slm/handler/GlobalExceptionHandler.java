@@ -35,12 +35,12 @@ public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<String> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
-        StringBuilder errors = new StringBuilder();
-        BindingResult bindingResult = exception.getBindingResult();
+        final StringBuilder errors = new StringBuilder();
+        final BindingResult bindingResult = exception.getBindingResult();
 
-        for (FieldError error : bindingResult.getFieldErrors()) {
+        for (final FieldError error : bindingResult.getFieldErrors()) {
             errors.append(error.getDefaultMessage());
             errors.append("\n");
         }
@@ -49,134 +49,134 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<String> handleNullPointerException(NullPointerException exception) {
+    public ResponseEntity<String> handleNullPointerException(final NullPointerException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
-        String message = "Missing or incorrect data entered";
+        final String message = "Missing or incorrect data entered";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UnexpectedTypeException.class)
-    public ResponseEntity<String> handleUnexpectedTypeException(UnexpectedTypeException exception) {
+    public ResponseEntity<String> handleUnexpectedTypeException(final UnexpectedTypeException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
-        String message = "Wrong data entered";
+        final String message = "Wrong data entered";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
+    public ResponseEntity<String> handleHttpMessageNotReadableException(final HttpMessageNotReadableException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
-        String message = "Incorrect data entered";
+        final String message = "Incorrect data entered";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<String> handleHttpRequestMethodNotSupportedException(
-        HttpRequestMethodNotSupportedException exception) {
+        final HttpRequestMethodNotSupportedException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
-        String message = "HTTP method not supported";
+        final String message = "HTTP method not supported";
         return new ResponseEntity<>(message, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException exception) {
+    public ResponseEntity<String> handleIllegalArgumentException(final IllegalArgumentException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
-        String message = exception.getMessage() != null ? exception.getMessage() : "Illegal argument provided";
+        final String message = exception.getMessage() != null ? exception.getMessage() : "Illegal argument provided";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<String> handleMissingServletRequestParameterException(
-        MissingServletRequestParameterException exception) {
+        final MissingServletRequestParameterException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
-        String message = "Invalid parameter provided";
+        final String message = "Invalid parameter provided";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DateTimeParseException.class)
-    public ResponseEntity<String> handleDateTimeParseException(DateTimeParseException exception) {
+    public ResponseEntity<String> handleDateTimeParseException(final DateTimeParseException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
-        String message = "Invalid date provided";
+        final String message = "Invalid date provided";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> handleMethodArgumentTypeMismatchException(
-        MethodArgumentTypeMismatchException exception) {
+        final MethodArgumentTypeMismatchException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
-        String message = "Invalid URL provided";
+        final String message = "Invalid URL provided";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException exception) {
+    public ResponseEntity<String> handleConstraintViolationException(final ConstraintViolationException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>("Request validation failed", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
-    public ResponseEntity<String> handleHandlerMethodValidationException(HandlerMethodValidationException exception) {
+    public ResponseEntity<String> handleHandlerMethodValidationException(final HandlerMethodValidationException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>("Request validation failed", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     public ResponseEntity<String> handleInternalAuthenticationServiceException(
-        InternalAuthenticationServiceException exception) {
+        final InternalAuthenticationServiceException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException exception) {
+    public ResponseEntity<String> handleBadCredentialsException(final BadCredentialsException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException exception) {
+    public ResponseEntity<String> handleDataIntegrityViolationException(final DataIntegrityViolationException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
-        String message = "Violation of database rules!";
+        final String message = "Violation of database rules!";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AuthorNotFoundException.class)
-    public ResponseEntity<String> handleAuthorNotFoundException(AuthorNotFoundException exception) {
+    public ResponseEntity<String> handleAuthorNotFoundException(final AuthorNotFoundException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BookNotFoundException.class)
-    public ResponseEntity<String> handleBookNotFoundException(BookNotFoundException exception) {
+    public ResponseEntity<String> handleBookNotFoundException(final BookNotFoundException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ClientNotFoundException.class)
-    public ResponseEntity<String> handleClientNotFoundException(ClientNotFoundException exception) {
+    public ResponseEntity<String> handleClientNotFoundException(final ClientNotFoundException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(OrderNotFoundException.class)
-    public ResponseEntity<String> handleOrderNotFoundException(OrderNotFoundException exception) {
+    public ResponseEntity<String> handleOrderNotFoundException(final OrderNotFoundException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException exception) {
+    public ResponseEntity<String> handleUserNotFoundException(final UserNotFoundException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UserRoleNotFoundException.class)
-    public ResponseEntity<String> handleUserRoleNotFoundException(UserRoleNotFoundException exception) {
+    public ResponseEntity<String> handleUserRoleNotFoundException(final UserRoleNotFoundException exception) {
         log.error(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception exception) {
+    public ResponseEntity<String> handleException(final Exception exception) {
         log.error(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
     }

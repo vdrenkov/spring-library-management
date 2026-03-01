@@ -31,8 +31,8 @@ public class OrderService {
     private final LocalDateMapper localDateMapper;
 
     @Autowired
-    public OrderService(BookService bookService, ClientService clientService, OrderRepository orderRepository,
-        OrderMapper orderMapper, LocalDateMapper localDateMapper) {
+    public OrderService(final BookService bookService, final ClientService clientService, final OrderRepository orderRepository,
+        final OrderMapper orderMapper, final LocalDateMapper localDateMapper) {
         this.bookService = bookService;
         this.clientService = clientService;
         this.orderRepository = orderRepository;
@@ -41,35 +41,35 @@ public class OrderService {
     }
 
     @Transactional
-    public Order addOrder(OrderRequest orderRequest) {
+    public Order addOrder(final OrderRequest orderRequest) {
         if (orderRequest.getBooksIds().isEmpty()) {
             throw new IllegalArgumentException("At least one book ID is required to create an order");
         }
         validateNoDuplicateBookIds(orderRequest.getBooksIds());
 
-        Client client = clientService.getClientById(orderRequest.getClientId());
-        List<Book> books = new ArrayList<>();
+        final Client client = clientService.getClientById(orderRequest.getClientId());
+        final List<Book> books = new ArrayList<>();
 
-        for (int bookId : orderRequest.getBooksIds()) {
+        for (final int bookId : orderRequest.getBooksIds()) {
             books.add(bookService.getBookById(bookId));
         }
 
         decreaseBooksQuantities(orderRequest.getBooksIds());
 
-        LocalDate issueDate = LocalDate.now();
+        final LocalDate issueDate = LocalDate.now();
 
         log.info("Trying to add a new order");
         return orderRepository.save(new Order(client, books, issueDate, issueDate.plusMonths(1)));
     }
 
-    private void validateNoDuplicateBookIds(List<Integer> booksIds) {
+    private void validateNoDuplicateBookIds(final List<Integer> booksIds) {
         if (new HashSet<>(booksIds).size() != booksIds.size()) {
             throw new IllegalArgumentException("Duplicate book IDs are not allowed in a single order");
         }
     }
 
-    private void decreaseBooksQuantities(List<Integer> booksIds) {
-        for (int bookId : booksIds) {
+    private void decreaseBooksQuantities(final List<Integer> booksIds) {
+        for (final int bookId : booksIds) {
             bookService.decreaseBookQuantity(bookId);
         }
     }
@@ -83,15 +83,15 @@ public class OrderService {
         return orderMapper.mapOrdersToOrdersDto(getAllOrders());
     }
 
-    public List<Order> getAllOrdersByClient(int clientId) {
+    public List<Order> getAllOrdersByClient(final int clientId) {
         return orderRepository.findByClientId(clientId);
     }
 
-    public List<OrderDto> getAllOrdersDtoByClient(int clientId) {
+    public List<OrderDto> getAllOrdersDtoByClient(final int clientId) {
         return orderMapper.mapOrdersToOrdersDto(getAllOrdersByClient(clientId));
     }
 
-    public List<Order> getAllOrdersByDate(int choice, LocalDate date) {
+    public List<Order> getAllOrdersByDate(final int choice, final LocalDate date) {
         validateOrderDateChoice(choice);
         return switch (choice) {
             case 1 -> orderRepository.findByIssueDate(date);
@@ -104,30 +104,30 @@ public class OrderService {
         };
     }
 
-    public List<OrderDto> getAllOrdersDtoByDate(int choice, String date) {
+    public List<OrderDto> getAllOrdersDtoByDate(final int choice, final String date) {
         return orderMapper.mapOrdersToOrdersDto(getAllOrdersByDate(choice, localDateMapper.mapStringToDate(date)));
     }
 
-    private void validateOrderDateChoice(int choice) {
+    private void validateOrderDateChoice(final int choice) {
         if (choice < 1 || choice > 6) {
             throw new IllegalArgumentException("Choice must be between 1 and 6");
         }
     }
 
-    public Order getOrderById(int id) {
+    public Order getOrderById(final int id) {
         log.info("Trying to find order with an ID {}", id);
         return orderRepository.findById(id).orElseThrow(OrderNotFoundException::new);
     }
 
-    public OrderDto getOrderDtoById(int id) {
+    public OrderDto getOrderDtoById(final int id) {
         return orderMapper.mapOrderToOrderDto(getOrderById(id));
     }
 
     @Transactional
-    public OrderDto extendOrderDueByDate(int orderId, int choice, int period) {
-        Order order = getOrderById(orderId);
+    public OrderDto extendOrderDueByDate(final int orderId, final int choice, final int period) {
+        final Order order = getOrderById(orderId);
 
-        LocalDate dueDate = order.getDueDate();
+        final LocalDate dueDate = order.getDueDate();
 
         switch (choice) {
             case 1:

@@ -19,14 +19,14 @@ public class BookMapper {
   private final AuthorMapper authorMapper;
 
   @Autowired
-  public BookMapper(AuthorMapper authorMapper) {
+  public BookMapper(final AuthorMapper authorMapper) {
     this.authorMapper = authorMapper;
   }
 
-  public List<BookDto> mapBooksToBooksDto(List<Book> books) {
-    List<BookDto> booksDto = new ArrayList<>();
+  public List<BookDto> mapBooksToBooksDto(final List<Book> books) {
+      final List<BookDto> booksDto = new ArrayList<>();
 
-    for (Book book : books) {
+    for (final Book book : books) {
       booksDto.add(mapBookToBookDto(book));
     }
 
@@ -35,7 +35,7 @@ public class BookMapper {
     return booksDto;
   }
 
-  public BookDto mapBookToBookDto(Book book) {
+  public BookDto mapBookToBookDto(final Book book) {
     log.info("Book mapped to book DTO");
     return new BookDto(book.getId(), book.getName(), book.getPublishDate(),
                        authorMapper.mapAuthorToAuthorDto(book.getAuthor()),

@@ -47,7 +47,7 @@ public class Order {
     @Column(name = "DUE_DATE")
     private LocalDate dueDate;
 
-    public Order(Client client, List<Book> books, LocalDate issueDate, LocalDate dueDate) {
+    public Order(final Client client, final List<Book> books, final LocalDate issueDate, final LocalDate dueDate) {
         this.client = client;
         this.books = books;
         this.issueDate = issueDate;

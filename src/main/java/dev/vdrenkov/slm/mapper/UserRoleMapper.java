@@ -15,10 +15,10 @@ public class UserRoleMapper {
 
   private static final Logger log = LoggerFactory.getLogger(UserRoleMapper.class);
 
-  public List<UserRoleDto> mapUserRolesToUserRolesDto(List<UserRole> userRoles) {
-    List<UserRoleDto> userRolesDto = new ArrayList<>();
+  public List<UserRoleDto> mapUserRolesToUserRolesDto(final List<UserRole> userRoles) {
+      final List<UserRoleDto> userRolesDto = new ArrayList<>();
 
-    for (UserRole userRole : userRoles) {
+    for (final UserRole userRole : userRoles) {
       userRolesDto.add(mapUserRoleToUserRoleDto(userRole));
     }
 
@@ -27,7 +27,7 @@ public class UserRoleMapper {
     return userRolesDto;
   }
 
-  public UserRoleDto mapUserRoleToUserRoleDto(UserRole userRole) {
+  public UserRoleDto mapUserRoleToUserRoleDto(final UserRole userRole) {
     log.info("User role mapped to user role DTO");
     return new UserRoleDto(userRole.getRole());
   }

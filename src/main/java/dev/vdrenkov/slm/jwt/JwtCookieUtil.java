@@ -21,17 +21,17 @@ public class JwtCookieUtil {
 
   @Autowired
   public JwtCookieUtil(
-    JwtTokenUtil tokenUtil,
-    @Value("${jwt.cookie.secure:false}") boolean secureCookie,
-    @Value("${jwt.cookie.same-site:Lax}") String sameSitePolicy
+    final JwtTokenUtil tokenUtil,
+    @Value("${jwt.cookie.secure:false}") final boolean secureCookie,
+    @Value("${jwt.cookie.same-site:Lax}") final String sameSitePolicy
   ) {
     this.tokenUtil = tokenUtil;
     this.secureCookie = secureCookie;
     this.sameSitePolicy = sameSitePolicy;
   }
 
-  public HttpCookie createJWTCookie(UserDetails userDetails) {
-    String jwt = tokenUtil.generateToken(userDetails);
+  public HttpCookie createJWTCookie(final UserDetails userDetails) {
+      final String jwt = tokenUtil.generateToken(userDetails);
 
     return ResponseCookie.from(JWT_COOKIE_NAME, jwt)
                          .maxAge(JWT_TOKEN_VALIDITY)

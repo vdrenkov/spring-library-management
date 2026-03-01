@@ -28,7 +28,7 @@ class OrderMapperTest {
     void testMapBooksToBooksDto() {
         when(clientMapper.mapClientToClientDto(any())).thenReturn(ClientFactory.getDefaultClientDto());
 
-        List<OrderDto> ordersDto = mapper.mapOrdersToOrdersDto(OrderFactory.getDefaultOrdersList());
+        final List<OrderDto> ordersDto = mapper.mapOrdersToOrdersDto(OrderFactory.getDefaultOrdersList());
 
         assertNotNull(ordersDto);
     }
@@ -37,7 +37,7 @@ class OrderMapperTest {
     void testMapClientToClientDto() {
         when(clientMapper.mapClientToClientDto(any())).thenReturn(ClientFactory.getDefaultClientDto());
 
-        OrderDto orderDto = mapper.mapOrderToOrderDto(OrderFactory.getDefaultOrder());
+        final OrderDto orderDto = mapper.mapOrderToOrderDto(OrderFactory.getDefaultOrder());
 
         assertNotNull(orderDto);
     }

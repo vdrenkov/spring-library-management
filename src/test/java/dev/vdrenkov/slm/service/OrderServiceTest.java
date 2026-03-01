@@ -61,7 +61,7 @@ class OrderServiceTest {
         when(bookService.decreaseBookQuantity(anyInt())).thenReturn(BookFactory.getDefaultBook());
         when(orderRepository.save(any())).thenReturn(new Order());
 
-        Order order = orderService.addOrder(OrderFactory.getDefaultOrderRequest());
+        final Order order = orderService.addOrder(OrderFactory.getDefaultOrderRequest());
 
         assertNotNull(order);
     }
@@ -91,7 +91,7 @@ class OrderServiceTest {
     void testGetAllOrders() {
         when(orderRepository.findAll()).thenReturn(OrderFactory.getDefaultOrdersList());
 
-        List<Order> testOrders = orderService.getAllOrders();
+        final List<Order> testOrders = orderService.getAllOrders();
 
         assertNotNull(testOrders);
     }
@@ -100,7 +100,7 @@ class OrderServiceTest {
     void testGetAllOrdersDto() {
         when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
 
-        List<OrderDto> result = orderService.getAllOrdersDto();
+        final List<OrderDto> result = orderService.getAllOrdersDto();
 
         assertNotNull(result);
     }
@@ -109,7 +109,7 @@ class OrderServiceTest {
     void testGetAllOrdersByClient() {
         when(orderRepository.findByClientId(anyInt())).thenReturn(OrderFactory.getDefaultOrdersList());
 
-        List<Order> testOrders = orderService.getAllOrdersByClient(ID);
+        final List<Order> testOrders = orderService.getAllOrdersByClient(ID);
 
         assertNotNull(testOrders);
     }
@@ -119,7 +119,7 @@ class OrderServiceTest {
         when(orderRepository.findByClientId(anyInt())).thenReturn(OrderFactory.getDefaultOrdersList());
         when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
 
-        List<OrderDto> result = orderService.getAllOrdersDtoByClient(ID);
+        final List<OrderDto> result = orderService.getAllOrdersDtoByClient(ID);
 
         assertNotNull(result);
     }
@@ -128,7 +128,7 @@ class OrderServiceTest {
     void testGetAllOrdersByDate() {
         when(orderRepository.findByIssueDate(any(LocalDate.class))).thenReturn(OrderFactory.getDefaultOrdersList());
 
-        List<Order> testOrders = orderService.getAllOrdersByDate(1, LOCAL_DATE);
+        final List<Order> testOrders = orderService.getAllOrdersByDate(1, LOCAL_DATE);
 
         assertNotNull(testOrders);
     }
@@ -144,7 +144,7 @@ class OrderServiceTest {
         when(orderRepository.findByIssueDateAfter(any(LocalDate.class))).thenReturn(OrderFactory.getDefaultOrdersList());
         when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
 
-        List<OrderDto> result = orderService.getAllOrdersDtoByDate(CHOICE, DATE_STRING);
+        final List<OrderDto> result = orderService.getAllOrdersDtoByDate(CHOICE, DATE_STRING);
 
         assertNotNull(result);
     }
@@ -153,7 +153,7 @@ class OrderServiceTest {
     void testGetOrderById() {
         when(orderRepository.findById(anyInt())).thenReturn(Optional.of(OrderFactory.getDefaultOrder()));
 
-        Order order = orderService.getOrderById(ID);
+        final Order order = orderService.getOrderById(ID);
 
         assertNotNull(order);
     }
@@ -163,7 +163,7 @@ class OrderServiceTest {
         when(orderRepository.findById(anyInt())).thenReturn(Optional.of(OrderFactory.getDefaultOrder()));
         when(orderMapper.mapOrderToOrderDto(any())).thenReturn(OrderFactory.getDefaultOrderDto());
 
-        OrderDto orderDto = orderService.getOrderDtoById(ID);
+        final OrderDto orderDto = orderService.getOrderDtoById(ID);
 
         assertNotNull(orderDto);
     }
@@ -174,10 +174,10 @@ class OrderServiceTest {
         when(orderRepository.save(any())).thenReturn(OrderFactory.getDefaultOrder());
         when(orderMapper.mapOrderToOrderDto(any())).thenReturn(OrderFactory.getDefaultOrderDto());
 
-        OrderDto orderDto1 = orderService.extendOrderDueByDate(ID, 1, PERIOD);
-        OrderDto orderDto2 = orderService.extendOrderDueByDate(ID, 2, PERIOD);
-        OrderDto orderDto3 = orderService.extendOrderDueByDate(ID, 3, PERIOD);
-        boolean result = orderDto1 != null && orderDto2 != null && orderDto3 != null;
+        final OrderDto orderDto1 = orderService.extendOrderDueByDate(ID, 1, PERIOD);
+        final OrderDto orderDto2 = orderService.extendOrderDueByDate(ID, 2, PERIOD);
+        final OrderDto orderDto3 = orderService.extendOrderDueByDate(ID, 3, PERIOD);
+        final boolean result = orderDto1 != null && orderDto2 != null && orderDto3 != null;
 
         assertTrue(result);
     }

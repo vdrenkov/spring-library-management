@@ -27,14 +27,14 @@ public class BookService {
     private final BookMapper bookMapper;
 
     @Autowired
-    public BookService(AuthorService authorService, BookRepository bookRepository, BookMapper bookMapper) {
+    public BookService(final AuthorService authorService, final BookRepository bookRepository, final BookMapper bookMapper) {
         this.authorService = authorService;
         this.bookRepository = bookRepository;
         this.bookMapper = bookMapper;
     }
 
-    public Book addBook(BookRequest bookRequest) {
-        Author bookAuthor = authorService.getAuthorById(bookRequest.getAuthorId());
+    public Book addBook(final BookRequest bookRequest) {
+        final Author bookAuthor = authorService.getAuthorById(bookRequest.getAuthorId());
 
         log.info("Trying to add a new book");
         return bookRepository.save(
@@ -54,26 +54,26 @@ public class BookService {
         return bookMapper.mapBooksToBooksDto(getAllAvailableBooks());
     }
 
-    public List<Book> getAllBooksByAuthor(int authorId) {
+    public List<Book> getAllBooksByAuthor(final int authorId) {
         return bookRepository.findByAuthorIdAndQuantityGreaterThan(authorId, ZERO);
     }
 
-    public List<BookDto> getAllBooksDtoByAuthor(int authorId) {
+    public List<BookDto> getAllBooksDtoByAuthor(final int authorId) {
         return bookMapper.mapBooksToBooksDto(getAllBooksByAuthor(authorId));
     }
 
-    public Book getBookById(int id) {
+    public Book getBookById(final int id) {
         log.info("Trying to retrieve book with an ID {}", id);
         return bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
     }
 
-    public BookDto getBookDtoById(int id) {
+    public BookDto getBookDtoById(final int id) {
         return bookMapper.mapBookToBookDto(getBookById(id));
     }
 
     @Transactional
-    public Book decreaseBookQuantity(int id) {
-        Book book = bookRepository.findByIdForUpdate(id).orElseThrow(BookNotFoundException::new);
+    public Book decreaseBookQuantity(final int id) {
+        final Book book = bookRepository.findByIdForUpdate(id).orElseThrow(BookNotFoundException::new);
         if (book.getQuantity() <= ZERO) {
             throw new IllegalStateException("Book with ID " + id + " is out of stock");
         }

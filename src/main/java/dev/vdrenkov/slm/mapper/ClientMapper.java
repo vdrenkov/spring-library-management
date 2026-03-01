@@ -15,10 +15,10 @@ public class ClientMapper {
 
   private static final Logger log = LoggerFactory.getLogger(ClientMapper.class);
 
-  public List<ClientDto> mapClientsToClientsDto(List<Client> clients) {
-    List<ClientDto> clientsDto = new ArrayList<>();
+  public List<ClientDto> mapClientsToClientsDto(final List<Client> clients) {
+      final List<ClientDto> clientsDto = new ArrayList<>();
 
-    for (Client client : clients) {
+    for (final Client client : clients) {
       clientsDto.add(mapClientToClientDto(client));
     }
 
@@ -27,7 +27,7 @@ public class ClientMapper {
     return clientsDto;
   }
 
-  public ClientDto mapClientToClientDto(Client client) {
+  public ClientDto mapClientToClientDto(final Client client) {
     log.info("Client mapped to client DTO");
     return new ClientDto(client.getId(), client.getName(), client.getSurname(), client.getPhoneNumber(),
                          client.getEmail());

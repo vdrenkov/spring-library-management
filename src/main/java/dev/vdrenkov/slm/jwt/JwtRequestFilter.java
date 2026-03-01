@@ -29,15 +29,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtUserDetailsService userDetailsService;
 
     @Autowired
-    public JwtRequestFilter(JwtTokenUtil tokenUtil, JwtUserDetailsService userDetailsService) {
+    public JwtRequestFilter(final JwtTokenUtil tokenUtil, final JwtUserDetailsService userDetailsService) {
         this.tokenUtil = tokenUtil;
         this.userDetailsService = userDetailsService;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain)
         throws ServletException, IOException {
-        String token = getJwtToken(request.getCookies());
+        final String token = getJwtToken(request.getCookies());
         String username = null;
 
         try {
@@ -47,10 +47,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
 
             if (SecurityContextHolder.getContext().getAuthentication() == null && username != null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                 if (Boolean.TRUE.equals(tokenUtil.validateToken(token, userDetails))) {
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
 
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -64,7 +64,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 
-    private String getJwtToken(Cookie[] cookies) {
+    private String getJwtToken(final Cookie[] cookies) {
         if (cookies != null) {
             return Arrays
                 .stream(cookies)

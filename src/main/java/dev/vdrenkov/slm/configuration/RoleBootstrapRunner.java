@@ -30,12 +30,12 @@ public class RoleBootstrapRunner implements CommandLineRunner {
     private final String bootstrapAdminPassword;
 
     public RoleBootstrapRunner(
-        UserRoleRepository userRoleRepository,
-        UserRepository userRepository,
-        PasswordEncoder passwordEncoder,
-        @Value("${app.bootstrap.roles:true}") boolean bootstrapRoles,
-        @Value("${app.bootstrap.admin.username:}") String bootstrapAdminUsername,
-        @Value("${app.bootstrap.admin.password:}") String bootstrapAdminPassword
+        final UserRoleRepository userRoleRepository,
+        final UserRepository userRepository,
+        final PasswordEncoder passwordEncoder,
+        @Value("${app.bootstrap.roles:true}") final boolean bootstrapRoles,
+        @Value("${app.bootstrap.admin.username:}") final String bootstrapAdminUsername,
+        @Value("${app.bootstrap.admin.password:}") final String bootstrapAdminPassword
     ) {
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
@@ -47,7 +47,7 @@ public class RoleBootstrapRunner implements CommandLineRunner {
 
     @Override
     @Transactional
-    public void run(String... args) {
+    public void run(final String... args) {
         if (!bootstrapRoles) {
             log.info("Role bootstrap disabled by configuration");
             return;
@@ -58,7 +58,7 @@ public class RoleBootstrapRunner implements CommandLineRunner {
         bootstrapAdminUserIfConfigured();
     }
 
-    private void ensureRoleExists(String roleName) {
+    private void ensureRoleExists(final String roleName) {
         if (!userRoleRepository.existsByRole(roleName)) {
             userRoleRepository.save(new UserRole(roleName));
             log.info("Bootstrapped missing '{}' role", roleName);
@@ -74,10 +74,10 @@ public class RoleBootstrapRunner implements CommandLineRunner {
             return;
         }
 
-        UserRole adminRole = userRoleRepository.findUserRoleByRole(ADMIN_ROLE)
+        final UserRole adminRole = userRoleRepository.findUserRoleByRole(ADMIN_ROLE)
             .orElseThrow(() -> new IllegalStateException("ADMIN role is missing"));
 
-        User admin = new User(
+        final User admin = new User(
             bootstrapAdminUsername,
             passwordEncoder.encode(bootstrapAdminPassword),
             List.of(adminRole)

@@ -11,11 +11,11 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "AUTHORS", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "surname"}))
 public class Author extends Person {
 
-  public Author(int id, String name, String surname) {
+  public Author(final int id, final String name, final String surname) {
     super(id, name, surname);
   }
 
-  public Author(String name, String surname) {
+  public Author(final String name, final String surname) {
     super(name, surname);
   }
 }

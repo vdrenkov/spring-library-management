@@ -45,8 +45,8 @@ class AuthorControllerTest {
 
     @Test
     void testAddAuthor_noExceptions_success() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(AuthorFactory.getDefaultAuthorRequest());
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final String json = objectMapper.writeValueAsString(AuthorFactory.getDefaultAuthorRequest());
         when(authorService.addAuthor(any())).thenReturn(AuthorFactory.getDefaultAuthor());
 
         mockMvc

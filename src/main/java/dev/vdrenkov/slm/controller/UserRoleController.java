@@ -29,15 +29,15 @@ public class UserRoleController {
     private final UserRoleService userRoleService;
 
     @Autowired
-    public UserRoleController(UserRoleService userRoleService) {
+    public UserRoleController(final UserRoleService userRoleService) {
         this.userRoleService = userRoleService;
     }
 
     @PostMapping
-    public ResponseEntity<Void> addUserRole(@RequestBody @Valid UserRoleRequest userRequest) {
-        UserRole userRole = userRoleService.addUserRole(userRequest);
+    public ResponseEntity<Void> addUserRole(@RequestBody @Valid final UserRoleRequest userRequest) {
+        final UserRole userRole = userRoleService.addUserRole(userRequest);
 
-        URI location = UriComponentsBuilder.fromUriString("/roles/{id}").buildAndExpand(userRole.getId()).toUri();
+        final URI location = UriComponentsBuilder.fromUriString("/roles/{id}").buildAndExpand(userRole.getId()).toUri();
         log.info("New role added");
         return ResponseEntity.created(location).build();
     }
@@ -49,7 +49,7 @@ public class UserRoleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserRoleDto> getUserRoleById(@PathVariable int id) {
+    public ResponseEntity<UserRoleDto> getUserRoleById(@PathVariable final int id) {
         log.info("Role with an ID {} requested from the database.", id);
         return ResponseEntity.ok(userRoleService.getUserRoleDtoById(id));
     }

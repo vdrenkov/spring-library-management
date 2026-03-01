@@ -43,7 +43,7 @@ class BookServiceTest {
         when(authorService.getAuthorById(anyInt())).thenReturn(AuthorFactory.getDefaultAuthor());
         when(bookRepository.save(any())).thenReturn(new Book());
 
-        Book book = bookService.addBook(BookFactory.getDefaultBookRequest());
+        final Book book = bookService.addBook(BookFactory.getDefaultBookRequest());
 
         assertNotNull(book);
     }
@@ -52,7 +52,7 @@ class BookServiceTest {
     void testGetAllBooks() {
         when(bookRepository.findAll()).thenReturn(BookFactory.getDefaultBooksList());
 
-        List<Book> testList = bookService.getAllBooks();
+        final List<Book> testList = bookService.getAllBooks();
 
         assertNotNull(testList);
     }
@@ -61,7 +61,7 @@ class BookServiceTest {
     void testGetAllAvailableBooks() {
         when(bookRepository.findByQuantityGreaterThan(anyInt())).thenReturn(BookFactory.getDefaultBooksList());
 
-        List<Book> testList = bookService.getAllAvailableBooks();
+        final List<Book> testList = bookService.getAllAvailableBooks();
 
         assertNotNull(testList);
     }
@@ -71,7 +71,7 @@ class BookServiceTest {
         when(bookRepository.findByQuantityGreaterThan(anyInt())).thenReturn(BookFactory.getDefaultBooksList());
         when(bookMapper.mapBooksToBooksDto(anyList())).thenReturn(BookFactory.getDefaultBooksDtoList());
 
-        List<BookDto> testList = bookService.getAllAvailableBooksDto();
+        final List<BookDto> testList = bookService.getAllAvailableBooksDto();
 
         assertNotNull(testList);
     }
@@ -81,7 +81,7 @@ class BookServiceTest {
         when(bookRepository.findByAuthorIdAndQuantityGreaterThan(anyInt(), anyInt())).thenReturn(
             BookFactory.getDefaultBooksList());
 
-        List<Book> testList = bookService.getAllBooksByAuthor(ID);
+        final List<Book> testList = bookService.getAllBooksByAuthor(ID);
 
         assertNotNull(testList);
     }
@@ -92,7 +92,7 @@ class BookServiceTest {
             BookFactory.getDefaultBooksList());
         when(bookMapper.mapBooksToBooksDto(anyList())).thenReturn(BookFactory.getDefaultBooksDtoList());
 
-        List<BookDto> testList = bookService.getAllBooksDtoByAuthor(ID);
+        final List<BookDto> testList = bookService.getAllBooksDtoByAuthor(ID);
 
         assertNotNull(testList);
     }
@@ -101,7 +101,7 @@ class BookServiceTest {
     void testGetBookById() {
         when(bookRepository.findById(anyInt())).thenReturn(Optional.of(BookFactory.getDefaultBook()));
 
-        Book book = bookService.getBookById(ID);
+        final Book book = bookService.getBookById(ID);
 
         assertNotNull(book);
     }
@@ -111,25 +111,25 @@ class BookServiceTest {
         when(bookRepository.findById(anyInt())).thenReturn(Optional.of(BookFactory.getDefaultBook()));
         when(bookMapper.mapBookToBookDto(any())).thenReturn(BookFactory.getDefaultBookDto());
 
-        BookDto bookDto = bookService.getBookDtoById(ID);
+        final BookDto bookDto = bookService.getBookDtoById(ID);
 
         assertNotNull(bookDto);
     }
 
     @Test
     void testDecreaseBookQuantity_success() {
-        Book book = BookFactory.getDefaultBook();
+        final Book book = BookFactory.getDefaultBook();
         when(bookRepository.findByIdForUpdate(anyInt())).thenReturn(Optional.of(book));
         when(bookRepository.save(any())).thenReturn(book);
 
-        Book updatedBook = bookService.decreaseBookQuantity(ID);
+        final Book updatedBook = bookService.decreaseBookQuantity(ID);
 
         assertNotNull(updatedBook);
     }
 
     @Test
     void testDecreaseBookQuantity_outOfStock_throws() {
-        Book outOfStockBook = new Book(
+        final Book outOfStockBook = new Book(
             ID,
             BookFactory.getDefaultBook().getName(),
             BookFactory.getDefaultBook().getPublishDate(),

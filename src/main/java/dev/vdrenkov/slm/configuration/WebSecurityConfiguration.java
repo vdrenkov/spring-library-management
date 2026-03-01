@@ -35,12 +35,12 @@ public class WebSecurityConfiguration {
 
     private final JwtRequestFilter jwtRequestFilter;
 
-    public WebSecurityConfiguration(JwtRequestFilter jwtRequestFilter) {
+    public WebSecurityConfiguration(final JwtRequestFilter jwtRequestFilter) {
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
+    SecurityFilterChain securityFilterChain(final HttpSecurity httpSecurity) {
         httpSecurity
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
@@ -73,7 +73,7 @@ public class WebSecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) {
+    public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration) {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }

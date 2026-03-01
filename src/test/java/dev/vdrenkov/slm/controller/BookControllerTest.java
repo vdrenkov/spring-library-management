@@ -46,8 +46,8 @@ class BookControllerTest {
 
     @Test
     void addBook() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(BookFactory.getDefaultBookRequest());
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final String json = objectMapper.writeValueAsString(BookFactory.getDefaultBookRequest());
         when(bookService.addBook(any())).thenReturn(BookFactory.getDefaultBook());
 
         mockMvc

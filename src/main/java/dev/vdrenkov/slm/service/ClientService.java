@@ -22,13 +22,13 @@ public class ClientService {
     private final ClientMapper clientMapper;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, ClientMapper clientMapper) {
+    public ClientService(final ClientRepository clientRepository, final ClientMapper clientMapper) {
         this.clientRepository = clientRepository;
         this.clientMapper = clientMapper;
     }
 
-    public Client addClient(ClientRequest clientRequest) {
-        Client client = new Client(clientRequest.getName(), clientRequest.getSurname(), clientRequest.getPhoneNumber(),
+    public Client addClient(final ClientRequest clientRequest) {
+        final Client client = new Client(clientRequest.getName(), clientRequest.getSurname(), clientRequest.getPhoneNumber(),
             clientRequest.getEmail());
 
         log.info("Trying to add a new client");
@@ -44,17 +44,17 @@ public class ClientService {
         return clientMapper.mapClientsToClientsDto(getAllClients());
     }
 
-    public Client getClientById(int id) {
+    public Client getClientById(final int id) {
         log.info("Trying to retrieve client with an ID {}", id);
         return clientRepository.findById(id).orElseThrow(ClientNotFoundException::new);
     }
 
-    public ClientDto getClientDtoById(int id) {
+    public ClientDto getClientDtoById(final int id) {
         return clientMapper.mapClientToClientDto(getClientById(id));
     }
 
-    public ClientDto deleteClient(int id) {
-        ClientDto clientDto = getClientDtoById(id);
+    public ClientDto deleteClient(final int id) {
+        final ClientDto clientDto = getClientDtoById(id);
 
         clientRepository.deleteById(id);
 

@@ -57,8 +57,8 @@ class OrderControllerTest {
 
     @Test
     void testAddOrder_noExceptions_success() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(OrderFactory.getDefaultOrderRequest());
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final String json = objectMapper.writeValueAsString(OrderFactory.getDefaultOrderRequest());
         when(orderService.addOrder(any())).thenReturn(OrderFactory.getDefaultOrder());
 
         mockMvc

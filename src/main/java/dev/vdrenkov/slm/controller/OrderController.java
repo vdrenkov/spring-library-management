@@ -35,15 +35,15 @@ public class OrderController {
     private final OrderService orderService;
 
     @Autowired
-    public OrderController(OrderService orderService) {
+    public OrderController(final OrderService orderService) {
         this.orderService = orderService;
     }
 
     @PostMapping(URI)
-    public ResponseEntity<Void> addOrder(@RequestBody @Valid OrderRequest orderRequest) {
-        Order order = orderService.addOrder(orderRequest);
+    public ResponseEntity<Void> addOrder(@RequestBody @Valid final OrderRequest orderRequest) {
+        final Order order = orderService.addOrder(orderRequest);
 
-        URI location = UriComponentsBuilder.fromUriString("/orders/{id}").buildAndExpand(order.getId()).toUri();
+        final URI location = UriComponentsBuilder.fromUriString("/orders/{id}").buildAndExpand(order.getId()).toUri();
         log.info("A new order added");
         return ResponseEntity.created(location).build();
     }
@@ -55,7 +55,7 @@ public class OrderController {
     }
 
     @GetMapping("/clients/{clientId}" + URI)
-    public ResponseEntity<List<OrderDto>> getAllOrdersByClient(@PathVariable int clientId) {
+    public ResponseEntity<List<OrderDto>> getAllOrdersByClient(@PathVariable final int clientId) {
         log.info("All orders with client ID {} requested from the database.", clientId);
         return ResponseEntity.ok(orderService.getAllOrdersDtoByClient(clientId));
     }
@@ -63,29 +63,29 @@ public class OrderController {
     @GetMapping(value = URI, params = { "choice", "date" })
     public ResponseEntity<List<OrderDto>> getALlOrdersByDate(
         @RequestParam @Min(value = 1, message = "Choice must be between 1 and 6")
-        @Max(value = 6, message = "Choice must be between 1 and 6") int choice,
-        @RequestParam String date
+        @Max(value = 6, message = "Choice must be between 1 and 6") final int choice,
+        @RequestParam final String date
     ) {
         log.info("All orders by date requested from the database.");
         return ResponseEntity.ok(orderService.getAllOrdersDtoByDate(choice, date));
     }
 
     @GetMapping(URI + "/{id}")
-    public ResponseEntity<OrderDto> getOrderById(@PathVariable int id) {
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable final int id) {
         log.info("Order with an ID {} requested from the database.", id);
         return ResponseEntity.ok(orderService.getOrderDtoById(id));
     }
 
     @PutMapping(URI + "/{id}")
     public ResponseEntity<OrderDto> extendOrderDueByDate(
-        @PathVariable int id,
+        @PathVariable final int id,
         @RequestParam @Min(value = 1, message = "Choice must be between 1 and 3")
-        @Max(value = 3, message = "Choice must be between 1 and 3") int choice,
-        @RequestParam @Positive(message = "Period must be a positive number") int period,
-        @RequestParam(required = false) Boolean returnOld
+        @Max(value = 3, message = "Choice must be between 1 and 3") final int choice,
+        @RequestParam @Positive(message = "Period must be a positive number") final int period,
+        @RequestParam(required = false) final Boolean returnOld
     ) {
 
-        OrderDto oldOrder = orderService.extendOrderDueByDate(id, choice, period);
+        final OrderDto oldOrder = orderService.extendOrderDueByDate(id, choice, period);
 
         log.info("Order with ID {} requested to be updated.", id);
 

@@ -37,7 +37,7 @@ class RoleBootstrapRunnerTest {
         when(userRoleRepository.existsByRole("ADMIN")).thenReturn(false);
         when(userRoleRepository.existsByRole("LIBRARIAN")).thenReturn(false);
 
-        RoleBootstrapRunner runner = new RoleBootstrapRunner(
+        final RoleBootstrapRunner runner = new RoleBootstrapRunner(
             userRoleRepository,
             userRepository,
             passwordEncoder,
@@ -55,14 +55,14 @@ class RoleBootstrapRunnerTest {
 
     @Test
     void testRun_bootstrapsAdminWhenConfigured() {
-        UserRole adminRole = new UserRole(1, "ADMIN");
+        final UserRole adminRole = new UserRole(1, "ADMIN");
         when(userRoleRepository.existsByRole("ADMIN")).thenReturn(true);
         when(userRoleRepository.existsByRole("LIBRARIAN")).thenReturn(true);
         when(userRoleRepository.findUserRoleByRole("ADMIN")).thenReturn(Optional.of(adminRole));
         when(userRepository.existsByUsername("admin")).thenReturn(false);
         when(passwordEncoder.encode("password123")).thenReturn("encoded-password");
 
-        RoleBootstrapRunner runner = new RoleBootstrapRunner(
+        final RoleBootstrapRunner runner = new RoleBootstrapRunner(
             userRoleRepository,
             userRepository,
             passwordEncoder,
@@ -73,9 +73,9 @@ class RoleBootstrapRunnerTest {
 
         runner.run();
 
-        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        final ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userCaptor.capture());
-        User savedUser = userCaptor.getValue();
+        final User savedUser = userCaptor.getValue();
         assertEquals("admin", savedUser.getUsername());
         assertEquals("encoded-password", savedUser.getPassword());
         assertTrue(savedUser.getUserRoles().stream().anyMatch(role -> "ADMIN".equals(role.getRole())));
@@ -83,7 +83,7 @@ class RoleBootstrapRunnerTest {
 
     @Test
     void testRun_bootstrapDisabled_doesNothing() {
-        RoleBootstrapRunner runner = new RoleBootstrapRunner(
+        final RoleBootstrapRunner runner = new RoleBootstrapRunner(
             userRoleRepository,
             userRepository,
             passwordEncoder,
@@ -105,7 +105,7 @@ class RoleBootstrapRunnerTest {
         when(userRoleRepository.existsByRole("LIBRARIAN")).thenReturn(true);
         when(userRepository.existsByUsername("admin")).thenReturn(true);
 
-        RoleBootstrapRunner runner = new RoleBootstrapRunner(
+        final RoleBootstrapRunner runner = new RoleBootstrapRunner(
             userRoleRepository,
             userRepository,
             passwordEncoder,

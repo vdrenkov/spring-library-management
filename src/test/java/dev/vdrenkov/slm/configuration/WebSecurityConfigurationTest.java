@@ -64,17 +64,17 @@ class WebSecurityConfigurationTest {
     @TestConfiguration
     static class SecurityFilterConfig {
         @Bean
-        JwtRequestFilter jwtRequestFilter(JwtTokenUtil jwtTokenUtil, JwtUserDetailsService jwtUserDetailsService) {
+        JwtRequestFilter jwtRequestFilter(final JwtTokenUtil jwtTokenUtil, final JwtUserDetailsService jwtUserDetailsService) {
             return new JwtRequestFilter(jwtTokenUtil, jwtUserDetailsService);
         }
     }
 
     @Test
     void testLogin_publicEndpoint_accessibleWithoutAuthentication() throws Exception {
-        HttpCookie cookie = ResponseCookie.from("Cookie", "jwt-token").httpOnly(true).path("/").build();
+        final HttpCookie cookie = ResponseCookie.from("Cookie", "jwt-token").httpOnly(true).path("/").build();
         when(userService.login(any(UserRequest.class))).thenReturn(cookie);
 
-        String json = objectMapper.writeValueAsString(new UserRequest("librarian", "password123"));
+        final String json = objectMapper.writeValueAsString(new UserRequest("librarian", "password123"));
 
         mockMvc.perform(post("/login")
                 .contentType(MediaType.APPLICATION_JSON)

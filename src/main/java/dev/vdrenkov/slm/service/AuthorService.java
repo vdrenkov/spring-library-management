@@ -22,13 +22,13 @@ public class AuthorService {
     private final AuthorMapper authorMapper;
 
     @Autowired
-    public AuthorService(AuthorRepository authorRepository, AuthorMapper authorMapper) {
+    public AuthorService(final AuthorRepository authorRepository, final AuthorMapper authorMapper) {
         this.authorRepository = authorRepository;
         this.authorMapper = authorMapper;
     }
 
-    public Author addAuthor(AuthorRequest authorRequest) {
-        Author author = new Author(authorRequest.getName(), authorRequest.getSurname());
+    public Author addAuthor(final AuthorRequest authorRequest) {
+        final Author author = new Author(authorRequest.getName(), authorRequest.getSurname());
 
         log.info("Trying to add a new author");
         return authorRepository.save(author);
@@ -43,12 +43,12 @@ public class AuthorService {
         return authorMapper.mapAuthorsToAuthorsDto(getAllAuthors());
     }
 
-    public Author getAuthorById(int id) {
+    public Author getAuthorById(final int id) {
         log.info("Trying to retrieve author with an ID {}", id);
         return authorRepository.findById(id).orElseThrow(AuthorNotFoundException::new);
     }
 
-    public AuthorDto getAuthorDtoById(int id) {
+    public AuthorDto getAuthorDtoById(final int id) {
         return authorMapper.mapAuthorToAuthorDto(getAuthorById(id));
     }
 }

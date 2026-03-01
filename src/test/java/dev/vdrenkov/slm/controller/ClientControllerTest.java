@@ -47,8 +47,8 @@ class ClientControllerTest {
 
     @Test
     void testAddClient_noExceptions_success() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(ClientFactory.getDefaultClientRequest());
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final String json = objectMapper.writeValueAsString(ClientFactory.getDefaultClientRequest());
         when(clientService.addClient(any())).thenReturn(ClientFactory.getDefaultClient());
 
         mockMvc

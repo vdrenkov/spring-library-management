@@ -28,15 +28,15 @@ public class BookController {
     private final BookService bookService;
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(final BookService bookService) {
         this.bookService = bookService;
     }
 
     @PostMapping(URI)
-    public ResponseEntity<Void> addBook(@RequestBody @Valid BookRequest bookRequest) {
-        Book book = bookService.addBook(bookRequest);
+    public ResponseEntity<Void> addBook(@RequestBody @Valid final BookRequest bookRequest) {
+        final Book book = bookService.addBook(bookRequest);
 
-        URI location = UriComponentsBuilder.fromUriString("/books/{id}").buildAndExpand(book.getId()).toUri();
+        final URI location = UriComponentsBuilder.fromUriString("/books/{id}").buildAndExpand(book.getId()).toUri();
         log.info("A new book added");
         return ResponseEntity.created(location).build();
     }
@@ -48,13 +48,13 @@ public class BookController {
     }
 
     @GetMapping("/authors/{authorId}" + URI)
-    public ResponseEntity<List<BookDto>> getAllBooksByAuthor(@PathVariable int authorId) {
+    public ResponseEntity<List<BookDto>> getAllBooksByAuthor(@PathVariable final int authorId) {
         log.info("All books with author ID {} requested from the database.", authorId);
         return ResponseEntity.ok(bookService.getAllBooksDtoByAuthor(authorId));
     }
 
     @GetMapping(URI + "/{id}")
-    public ResponseEntity<BookDto> getBookById(@PathVariable int id) {
+    public ResponseEntity<BookDto> getBookById(@PathVariable final int id) {
         log.info("Book with an ID {} requested from the database.", id);
         return ResponseEntity.ok(bookService.getBookDtoById(id));
     }

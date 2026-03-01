@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
    void testAddClient() {
    when(clientRepository.save(any())).thenReturn(new Client());
 
-    Client client = clientService.addClient(ClientFactory.getDefaultClientRequest());
+      final Client client = clientService.addClient(ClientFactory.getDefaultClientRequest());
 
     Assertions.assertNotNull(client);
   }
@@ -47,7 +47,7 @@ import static org.mockito.Mockito.when;
    void testGetAllClients() {
     when(clientRepository.findAll()).thenReturn(ClientFactory.getDefaultClientsList());
 
-    List<Client> result = clientService.getAllClients();
+      final List<Client> result = clientService.getAllClients();
 
     Assertions.assertFalse(result.isEmpty());
   }
@@ -57,7 +57,7 @@ import static org.mockito.Mockito.when;
     when(clientRepository.findAll()).thenReturn(ClientFactory.getDefaultClientsList());
     when(clientMapper.mapClientsToClientsDto(anyList())).thenReturn(ClientFactory.getDefaultClientsDtoList());
 
-    List<ClientDto> result = clientService.getAllClientsDto();
+      final List<ClientDto> result = clientService.getAllClientsDto();
 
     Assertions.assertFalse(result.isEmpty());
   }
@@ -66,7 +66,7 @@ import static org.mockito.Mockito.when;
    void testGetClientById() {
     when(clientRepository.findById(anyInt())).thenReturn(Optional.of(ClientFactory.getDefaultClient()));
 
-    Client result = clientService.getClientById(ID);
+      final Client result = clientService.getClientById(ID);
 
     assertNotNull(result.getName());
   }
@@ -76,7 +76,7 @@ import static org.mockito.Mockito.when;
     when(clientRepository.findById(anyInt())).thenReturn(Optional.of(ClientFactory.getDefaultClient()));
     when(clientMapper.mapClientToClientDto(any())).thenReturn(ClientFactory.getDefaultClientDto());
 
-    ClientDto result = clientService.getClientDtoById(ID);
+      final ClientDto result = clientService.getClientDtoById(ID);
 
     assertNotNull(result.getName());
   }

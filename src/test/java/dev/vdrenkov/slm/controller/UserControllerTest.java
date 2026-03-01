@@ -50,9 +50,9 @@ class UserControllerTest {
 
     @Test
     void testLogin_returnsOkAndCookie() throws Exception {
-        HttpCookie cookie = ResponseCookie.from("Cookie", "jwt-token").httpOnly(true).path("/").build();
+        final HttpCookie cookie = ResponseCookie.from("Cookie", "jwt-token").httpOnly(true).path("/").build();
         when(userService.login(any(UserRequest.class))).thenReturn(cookie);
-        String json = new ObjectMapper().writeValueAsString(new UserRequest("librarian", "password123"));
+        final String json = new ObjectMapper().writeValueAsString(new UserRequest("librarian", "password123"));
 
         mockMvc
             .perform(post("/login").contentType(MediaType.APPLICATION_JSON).content(json))
@@ -62,9 +62,9 @@ class UserControllerTest {
 
     @Test
     void testRegister_returnsCreatedAndCookie() throws Exception {
-        HttpCookie cookie = ResponseCookie.from("Cookie", "jwt-token").httpOnly(true).path("/").build();
+        final HttpCookie cookie = ResponseCookie.from("Cookie", "jwt-token").httpOnly(true).path("/").build();
         when(userService.registerUser(any(UserRequest.class))).thenReturn(cookie);
-        String json = new ObjectMapper().writeValueAsString(new UserRequest("librarian", "password123"));
+        final String json = new ObjectMapper().writeValueAsString(new UserRequest("librarian", "password123"));
 
         mockMvc
             .perform(post("/register").contentType(MediaType.APPLICATION_JSON).content(json))
@@ -73,9 +73,9 @@ class UserControllerTest {
 
     @Test
     void testRegisterAdmin_returnsCreatedAndCookie() throws Exception {
-        HttpCookie cookie = ResponseCookie.from("Cookie", "jwt-token").httpOnly(true).path("/").build();
+        final HttpCookie cookie = ResponseCookie.from("Cookie", "jwt-token").httpOnly(true).path("/").build();
         when(userService.registerByAdmin(any(AdminRequest.class))).thenReturn(cookie);
-        String json = """
+        final String json = """
             {"username":"admin","password":"password123","rolesIds":[1]}
             """;
 
@@ -104,7 +104,7 @@ class UserControllerTest {
 
     @Test
     void testLogin_invalidPayload_returnsBadRequest() throws Exception {
-        String json = """
+        final String json = """
             {"username":"","password":"short"}
             """;
 

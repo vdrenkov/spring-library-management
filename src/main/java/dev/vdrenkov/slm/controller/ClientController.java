@@ -31,15 +31,15 @@ public class ClientController {
     private final ClientService clientService;
 
     @Autowired
-    public ClientController(ClientService clientService) {
+    public ClientController(final ClientService clientService) {
         this.clientService = clientService;
     }
 
     @PostMapping
-    public ResponseEntity<Void> addClient(@RequestBody @Valid ClientRequest clientRequest) {
-        Client client = clientService.addClient(clientRequest);
+    public ResponseEntity<Void> addClient(@RequestBody @Valid final ClientRequest clientRequest) {
+        final Client client = clientService.addClient(clientRequest);
 
-        URI location = UriComponentsBuilder.fromUriString("/clients/{id}").buildAndExpand(client.getId()).toUri();
+        final URI location = UriComponentsBuilder.fromUriString("/clients/{id}").buildAndExpand(client.getId()).toUri();
 
         log.info("A new client added");
         return ResponseEntity.created(location).build();
@@ -52,16 +52,16 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClientDto> getClientById(@PathVariable int id) {
+    public ResponseEntity<ClientDto> getClientById(@PathVariable final int id) {
         log.info("Client with an ID {} requested from the database.", id);
         return ResponseEntity.ok(clientService.getClientDtoById(id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ClientDto> deleteClient(@PathVariable int id,
-        @RequestParam(required = false) Boolean returnOld) {
+    public ResponseEntity<ClientDto> deleteClient(@PathVariable final int id,
+        @RequestParam(required = false) final Boolean returnOld) {
 
-        ClientDto clientDto = clientService.deleteClient(id);
+        final ClientDto clientDto = clientService.deleteClient(id);
 
         log.info("Client with an ID {} deleted from the database.", id);
 
