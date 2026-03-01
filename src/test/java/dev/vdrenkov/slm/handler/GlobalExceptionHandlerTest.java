@@ -70,13 +70,13 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void testHandleNullPointerException_onEndpointGetAllOrders_badRequest() throws Exception {
+    void testHandleNullPointerException_onEndpointGetAllOrders_internalServerError() throws Exception {
         when(orderService.getAllOrdersDto()).thenThrow(NullPointerException.class);
 
         mockMvc
             .perform(get(URI))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath(ROOT, is("Missing or incorrect data entered")));
+            .andExpect(status().isInternalServerError())
+            .andExpect(jsonPath(ROOT, is("Something went wrong")));
     }
 
     @Test

@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         final StringBuilder errors = new StringBuilder();
         final BindingResult bindingResult = exception.getBindingResult();
 
@@ -48,23 +48,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors.toString(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<String> handleNullPointerException(final NullPointerException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
-        final String message = "Missing or incorrect data entered";
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(UnexpectedTypeException.class)
     public ResponseEntity<String> handleUnexpectedTypeException(final UnexpectedTypeException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         final String message = "Wrong data entered";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleHttpMessageNotReadableException(final HttpMessageNotReadableException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         final String message = "Incorrect data entered";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
@@ -72,14 +65,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<String> handleHttpRequestMethodNotSupportedException(
         final HttpRequestMethodNotSupportedException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         final String message = "HTTP method not supported";
         return new ResponseEntity<>(message, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(final IllegalArgumentException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         final String message = exception.getMessage() != null ? exception.getMessage() : "Illegal argument provided";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
@@ -87,14 +80,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<String> handleMissingServletRequestParameterException(
         final MissingServletRequestParameterException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         final String message = "Invalid parameter provided";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DateTimeParseException.class)
     public ResponseEntity<String> handleDateTimeParseException(final DateTimeParseException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         final String message = "Invalid date provided";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
@@ -102,76 +95,76 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> handleMethodArgumentTypeMismatchException(
         final MethodArgumentTypeMismatchException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         final String message = "Invalid URL provided";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<String> handleConstraintViolationException(final ConstraintViolationException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>("Request validation failed", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
     public ResponseEntity<String> handleHandlerMethodValidationException(final HandlerMethodValidationException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>("Request validation failed", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     public ResponseEntity<String> handleInternalAuthenticationServiceException(
         final InternalAuthenticationServiceException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<String> handleBadCredentialsException(final BadCredentialsException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDataIntegrityViolationException(final DataIntegrityViolationException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         final String message = "Violation of database rules!";
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AuthorNotFoundException.class)
     public ResponseEntity<String> handleAuthorNotFoundException(final AuthorNotFoundException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BookNotFoundException.class)
     public ResponseEntity<String> handleBookNotFoundException(final BookNotFoundException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ClientNotFoundException.class)
     public ResponseEntity<String> handleClientNotFoundException(final ClientNotFoundException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(OrderNotFoundException.class)
     public ResponseEntity<String> handleOrderNotFoundException(final OrderNotFoundException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFoundException(final UserNotFoundException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UserRoleNotFoundException.class)
     public ResponseEntity<String> handleUserRoleNotFoundException(final UserRoleNotFoundException exception) {
-        log.error(CAUGHT_EXCEPTION, exception);
+        log.warn(CAUGHT_EXCEPTION, exception);
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
