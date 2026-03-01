@@ -20,19 +20,34 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * UserRoleController component.
+ */
 @RestController
 @RequestMapping("/roles")
 public class UserRoleController {
-
     private static final Logger log = LoggerFactory.getLogger(UserRoleController.class);
 
     private final UserRoleService userRoleService;
 
+    /**
+     * Handles UserRoleController operation.
+     *
+     * @param userRoleService
+     *     Service dependency used by this component.
+     */
     @Autowired
     public UserRoleController(final UserRoleService userRoleService) {
         this.userRoleService = userRoleService;
     }
 
+    /**
+     * Handles addUserRole operation.
+     *
+     * @param userRequest
+     *     Request payload with input data.
+     * @return Response entity containing the operation result.
+     */
     @PostMapping
     public ResponseEntity<Void> addUserRole(@RequestBody @Valid final UserRoleRequest userRequest) {
         final UserRole userRole = userRoleService.addUserRole(userRequest);
@@ -42,16 +57,27 @@ public class UserRoleController {
         return ResponseEntity.created(location).build();
     }
 
+    /**
+     * Handles getAllUserRoles operation.
+     *
+     * @return Response entity containing the requested data.
+     */
     @GetMapping
     public ResponseEntity<List<UserRoleDto>> getAllUserRoles() {
         log.info("All roles requested from the database");
         return ResponseEntity.ok(userRoleService.getAllUserRolesDto());
     }
 
+    /**
+     * Handles getUserRoleById operation.
+     *
+     * @param id
+     *     Identifier of the target entity.
+     * @return Response entity containing the requested data.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<UserRoleDto> getUserRoleById(@PathVariable final int id) {
         log.info("Role with an ID {} requested from the database.", id);
         return ResponseEntity.ok(userRoleService.getUserRoleDtoById(id));
     }
 }
-

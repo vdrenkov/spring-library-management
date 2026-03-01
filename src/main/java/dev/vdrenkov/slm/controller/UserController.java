@@ -20,21 +20,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * UserController component.
+ */
 @RestController
 public class UserController {
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     private static final String USER_PATH = "/users";
     private static final String ADMIN_PATH = "/admins";
 
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
-
     private final UserService userService;
 
+    /**
+     * Handles UserController operation.
+     *
+     * @param userService
+     *     Service dependency used by this component.
+     */
     @Autowired
     public UserController(final UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Handles login operation.
+     *
+     * @param request
+     *     Request payload with input data.
+     * @return Response entity containing the operation result.
+     */
     @PostMapping("/login")
     public ResponseEntity<Void> login(@RequestBody @Valid final UserRequest request) {
         final HttpCookie cookie = userService.login(request);
@@ -43,6 +58,13 @@ public class UserController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
     }
 
+    /**
+     * Handles registerUser operation.
+     *
+     * @param request
+     *     Request payload with input data.
+     * @return Response entity containing the operation result.
+     */
     @PostMapping("/register")
     public ResponseEntity<Void> registerUser(@RequestBody @Valid final UserRequest request) {
         final HttpCookie cookie = userService.registerUser(request);
@@ -51,6 +73,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
     }
 
+    /**
+     * Handles registerAdmin operation.
+     *
+     * @param request
+     *     Request payload with input data.
+     * @return Response entity containing the operation result.
+     */
     @PostMapping(ADMIN_PATH + "/register")
     public ResponseEntity<Void> registerAdmin(@RequestBody @Valid final AdminRequest request) {
         final HttpCookie cookie = userService.registerByAdmin(request);
@@ -59,12 +88,24 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
     }
 
+    /**
+     * Handles getAllUsers operation.
+     *
+     * @return Response entity containing the requested data.
+     */
     @GetMapping(USER_PATH)
     public ResponseEntity<List<UserDto>> getAllUsers() {
         log.info("All users requested from the database");
         return ResponseEntity.ok(userService.getAllUsersDto());
     }
 
+    /**
+     * Handles getUserById operation.
+     *
+     * @param id
+     *     Identifier of the target entity.
+     * @return Response entity containing the requested data.
+     */
     @GetMapping(USER_PATH + "/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable final int id) {
         log.info("User with an ID {} requested from the database.", id);

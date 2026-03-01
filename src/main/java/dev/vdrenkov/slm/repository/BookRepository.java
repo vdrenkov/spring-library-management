@@ -12,10 +12,24 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+/**
+ * BookRepository contract.
+ */
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
+    /**
+     * Handles findByQuantityGreaterThan operation.
+     * @param quantity Quantity value.
+     * @return List of books.
+     */
     List<Book> findByQuantityGreaterThan(int quantity);
 
+    /**
+     * Handles findByAuthorIdAndQuantityGreaterThan operation.
+     * @param authorId Identifier of the target entity.
+     * @param quantity Quantity value.
+     * @return List of books.
+     */
     List<Book> findByAuthorIdAndQuantityGreaterThan(int authorId, int quantity);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)

@@ -12,6 +12,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+/**
+ * BookRequest component.
+ */
 public class BookRequest {
 
     @Pattern(regexp = "^[A-Z0-9][A-Z0-9a-z .]*$",
@@ -31,5 +34,3 @@ public class BookRequest {
     @NotNull(message = "The quantity cannot be null")
     private Integer quantity;
 }
-
-

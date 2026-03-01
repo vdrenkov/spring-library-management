@@ -129,13 +129,8 @@ class BookServiceTest {
 
     @Test
     void testDecreaseBookQuantity_outOfStock_throws() {
-        final Book outOfStockBook = new Book(
-            ID,
-            BookFactory.getDefaultBook().getName(),
-            BookFactory.getDefaultBook().getPublishDate(),
-            BookFactory.getDefaultBook().getAuthor(),
-            0
-        );
+        final Book outOfStockBook = new Book(ID, BookFactory.getDefaultBook().getName(),
+            BookFactory.getDefaultBook().getPublishDate(), BookFactory.getDefaultBook().getAuthor(), 0);
         when(bookRepository.findByIdForUpdate(anyInt())).thenReturn(Optional.of(outOfStockBook));
 
         assertThrows(IllegalStateException.class, () -> bookService.decreaseBookQuantity(ID));

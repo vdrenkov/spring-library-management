@@ -24,6 +24,9 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+/**
+ * UserService component.
+ */
 public class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
@@ -36,6 +39,15 @@ public class UserService {
     private final UserMapper userMapper;
 
     @Autowired
+    /**
+     * Handles UserService operation.
+     * @param authenticationManager Authentication manager dependency.
+     * @param passwordEncoder Password encoder dependency.
+     * @param jwtCookieUtil JWT cookie utility dependency.
+     * @param userRepository Repository dependency used by this component.
+     * @param userRoleService Service dependency used by this component.
+     * @param userMapper Mapper dependency used by this component.
+     */
     public UserService(final AuthenticationManager authenticationManager, final PasswordEncoder passwordEncoder,
         final JwtCookieUtil jwtCookieUtil, final UserRepository userRepository, final UserRoleService userRoleService,
         final UserMapper userMapper) {
@@ -47,6 +59,11 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
+    /**
+     * Handles login operation.
+     * @param userRequest Request payload with input data.
+     * @return Resulting httpCookie value.
+     */
     public HttpCookie login(final UserRequest userRequest) {
         final UserDetails userDetails = (UserDetails) authenticationManager
             .authenticate(new UsernamePasswordAuthenticationToken(userRequest.getUsername(), userRequest.getPassword()))
@@ -55,12 +72,21 @@ public class UserService {
         return jwtCookieUtil.createJWTCookie(userDetails);
     }
 
+    /**
+     * Handles registerUser operation.
+     * @param userRequest Request payload with input data.
+     * @return Resulting httpCookie value.
+     */
     public HttpCookie registerUser(final UserRequest userRequest) {
         addUser(userRequest);
 
         return login(new UserRequest(userRequest.getUsername(), userRequest.getPassword()));
     }
 
+    /**
+     * Handles addUser operation.
+     * @param userRequest Request payload with input data.
+     */
     public void addUser(final UserRequest userRequest) {
         final String username = userRequest.getUsername();
         validateUsernameIsAvailable(username);
@@ -73,16 +99,29 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Handles getLibrarianRole operation.
+     * @return List of userRoles.
+     */
     public List<UserRole> getLibrarianRole() {
         return Collections.singletonList(userRoleService.getUserRoleByRole(LIBRARIAN_ROLE));
     }
 
+    /**
+     * Handles registerByAdmin operation.
+     * @param adminRequest Request payload with input data.
+     * @return Resulting httpCookie value.
+     */
     public HttpCookie registerByAdmin(final AdminRequest adminRequest) {
         addUserByAdmin(adminRequest);
 
         return login(new UserRequest(adminRequest.getUsername(), adminRequest.getPassword()));
     }
 
+    /**
+     * Handles addUserByAdmin operation.
+     * @param adminRequest Request payload with input data.
+     */
     public void addUserByAdmin(final AdminRequest adminRequest) {
         validateUsernameIsAvailable(adminRequest.getUsername());
 
@@ -94,12 +133,21 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Handles validateUsernameIsAvailable operation.
+     * @param username Username value.
+     */
     private void validateUsernameIsAvailable(final String username) {
         if (userRepository.existsByUsername(username)) {
             throw new IllegalArgumentException("A user with this username already exists");
         }
     }
 
+    /**
+     * Handles getUserRoles operation.
+     * @param rolesIds Collection of target entity identifiers.
+     * @return List of userRoles.
+     */
     public List<UserRole> getUserRoles(final List<Integer> rolesIds) {
         final List<UserRole> roles = new ArrayList<>();
 
@@ -110,22 +158,39 @@ public class UserService {
         return roles;
     }
 
+    /**
+     * Handles getAllUsers operation.
+     * @return List of users.
+     */
     public List<User> getAllUsers() {
         log.info("Trying to retrieve all users");
         return userRepository.findAll();
     }
 
+    /**
+     * Handles getAllUsersDto operation.
+     * @return List of user DTOs.
+     */
     public List<UserDto> getAllUsersDto() {
         return userMapper.mapUsersToUsersDto(getAllUsers());
     }
 
+    /**
+     * Handles getUserById operation.
+     * @param id Identifier of the target entity.
+     * @return Resulting user value.
+     */
     public User getUserById(final int id) {
         log.info("Trying to retrieve user with an ID {}", id);
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
+    /**
+     * Handles getUserDtoById operation.
+     * @param id Identifier of the target entity.
+     * @return Resulting user DTO value.
+     */
     public UserDto getUserDtoById(final int id) {
         return userMapper.mapUserToUserDto(getUserById(id));
     }
 }
-

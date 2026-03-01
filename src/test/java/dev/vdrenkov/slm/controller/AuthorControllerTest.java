@@ -90,5 +90,3 @@ class AuthorControllerTest {
             .andExpect(jsonPath("$.surname").value(SURNAME));
     }
 }
-
-

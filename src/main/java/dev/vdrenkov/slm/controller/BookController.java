@@ -19,19 +19,35 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * BookController component.
+ */
 @RestController
 public class BookController {
-
     private static final Logger log = LoggerFactory.getLogger(BookController.class);
 
     private static final String URI = "/books";
+
     private final BookService bookService;
 
+    /**
+     * Handles BookController operation.
+     *
+     * @param bookService
+     *     Service dependency used by this component.
+     */
     @Autowired
     public BookController(final BookService bookService) {
         this.bookService = bookService;
     }
 
+    /**
+     * Handles addBook operation.
+     *
+     * @param bookRequest
+     *     Request payload with input data.
+     * @return Response entity containing the operation result.
+     */
     @PostMapping(URI)
     public ResponseEntity<Void> addBook(@RequestBody @Valid final BookRequest bookRequest) {
         final Book book = bookService.addBook(bookRequest);
@@ -41,23 +57,40 @@ public class BookController {
         return ResponseEntity.created(location).build();
     }
 
+    /**
+     * Handles getAllAvailableBooks operation.
+     *
+     * @return Response entity containing the requested data.
+     */
     @GetMapping(URI)
     public ResponseEntity<List<BookDto>> getAllAvailableBooks() {
         log.info("All available books requested from the database");
         return ResponseEntity.ok(bookService.getAllAvailableBooksDto());
     }
 
+    /**
+     * Handles getAllBooksByAuthor operation.
+     *
+     * @param authorId
+     *     Identifier of the target entity.
+     * @return Response entity containing the requested data.
+     */
     @GetMapping("/authors/{authorId}" + URI)
     public ResponseEntity<List<BookDto>> getAllBooksByAuthor(@PathVariable final int authorId) {
         log.info("All books with author ID {} requested from the database.", authorId);
         return ResponseEntity.ok(bookService.getAllBooksDtoByAuthor(authorId));
     }
 
+    /**
+     * Handles getBookById operation.
+     *
+     * @param id
+     *     Identifier of the target entity.
+     * @return Response entity containing the requested data.
+     */
     @GetMapping(URI + "/{id}")
     public ResponseEntity<BookDto> getBookById(@PathVariable final int id) {
         log.info("Book with an ID {} requested from the database.", id);
         return ResponseEntity.ok(bookService.getBookDtoById(id));
     }
 }
-
-

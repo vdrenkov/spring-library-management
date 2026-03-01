@@ -13,6 +13,9 @@ import java.util.Comparator;
 import java.util.List;
 
 @Component
+/**
+ * OrderMapper component.
+ */
 public class OrderMapper {
 
   private static final Logger log = LoggerFactory.getLogger(OrderMapper.class);
@@ -20,10 +23,19 @@ public class OrderMapper {
   private final ClientMapper clientMapper;
 
   @Autowired
+  /**
+   * Handles OrderMapper operation.
+   * @param clientMapper Mapper dependency used by this component.
+   */
   public OrderMapper(final ClientMapper clientMapper) {
     this.clientMapper = clientMapper;
   }
 
+  /**
+   * Handles mapOrdersToOrdersDto operation.
+   * @param orders Order entities to map.
+   * @return List of order DTOs.
+   */
   public List<OrderDto> mapOrdersToOrdersDto(final List<Order> orders) {
     final List<OrderDto> ordersDto = new ArrayList<>();
 
@@ -36,6 +48,11 @@ public class OrderMapper {
     return ordersDto;
   }
 
+  /**
+   * Handles mapOrderToOrderDto operation.
+   * @param order Order entity value.
+   * @return Resulting order DTO value.
+   */
   public OrderDto mapOrderToOrderDto(final Order order) {
     final List<String> booksNames = new ArrayList<>();
 

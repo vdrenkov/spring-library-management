@@ -19,6 +19,9 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Order component.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -47,6 +50,18 @@ public class Order {
     @Column(name = "DUE_DATE")
     private LocalDate dueDate;
 
+    /**
+     * Handles Order operation.
+     *
+     * @param client
+     *     Client entity value.
+     * @param books
+     *     Books included in the order.
+     * @param issueDate
+     *     Order issue date.
+     * @param dueDate
+     *     Order due date.
+     */
     public Order(final Client client, final List<Book> books, final LocalDate issueDate, final LocalDate dueDate) {
         this.client = client;
         this.books = books;
@@ -54,4 +69,3 @@ public class Order {
         this.dueDate = dueDate;
     }
 }
-

@@ -11,6 +11,9 @@ import static dev.vdrenkov.slm.util.Constants.JWT_COOKIE_NAME;
 import static dev.vdrenkov.slm.util.Constants.JWT_TOKEN_VALIDITY;
 
 @Component
+/**
+ * JwtCookieUtil component.
+ */
 public class JwtCookieUtil {
 
   private static final String COOKIE_PATH = "/";
@@ -20,6 +23,9 @@ public class JwtCookieUtil {
   private final String sameSitePolicy;
 
   @Autowired
+  /**
+   * Handles JwtCookieUtil operation.
+   */
   public JwtCookieUtil(
     final JwtTokenUtil tokenUtil,
     @Value("${jwt.cookie.secure:false}") final boolean secureCookie,
@@ -30,6 +36,11 @@ public class JwtCookieUtil {
     this.sameSitePolicy = sameSitePolicy;
   }
 
+  /**
+   * Handles createJWTCookie operation.
+   * @param userDetails Authenticated user details.
+   * @return Resulting httpCookie value.
+   */
   public HttpCookie createJWTCookie(final UserDetails userDetails) {
       final String jwt = tokenUtil.generateToken(userDetails);
 

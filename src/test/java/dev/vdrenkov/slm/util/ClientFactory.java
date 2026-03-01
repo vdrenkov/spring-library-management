@@ -13,30 +13,60 @@ import static dev.vdrenkov.slm.util.Constants.NAME;
 import static dev.vdrenkov.slm.util.Constants.PHONE_NUMBER;
 import static dev.vdrenkov.slm.util.Constants.SURNAME;
 
+/**
+ * Test factory for creating default {@link Client}, {@link ClientDto}, and {@link ClientRequest} instances.
+ */
 public final class ClientFactory {
 
-  private ClientFactory() {
-    throw new IllegalStateException();
-  }
+    /**
+     * Utility class constructor.
+     */
+    private ClientFactory() {
+        throw new IllegalStateException("Utility class. Must not be instantiated!");
+    }
 
-  public static Client getDefaultClient() {
-    return new Client(ID, NAME, SURNAME, PHONE_NUMBER, EMAIL);
-  }
+    /**
+     * Creates a default {@link Client} test entity.
+     *
+     * @return Default client entity.
+     */
+    public static Client getDefaultClient() {
+        return new Client(ID, NAME, SURNAME, PHONE_NUMBER, EMAIL);
+    }
 
-  public static List<Client> getDefaultClientsList() {
-    return Collections.singletonList(getDefaultClient());
-  }
+    /**
+     * Creates a singleton list containing the default client entity.
+     *
+     * @return Singleton list of clients.
+     */
+    public static List<Client> getDefaultClientsList() {
+        return Collections.singletonList(getDefaultClient());
+    }
 
-  public static ClientDto getDefaultClientDto() {
-    return new ClientDto(ID, NAME, SURNAME, PHONE_NUMBER, EMAIL);
-  }
+    /**
+     * Creates a default {@link ClientDto}.
+     *
+     * @return Default client DTO.
+     */
+    public static ClientDto getDefaultClientDto() {
+        return new ClientDto(ID, NAME, SURNAME, PHONE_NUMBER, EMAIL);
+    }
 
-  public static List<ClientDto> getDefaultClientsDtoList() {
-    return Collections.singletonList(getDefaultClientDto());
-  }
+    /**
+     * Creates a singleton list containing the default client DTO.
+     *
+     * @return Singleton list of client DTOs.
+     */
+    public static List<ClientDto> getDefaultClientsDtoList() {
+        return Collections.singletonList(getDefaultClientDto());
+    }
 
-  public static ClientRequest getDefaultClientRequest() {
-    return new ClientRequest(NAME, SURNAME, PHONE_NUMBER, EMAIL);
-  }
+    /**
+     * Creates a default {@link ClientRequest}.
+     *
+     * @return Default client request.
+     */
+    public static ClientRequest getDefaultClientRequest() {
+        return new ClientRequest(NAME, SURNAME, PHONE_NUMBER, EMAIL);
+    }
 }
-

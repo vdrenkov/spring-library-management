@@ -14,16 +14,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+/**
+ * JwtUserDetailsService component.
+ */
 public class JwtUserDetailsService implements UserDetailsService {
 
   private final UserRepository userRepository;
 
   @Autowired
+  /**
+   * Handles JwtUserDetailsService operation.
+   * @param userRepository Repository dependency used by this component.
+   */
   public JwtUserDetailsService(final UserRepository userRepository) {
     this.userRepository = userRepository;
   }
 
   @Override
+  /**
+   * Handles loadUserByUsername operation.
+   * @param username Username value.
+   * @return Loaded user details instance.
+   */
   public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
     final User user = userRepository.findByUsername(username)
         .orElseThrow(() -> new UsernameNotFoundException("No such user found in the database"));

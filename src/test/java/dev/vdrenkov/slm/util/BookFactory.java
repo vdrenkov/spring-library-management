@@ -14,38 +14,78 @@ import static dev.vdrenkov.slm.util.Constants.NAME;
 import static dev.vdrenkov.slm.util.Constants.ONE;
 import static dev.vdrenkov.slm.util.Constants.QUANTITY;
 
+/**
+ * Test factory for creating default {@link Book}, {@link BookDto}, and {@link BookRequest} instances.
+ */
 public final class BookFactory {
 
-  private BookFactory() {
-    throw new IllegalStateException();
-  }
+    /**
+     * Utility class constructor.
+     */
+    private BookFactory() {
+        throw new IllegalStateException("Utility class. Must not be instantiated!");
+    }
 
-  public static Book getDefaultBook() {
-    return new Book(ID, NAME, LOCAL_DATE, AuthorFactory.getDefaultAuthor(), QUANTITY);
-  }
+    /**
+     * Creates a default {@link Book} test entity.
+     *
+     * @return Default book entity.
+     */
+    public static Book getDefaultBook() {
+        return new Book(ID, NAME, LOCAL_DATE, AuthorFactory.getDefaultAuthor(), QUANTITY);
+    }
 
-  public static List<Book> getDefaultBooksList() {
-    return Collections.singletonList(getDefaultBook());
-  }
+    /**
+     * Creates a singleton list containing the default book entity.
+     *
+     * @return Singleton list of books.
+     */
+    public static List<Book> getDefaultBooksList() {
+        return Collections.singletonList(getDefaultBook());
+    }
 
-  public static BookDto getDefaultBookDto() {
-    return new BookDto(ID, NAME, LOCAL_DATE, AuthorFactory.getDefaultAuthorDto(), QUANTITY);
-  }
+    /**
+     * Creates a default {@link BookDto}.
+     *
+     * @return Default book DTO.
+     */
+    public static BookDto getDefaultBookDto() {
+        return new BookDto(ID, NAME, LOCAL_DATE, AuthorFactory.getDefaultAuthorDto(), QUANTITY);
+    }
 
-  public static List<BookDto> getDefaultBooksDtoList() {
-    return Collections.singletonList(getDefaultBookDto());
-  }
+    /**
+     * Creates a singleton list containing the default book DTO.
+     *
+     * @return Singleton list of book DTOs.
+     */
+    public static List<BookDto> getDefaultBooksDtoList() {
+        return Collections.singletonList(getDefaultBookDto());
+    }
 
-  public static BookRequest getDefaultBookRequest() {
-    return new BookRequest(NAME, LOCAL_DATE, ID, QUANTITY);
-  }
+    /**
+     * Creates a default {@link BookRequest}.
+     *
+     * @return Default book request.
+     */
+    public static BookRequest getDefaultBookRequest() {
+        return new BookRequest(NAME, LOCAL_DATE, ID, QUANTITY);
+    }
 
-  public static List<String> getDefaultBooksNamesList() {
-    return Collections.singletonList(BOOKS_NAMES_LIST_VALUE);
-  }
+    /**
+     * Creates a singleton list containing a default book name value.
+     *
+     * @return Singleton list of book names.
+     */
+    public static List<String> getDefaultBooksNamesList() {
+        return Collections.singletonList(BOOKS_NAMES_LIST_VALUE);
+    }
 
-  public static List<Integer> getDefaultBooksIdsList() {
-    return Collections.singletonList(ONE);
-  }
+    /**
+     * Creates a singleton list containing a default book ID.
+     *
+     * @return Singleton list of book IDs.
+     */
+    public static List<Integer> getDefaultBooksIdsList() {
+        return Collections.singletonList(ONE);
+    }
 }
-

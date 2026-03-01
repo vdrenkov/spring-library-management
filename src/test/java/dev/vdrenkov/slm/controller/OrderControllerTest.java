@@ -150,8 +150,8 @@ class OrderControllerTest {
 
     @Test
     void testGetAllOrdersByDate_invalidChoice_badRequest() throws Exception {
-        when(orderService.getAllOrdersDtoByDate(anyInt(), anyString()))
-            .thenThrow(new IllegalArgumentException("Choice must be between 1 and 6"));
+        when(orderService.getAllOrdersDtoByDate(anyInt(), anyString())).thenThrow(
+            new IllegalArgumentException("Choice must be between 1 and 6"));
 
         mockMvc
             .perform(get(URI).queryParam("choice", "99").queryParam("date", DATE_STRING))
@@ -200,14 +200,11 @@ class OrderControllerTest {
 
     @Test
     void testExtendOrderDueByDate_invalidChoice_badRequest() throws Exception {
-        when(orderService.extendOrderDueByDate(anyInt(), anyInt(), anyInt()))
-            .thenThrow(new IllegalArgumentException("Choice must be between 1 and 3"));
+        when(orderService.extendOrderDueByDate(anyInt(), anyInt(), anyInt())).thenThrow(
+            new IllegalArgumentException("Choice must be between 1 and 3"));
 
         mockMvc
             .perform(put(URI + "/" + ID).queryParam("choice", "99").queryParam("period", PERIOD_STRING))
             .andExpect(status().isBadRequest());
     }
 }
-
-
-

@@ -205,7 +205,3 @@ class GlobalExceptionHandlerTest {
             .andExpect(jsonPath(ROOT, is("Something went wrong")));
     }
 }
-
-
-
-

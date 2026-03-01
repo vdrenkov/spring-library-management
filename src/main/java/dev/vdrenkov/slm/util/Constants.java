@@ -3,6 +3,9 @@ package dev.vdrenkov.slm.util;
 import lombok.Generated;
 import java.time.LocalDate;
 
+/**
+ * Constants component.
+ */
 public final class Constants {
 
     public static final int ZERO = 0;
@@ -27,8 +30,10 @@ public final class Constants {
     public static final String JWT_COOKIE_NAME = "Cookie";
 
     @Generated
+    /**
+     * Handles Constants operation.
+     */
     private Constants() {
         throw new IllegalStateException();
     }
 }
-

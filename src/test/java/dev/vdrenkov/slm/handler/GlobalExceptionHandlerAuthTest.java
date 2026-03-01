@@ -55,8 +55,8 @@ class GlobalExceptionHandlerAuthTest {
 
     @Test
     void testInternalAuthenticationService_returnsUnauthorized() throws Exception {
-        when(userService.login(any(UserRequest.class)))
-            .thenThrow(new InternalAuthenticationServiceException("user not found"));
+        when(userService.login(any(UserRequest.class))).thenThrow(
+            new InternalAuthenticationServiceException("user not found"));
         final String json = new ObjectMapper().writeValueAsString(new UserRequest("user123", "password123"));
 
         mockMvc

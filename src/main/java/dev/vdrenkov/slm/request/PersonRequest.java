@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+/**
+ * PersonRequest component.
+ */
 public class PersonRequest {
 
     @Pattern(regexp = "^[A-Z][a-z. ]+$",
@@ -20,5 +23,3 @@ public class PersonRequest {
     @NotNull(message = "The surname cannot be null")
     private String surname;
 }
-
-

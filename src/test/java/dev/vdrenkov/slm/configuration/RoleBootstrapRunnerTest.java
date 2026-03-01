@@ -37,14 +37,8 @@ class RoleBootstrapRunnerTest {
         when(userRoleRepository.existsByRole("ADMIN")).thenReturn(false);
         when(userRoleRepository.existsByRole("LIBRARIAN")).thenReturn(false);
 
-        final RoleBootstrapRunner runner = new RoleBootstrapRunner(
-            userRoleRepository,
-            userRepository,
-            passwordEncoder,
-            true,
-            "",
-            ""
-        );
+        final RoleBootstrapRunner runner = new RoleBootstrapRunner(userRoleRepository, userRepository, passwordEncoder,
+            true, "", "");
 
         runner.run();
 
@@ -62,14 +56,8 @@ class RoleBootstrapRunnerTest {
         when(userRepository.existsByUsername("admin")).thenReturn(false);
         when(passwordEncoder.encode("password123")).thenReturn("encoded-password");
 
-        final RoleBootstrapRunner runner = new RoleBootstrapRunner(
-            userRoleRepository,
-            userRepository,
-            passwordEncoder,
-            true,
-            "admin",
-            "password123"
-        );
+        final RoleBootstrapRunner runner = new RoleBootstrapRunner(userRoleRepository, userRepository, passwordEncoder,
+            true, "admin", "password123");
 
         runner.run();
 
@@ -83,14 +71,8 @@ class RoleBootstrapRunnerTest {
 
     @Test
     void testRun_bootstrapDisabled_doesNothing() {
-        final RoleBootstrapRunner runner = new RoleBootstrapRunner(
-            userRoleRepository,
-            userRepository,
-            passwordEncoder,
-            false,
-            "admin",
-            "password123"
-        );
+        final RoleBootstrapRunner runner = new RoleBootstrapRunner(userRoleRepository, userRepository, passwordEncoder,
+            false, "admin", "password123");
 
         runner.run();
 
@@ -105,14 +87,8 @@ class RoleBootstrapRunnerTest {
         when(userRoleRepository.existsByRole("LIBRARIAN")).thenReturn(true);
         when(userRepository.existsByUsername("admin")).thenReturn(true);
 
-        final RoleBootstrapRunner runner = new RoleBootstrapRunner(
-            userRoleRepository,
-            userRepository,
-            passwordEncoder,
-            true,
-            "admin",
-            "password123"
-        );
+        final RoleBootstrapRunner runner = new RoleBootstrapRunner(userRoleRepository, userRepository, passwordEncoder,
+            true, "admin", "password123");
 
         runner.run();
 

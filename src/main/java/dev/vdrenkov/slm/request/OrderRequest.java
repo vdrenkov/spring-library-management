@@ -12,6 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+/**
+ * OrderRequest component.
+ */
 public class OrderRequest {
 
     @Positive(message = "The client ID must be a positive digit")
@@ -23,5 +26,3 @@ public class OrderRequest {
     private List<@NotNull(message = "Book ID cannot be null")
         @Positive(message = "Book ID must be a positive digit") Integer> booksIds;
 }
-
-

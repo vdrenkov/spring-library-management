@@ -22,19 +22,34 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * ClientController component.
+ */
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
-
     private static final Logger log = LoggerFactory.getLogger(ClientController.class);
 
     private final ClientService clientService;
 
+    /**
+     * Handles ClientController operation.
+     *
+     * @param clientService
+     *     Service dependency used by this component.
+     */
     @Autowired
     public ClientController(final ClientService clientService) {
         this.clientService = clientService;
     }
 
+    /**
+     * Handles addClient operation.
+     *
+     * @param clientRequest
+     *     Request payload with input data.
+     * @return Response entity containing the operation result.
+     */
     @PostMapping
     public ResponseEntity<Void> addClient(@RequestBody @Valid final ClientRequest clientRequest) {
         final Client client = clientService.addClient(clientRequest);
@@ -45,18 +60,39 @@ public class ClientController {
         return ResponseEntity.created(location).build();
     }
 
+    /**
+     * Handles getAllClients operation.
+     *
+     * @return Response entity containing the requested data.
+     */
     @GetMapping
     public ResponseEntity<List<ClientDto>> getAllClients() {
         log.info("All clients requested from the database");
         return ResponseEntity.ok(clientService.getAllClientsDto());
     }
 
+    /**
+     * Handles getClientById operation.
+     *
+     * @param id
+     *     Identifier of the target entity.
+     * @return Response entity containing the requested data.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<ClientDto> getClientById(@PathVariable final int id) {
         log.info("Client with an ID {} requested from the database.", id);
         return ResponseEntity.ok(clientService.getClientDtoById(id));
     }
 
+    /**
+     * Handles deleteClient operation.
+     *
+     * @param id
+     *     Client identifier.
+     * @param returnOld
+     *     Whether to return the deleted payload instead of no-content.
+     * @return Response with deleted client payload or no-content status.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<ClientDto> deleteClient(@PathVariable final int id,
         @RequestParam(required = false) final Boolean returnOld) {
@@ -72,5 +108,3 @@ public class ClientController {
         }
     }
 }
-
-

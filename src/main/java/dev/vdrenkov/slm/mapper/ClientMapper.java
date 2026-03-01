@@ -11,10 +11,18 @@ import java.util.Comparator;
 import java.util.List;
 
 @Component
+/**
+ * ClientMapper component.
+ */
 public class ClientMapper {
 
   private static final Logger log = LoggerFactory.getLogger(ClientMapper.class);
 
+  /**
+   * Handles mapClientsToClientsDto operation.
+   * @param clients Client entities to map.
+   * @return List of client DTOs.
+   */
   public List<ClientDto> mapClientsToClientsDto(final List<Client> clients) {
     final List<ClientDto> clientsDto = new ArrayList<>();
 
@@ -27,10 +35,14 @@ public class ClientMapper {
     return clientsDto;
   }
 
+  /**
+   * Handles mapClientToClientDto operation.
+   * @param client Client entity value.
+   * @return Resulting client DTO value.
+   */
   public ClientDto mapClientToClientDto(final Client client) {
     log.debug("Client mapped to client DTO");
     return new ClientDto(client.getId(), client.getName(), client.getSurname(), client.getPhoneNumber(),
                          client.getEmail());
   }
 }
-

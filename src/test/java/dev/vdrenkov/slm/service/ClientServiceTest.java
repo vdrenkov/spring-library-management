@@ -23,63 +23,61 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
- class ClientServiceTest {
+class ClientServiceTest {
 
-  @Mock
-  private ClientRepository clientRepository;
+    @Mock
+    private ClientRepository clientRepository;
 
-  @Mock
-  private ClientMapper clientMapper;
+    @Mock
+    private ClientMapper clientMapper;
 
-  @InjectMocks
-  private ClientService clientService;
+    @InjectMocks
+    private ClientService clientService;
 
-  @Test
-   void testAddClient() {
-   when(clientRepository.save(any())).thenReturn(new Client());
+    @Test
+    void testAddClient() {
+        when(clientRepository.save(any())).thenReturn(new Client());
 
-      final Client client = clientService.addClient(ClientFactory.getDefaultClientRequest());
+        final Client client = clientService.addClient(ClientFactory.getDefaultClientRequest());
 
-    Assertions.assertNotNull(client);
-  }
+        Assertions.assertNotNull(client);
+    }
 
-  @Test
-   void testGetAllClients() {
-    when(clientRepository.findAll()).thenReturn(ClientFactory.getDefaultClientsList());
+    @Test
+    void testGetAllClients() {
+        when(clientRepository.findAll()).thenReturn(ClientFactory.getDefaultClientsList());
 
-      final List<Client> result = clientService.getAllClients();
+        final List<Client> result = clientService.getAllClients();
 
-    Assertions.assertFalse(result.isEmpty());
-  }
+        Assertions.assertFalse(result.isEmpty());
+    }
 
-  @Test
-   void testGetAllClientsDto() {
-    when(clientRepository.findAll()).thenReturn(ClientFactory.getDefaultClientsList());
-    when(clientMapper.mapClientsToClientsDto(anyList())).thenReturn(ClientFactory.getDefaultClientsDtoList());
+    @Test
+    void testGetAllClientsDto() {
+        when(clientRepository.findAll()).thenReturn(ClientFactory.getDefaultClientsList());
+        when(clientMapper.mapClientsToClientsDto(anyList())).thenReturn(ClientFactory.getDefaultClientsDtoList());
 
-      final List<ClientDto> result = clientService.getAllClientsDto();
+        final List<ClientDto> result = clientService.getAllClientsDto();
 
-    Assertions.assertFalse(result.isEmpty());
-  }
+        Assertions.assertFalse(result.isEmpty());
+    }
 
-  @Test
-   void testGetClientById() {
-    when(clientRepository.findById(anyInt())).thenReturn(Optional.of(ClientFactory.getDefaultClient()));
+    @Test
+    void testGetClientById() {
+        when(clientRepository.findById(anyInt())).thenReturn(Optional.of(ClientFactory.getDefaultClient()));
 
-      final Client result = clientService.getClientById(ID);
+        final Client result = clientService.getClientById(ID);
 
-    assertNotNull(result.getName());
-  }
+        assertNotNull(result.getName());
+    }
 
-  @Test
-   void testGetClientDtoById() {
-    when(clientRepository.findById(anyInt())).thenReturn(Optional.of(ClientFactory.getDefaultClient()));
-    when(clientMapper.mapClientToClientDto(any())).thenReturn(ClientFactory.getDefaultClientDto());
+    @Test
+    void testGetClientDtoById() {
+        when(clientRepository.findById(anyInt())).thenReturn(Optional.of(ClientFactory.getDefaultClient()));
+        when(clientMapper.mapClientToClientDto(any())).thenReturn(ClientFactory.getDefaultClientDto());
 
-      final ClientDto result = clientService.getClientDtoById(ID);
+        final ClientDto result = clientService.getClientDtoById(ID);
 
-    assertNotNull(result.getName());
-  }
+        assertNotNull(result.getName());
+    }
 }
-
-

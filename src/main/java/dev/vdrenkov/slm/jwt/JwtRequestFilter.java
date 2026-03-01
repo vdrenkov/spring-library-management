@@ -21,6 +21,9 @@ import java.util.Arrays;
 import static dev.vdrenkov.slm.util.Constants.JWT_COOKIE_NAME;
 
 @Component
+/**
+ * JwtRequestFilter component.
+ */
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
@@ -29,12 +32,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtUserDetailsService userDetailsService;
 
     @Autowired
+    /**
+     * Handles JwtRequestFilter operation.
+     * @param tokenUtil JWT token utility dependency.
+     * @param userDetailsService Service dependency used by this component.
+     */
     public JwtRequestFilter(final JwtTokenUtil tokenUtil, final JwtUserDetailsService userDetailsService) {
         this.tokenUtil = tokenUtil;
         this.userDetailsService = userDetailsService;
     }
 
     @Override
+    /**
+     * Handles doFilterInternal operation.
+     * @param request Request payload with input data.
+     * @param response HTTP servlet response.
+     * @param chain Filter chain for request processing.
+     */
     protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain)
         throws ServletException, IOException {
         final String token = getJwtToken(request.getCookies());
@@ -64,6 +78,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 
+    /**
+     * Handles getJwtToken operation.
+     * @param cookies Request cookies.
+     * @return JWT token value.
+     */
     private String getJwtToken(final Cookie[] cookies) {
         if (cookies != null) {
             return Arrays

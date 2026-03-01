@@ -15,6 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+/**
+ * AdminRequest component.
+ */
 public class AdminRequest {
 
     @Pattern(regexp = "^[A-Za-z0-9_-]+$",
@@ -32,4 +35,3 @@ public class AdminRequest {
     private List<@NotNull(message = "Role ID cannot be null")
     @Positive(message = "Role ID must be a positive digit") Integer> rolesIds;
 }
-

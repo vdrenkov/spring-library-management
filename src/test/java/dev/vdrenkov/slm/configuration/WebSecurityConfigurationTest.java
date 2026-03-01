@@ -13,8 +13,8 @@ import dev.vdrenkov.slm.service.ClientService;
 import dev.vdrenkov.slm.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpCookie;
@@ -61,14 +61,6 @@ class WebSecurityConfigurationTest {
     @MockitoBean
     private JwtUserDetailsService jwtUserDetailsService;
 
-    @TestConfiguration
-    static class SecurityFilterConfig {
-        @Bean
-        JwtRequestFilter jwtRequestFilter(final JwtTokenUtil jwtTokenUtil, final JwtUserDetailsService jwtUserDetailsService) {
-            return new JwtRequestFilter(jwtTokenUtil, jwtUserDetailsService);
-        }
-    }
-
     @Test
     void testLogin_publicEndpoint_accessibleWithoutAuthentication() throws Exception {
         final HttpCookie cookie = ResponseCookie.from("Cookie", "jwt-token").httpOnly(true).path("/").build();
@@ -76,31 +68,29 @@ class WebSecurityConfigurationTest {
 
         final String json = objectMapper.writeValueAsString(new UserRequest("librarian", "password123"));
 
-        mockMvc.perform(post("/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+        mockMvc
+            .perform(post("/login").contentType(MediaType.APPLICATION_JSON).content(json))
             .andExpect(status().isOk());
     }
 
     @Test
     void testGetAuthors_withoutAuthentication_forbidden() throws Exception {
-        mockMvc.perform(get("/authors"))
-            .andExpect(status().isForbidden());
+        mockMvc.perform(get("/authors")).andExpect(status().isForbidden());
     }
 
     @Test
     void testGetAuthors_withLibrarian_allowed() throws Exception {
         when(authorService.getAllAuthorsDto()).thenReturn(Collections.emptyList());
 
-        mockMvc.perform(get("/authors")
-                .with(user("librarian").authorities(new SimpleGrantedAuthority("LIBRARIAN"))))
+        mockMvc
+            .perform(get("/authors").with(user("librarian").authorities(new SimpleGrantedAuthority("LIBRARIAN"))))
             .andExpect(status().isOk());
     }
 
     @Test
     void testDeleteClient_withLibrarian_forbidden() throws Exception {
-        mockMvc.perform(delete("/clients/1")
-                .with(user("librarian").authorities(new SimpleGrantedAuthority("LIBRARIAN"))))
+        mockMvc
+            .perform(delete("/clients/1").with(user("librarian").authorities(new SimpleGrantedAuthority("LIBRARIAN"))))
             .andExpect(status().isForbidden());
     }
 
@@ -108,8 +98,17 @@ class WebSecurityConfigurationTest {
     void testDeleteClient_withAdmin_allowed() throws Exception {
         when(clientService.deleteClient(anyInt())).thenReturn(new ClientDto(1, "N", "S", "0888888888", "n@s.com"));
 
-        mockMvc.perform(delete("/clients/1")
-                .with(user("admin").authorities(new SimpleGrantedAuthority("ADMIN"))))
+        mockMvc
+            .perform(delete("/clients/1").with(user("admin").authorities(new SimpleGrantedAuthority("ADMIN"))))
             .andExpect(status().isNoContent());
+    }
+
+    @TestConfiguration
+    static class SecurityFilterConfig {
+        @Bean
+        JwtRequestFilter jwtRequestFilter(final JwtTokenUtil jwtTokenUtil,
+            final JwtUserDetailsService jwtUserDetailsService) {
+            return new JwtRequestFilter(jwtTokenUtil, jwtUserDetailsService);
+        }
     }
 }

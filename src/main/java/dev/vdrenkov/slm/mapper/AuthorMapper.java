@@ -11,10 +11,18 @@ import java.util.Comparator;
 import java.util.List;
 
 @Component
+/**
+ * AuthorMapper component.
+ */
 public class AuthorMapper {
 
   private static final Logger log = LoggerFactory.getLogger(AuthorMapper.class);
 
+  /**
+   * Handles mapAuthorsToAuthorsDto operation.
+   * @param authors Author entities to map.
+   * @return List of author DTOs.
+   */
   public List<AuthorDto> mapAuthorsToAuthorsDto(final List<Author> authors) {
     final List<AuthorDto> authorsDto = new ArrayList<>();
 
@@ -27,9 +35,13 @@ public class AuthorMapper {
     return authorsDto;
   }
 
+  /**
+   * Handles mapAuthorToAuthorDto operation.
+   * @param author Author entity value.
+   * @return Resulting author DTO value.
+   */
   public AuthorDto mapAuthorToAuthorDto(final Author author) {
     log.debug("Author mapped to author DTO");
     return new AuthorDto(author.getId(), author.getName(), author.getSurname());
   }
 }
-

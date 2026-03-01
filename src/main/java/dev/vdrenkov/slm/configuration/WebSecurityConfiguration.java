@@ -18,6 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import static dev.vdrenkov.slm.util.Constants.JWT_COOKIE_NAME;
 
+/**
+ * WebSecurityConfiguration component.
+ */
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfiguration {
@@ -37,6 +40,12 @@ public class WebSecurityConfiguration {
 
     private final JwtRequestFilter jwtRequestFilter;
 
+    /**
+     * Handles WebSecurityConfiguration operation.
+     *
+     * @param jwtRequestFilter
+     *     The JWT request filter. Will not be null.
+     */
     public WebSecurityConfiguration(final JwtRequestFilter jwtRequestFilter) {
         this.jwtRequestFilter = jwtRequestFilter;
     }
@@ -69,14 +78,25 @@ public class WebSecurityConfiguration {
         return httpSecurity.build();
     }
 
+    /**
+     * Handles passwordEncoder operation.
+     *
+     * @return The newly instantiated password encoder.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Handles authenticationManager operation.
+     *
+     * @param authenticationConfiguration
+     *     The authentication configuration. Will not be null.
+     * @return The newly instantiated authentication manager.
+     */
     @Bean
     public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration) {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
-

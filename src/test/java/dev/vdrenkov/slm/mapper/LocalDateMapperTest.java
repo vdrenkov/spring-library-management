@@ -18,5 +18,3 @@ class LocalDateMapperTest {
         Assertions.assertEquals(LOCAL_DATE.toString(), response.toString());
     }
 }
-
-

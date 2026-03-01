@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+/**
+ * AuthorService component.
+ */
 public class AuthorService {
 
     private static final Logger log = LoggerFactory.getLogger(AuthorService.class);
@@ -22,11 +25,21 @@ public class AuthorService {
     private final AuthorMapper authorMapper;
 
     @Autowired
+    /**
+     * Handles AuthorService operation.
+     * @param authorRepository Repository dependency used by this component.
+     * @param authorMapper Mapper dependency used by this component.
+     */
     public AuthorService(final AuthorRepository authorRepository, final AuthorMapper authorMapper) {
         this.authorRepository = authorRepository;
         this.authorMapper = authorMapper;
     }
 
+    /**
+     * Handles addAuthor operation.
+     * @param authorRequest Request payload with input data.
+     * @return Resulting author value.
+     */
     public Author addAuthor(final AuthorRequest authorRequest) {
         final Author author = new Author(authorRequest.getName(), authorRequest.getSurname());
 
@@ -34,22 +47,39 @@ public class AuthorService {
         return authorRepository.save(author);
     }
 
+    /**
+     * Handles getAllAuthors operation.
+     * @return List of authors.
+     */
     public List<Author> getAllAuthors() {
         log.info("Trying to retrieve all authors");
         return authorRepository.findAll();
     }
 
+    /**
+     * Handles getAllAuthorsDto operation.
+     * @return List of author DTOs.
+     */
     public List<AuthorDto> getAllAuthorsDto() {
         return authorMapper.mapAuthorsToAuthorsDto(getAllAuthors());
     }
 
+    /**
+     * Handles getAuthorById operation.
+     * @param id Identifier of the target entity.
+     * @return Resulting author value.
+     */
     public Author getAuthorById(final int id) {
         log.info("Trying to retrieve author with an ID {}", id);
         return authorRepository.findById(id).orElseThrow(AuthorNotFoundException::new);
     }
 
+    /**
+     * Handles getAuthorDtoById operation.
+     * @param id Identifier of the target entity.
+     * @return Resulting author DTO value.
+     */
     public AuthorDto getAuthorDtoById(final int id) {
         return authorMapper.mapAuthorToAuthorDto(getAuthorById(id));
     }
 }
-

@@ -95,5 +95,3 @@ class ClientControllerTest {
             .andExpect(jsonPath("$.email").value(EMAIL));
     }
 }
-
-

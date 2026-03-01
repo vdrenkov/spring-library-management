@@ -110,6 +110,3 @@ class BookControllerTest {
             .andExpect(jsonPath("$.quantity").value(QUANTITY));
     }
 }
-
-
-

@@ -2,8 +2,6 @@ package dev.vdrenkov.slm.service;
 
 import dev.vdrenkov.slm.entity.User;
 import dev.vdrenkov.slm.entity.UserRole;
-import dev.vdrenkov.slm.jwt.JwtCookieUtil;
-import dev.vdrenkov.slm.mapper.UserMapper;
 import dev.vdrenkov.slm.repository.UserRepository;
 import dev.vdrenkov.slm.request.AdminRequest;
 import dev.vdrenkov.slm.request.UserRequest;
@@ -13,7 +11,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -32,22 +29,13 @@ class UserServiceTest {
     private UserService userService;
 
     @Mock
-    private AuthenticationManager authenticationManager;
-
-    @Mock
     private PasswordEncoder passwordEncoder;
-
-    @Mock
-    private JwtCookieUtil jwtCookieUtil;
 
     @Mock
     private UserRepository userRepository;
 
     @Mock
     private UserRoleService userRoleService;
-
-    @Mock
-    private UserMapper userMapper;
 
     @Test
     void testAddUser_success() {
@@ -72,8 +60,8 @@ class UserServiceTest {
     void testAddUser_duplicateUsername_throwsException() {
         when(userRepository.existsByUsername("librarian")).thenReturn(true);
 
-        assertThrows(IllegalArgumentException.class,
-            () -> userService.addUser(new UserRequest("librarian", "password123")));
+        final UserRequest userRequest = new UserRequest("librarian", "password123");
+        assertThrows(IllegalArgumentException.class, () -> userService.addUser(userRequest));
         verify(userRepository, never()).save(any(User.class));
     }
 

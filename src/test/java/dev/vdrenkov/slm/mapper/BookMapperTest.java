@@ -42,4 +42,3 @@ class BookMapperTest {
         assertNotNull(bookDto);
     }
 }
-

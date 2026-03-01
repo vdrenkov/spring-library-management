@@ -5,6 +5,7 @@ import dev.vdrenkov.slm.entity.Order;
 import dev.vdrenkov.slm.mapper.LocalDateMapper;
 import dev.vdrenkov.slm.mapper.OrderMapper;
 import dev.vdrenkov.slm.repository.OrderRepository;
+import dev.vdrenkov.slm.request.OrderRequest;
 import dev.vdrenkov.slm.util.BookFactory;
 import dev.vdrenkov.slm.util.ClientFactory;
 import dev.vdrenkov.slm.util.OrderFactory;
@@ -68,8 +69,8 @@ class OrderServiceTest {
 
     @Test
     void testAddOrder_noBooksIds_throws() {
-        assertThrows(IllegalArgumentException.class, () ->
-            orderService.addOrder(new dev.vdrenkov.slm.request.OrderRequest(ID, Collections.emptyList())));
+        final OrderRequest orderRequest = new OrderRequest(ID, Collections.emptyList());
+        assertThrows(IllegalArgumentException.class, () -> orderService.addOrder(orderRequest));
     }
 
     @Test
@@ -78,13 +79,14 @@ class OrderServiceTest {
         when(bookService.getBookById(anyInt())).thenReturn(BookFactory.getDefaultBook());
         when(bookService.decreaseBookQuantity(anyInt())).thenThrow(new IllegalStateException("Book is out of stock"));
 
-        assertThrows(IllegalStateException.class, () -> orderService.addOrder(OrderFactory.getDefaultOrderRequest()));
+        final OrderRequest orderRequest = OrderFactory.getDefaultOrderRequest();
+        assertThrows(IllegalStateException.class, () -> orderService.addOrder(orderRequest));
     }
 
     @Test
     void testAddOrder_duplicateBookIds_throws() {
-        assertThrows(IllegalArgumentException.class, () ->
-            orderService.addOrder(new dev.vdrenkov.slm.request.OrderRequest(ID, List.of(ID, ID))));
+        final OrderRequest orderRequest = new OrderRequest(ID, List.of(ID, ID));
+        assertThrows(IllegalArgumentException.class, () -> orderService.addOrder(orderRequest));
     }
 
     @Test
@@ -141,7 +143,8 @@ class OrderServiceTest {
     @Test
     void testGetAllOrdersDtoByDate() {
         when(localDateMapper.mapStringToDate(anyString())).thenReturn(LOCAL_DATE);
-        when(orderRepository.findByIssueDateAfter(any(LocalDate.class))).thenReturn(OrderFactory.getDefaultOrdersList());
+        when(orderRepository.findByIssueDateAfter(any(LocalDate.class))).thenReturn(
+            OrderFactory.getDefaultOrdersList());
         when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
 
         final List<OrderDto> result = orderService.getAllOrdersDtoByDate(CHOICE, DATE_STRING);

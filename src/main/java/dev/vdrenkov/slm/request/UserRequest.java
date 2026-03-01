@@ -7,6 +7,9 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
+/**
+ * UserRequest component.
+ */
 public class UserRequest {
 
     @NotBlank(message = "The username cannot be blank")
@@ -17,5 +20,3 @@ public class UserRequest {
     @Size(min = 8, max = 100, message = "The password must be between 8 and 100 characters")
     private String password;
 }
-
-
