@@ -3,6 +3,7 @@ package dev.vdrenkov.slm.configuration;
 import dev.vdrenkov.slm.jwt.JwtRequestFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -18,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import static dev.vdrenkov.slm.util.Constants.JWT_COOKIE_NAME;
 
 @EnableWebSecurity
+@Configuration
 public class WebSecurityConfiguration {
 
     private static final String ADMIN = "ADMIN";

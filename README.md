@@ -57,6 +57,8 @@ The default configuration lives in `src/main/resources/application.properties`:
 
 - `spring.datasource.*` points to a PostgreSQL instance.
 - `spring.jpa.hibernate.ddl-auto=update` is intentionally kept for this project long-term to auto-evolve schema during development/demo deployment.
+- `spring.jpa.open-in-view=false` disables Open Session in View for stateless API behavior.
+- Hibernate dialect is auto-detected from the JDBC driver (no explicit `hibernate.dialect` override is configured).
 - `jwt.secret` provides the signing key for tokens (use a strong 64+ character secret for HS512) and is required at startup.
 - `jwt.cookie.secure` and `jwt.cookie.same-site` control cookie hardening options.
 - `logging.file.name=logs/log.log` routes logs to the `/logs` folder.
