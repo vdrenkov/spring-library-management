@@ -4,7 +4,6 @@ import dev.vdrenkov.slm.dto.ClientDto;
 import dev.vdrenkov.slm.entity.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,8 +12,7 @@ import java.util.List;
 /**
  * ClientMapper component.
  */
-@Component
-public class ClientMapper {
+public final class ClientMapper {
     private static final Logger log = LoggerFactory.getLogger(ClientMapper.class);
 
     private ClientMapper() {

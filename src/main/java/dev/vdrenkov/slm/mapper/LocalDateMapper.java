@@ -2,15 +2,13 @@ package dev.vdrenkov.slm.mapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 /**
  * LocalDateMapper component.
  */
-@Component
-public class LocalDateMapper {
+public final class LocalDateMapper {
     private static final Logger log = LoggerFactory.getLogger(LocalDateMapper.class);
 
     private LocalDateMapper() {

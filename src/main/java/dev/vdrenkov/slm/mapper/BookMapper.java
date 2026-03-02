@@ -4,7 +4,6 @@ import dev.vdrenkov.slm.dto.BookDto;
 import dev.vdrenkov.slm.entity.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,8 +12,7 @@ import java.util.List;
 /**
  * BookMapper component.
  */
-@Component
-public class BookMapper {
+public final class BookMapper {
     private static final Logger log = LoggerFactory.getLogger(BookMapper.class);
 
     private BookMapper() {

@@ -4,7 +4,6 @@ import dev.vdrenkov.slm.dto.UserRoleDto;
 import dev.vdrenkov.slm.entity.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,8 +12,7 @@ import java.util.List;
 /**
  * UserRoleMapper component.
  */
-@Component
-public class UserRoleMapper {
+public final class UserRoleMapper {
     private static final Logger log = LoggerFactory.getLogger(UserRoleMapper.class);
 
     private UserRoleMapper() {

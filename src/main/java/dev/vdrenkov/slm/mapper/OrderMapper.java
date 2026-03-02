@@ -5,7 +5,6 @@ import dev.vdrenkov.slm.entity.Book;
 import dev.vdrenkov.slm.entity.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,8 +13,7 @@ import java.util.List;
 /**
  * OrderMapper component.
  */
-@Component
-public class OrderMapper {
+public final class OrderMapper {
     private static final Logger log = LoggerFactory.getLogger(OrderMapper.class);
 
     private OrderMapper() {
