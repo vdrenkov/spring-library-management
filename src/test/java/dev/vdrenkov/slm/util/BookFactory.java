@@ -11,7 +11,6 @@ import static dev.vdrenkov.slm.util.Constants.BOOKS_NAMES_LIST_VALUE;
 import static dev.vdrenkov.slm.util.Constants.ID;
 import static dev.vdrenkov.slm.util.Constants.LOCAL_DATE;
 import static dev.vdrenkov.slm.util.Constants.NAME;
-import static dev.vdrenkov.slm.util.Constants.ONE;
 import static dev.vdrenkov.slm.util.Constants.QUANTITY;
 
 /**
@@ -86,6 +85,6 @@ public final class BookFactory {
      * @return Singleton list of book IDs.
      */
     public static List<Integer> getDefaultBooksIdsList() {
-        return Collections.singletonList(ONE);
+        return Collections.singletonList(1);
     }
 }

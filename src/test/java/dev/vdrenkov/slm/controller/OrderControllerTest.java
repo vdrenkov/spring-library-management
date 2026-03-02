@@ -19,7 +19,6 @@ import static dev.vdrenkov.slm.util.Constants.DATE_STRING;
 import static dev.vdrenkov.slm.util.Constants.EMAIL;
 import static dev.vdrenkov.slm.util.Constants.ID;
 import static dev.vdrenkov.slm.util.Constants.NAME;
-import static dev.vdrenkov.slm.util.Constants.ONE;
 import static dev.vdrenkov.slm.util.Constants.PERIOD_STRING;
 import static dev.vdrenkov.slm.util.Constants.PHONE_NUMBER;
 import static dev.vdrenkov.slm.util.Constants.SURNAME;
@@ -79,7 +78,7 @@ class OrderControllerTest {
             .andExpect(jsonPath("$[0].clientDto.surname").value(SURNAME))
             .andExpect(jsonPath("$[0].clientDto.phoneNumber").value(PHONE_NUMBER))
             .andExpect(jsonPath("$[0].clientDto.email").value(EMAIL))
-            .andExpect(jsonPath("$[0].booksNames", hasSize(ONE)))
+            .andExpect(jsonPath("$[0].booksNames", hasSize(1)))
             .andExpect(jsonPath("$[0].issueDate").value(DATE_STRING))
             .andExpect(jsonPath("$[0].dueDate").value(DATE_STRING));
     }
@@ -105,7 +104,7 @@ class OrderControllerTest {
             .andExpect(jsonPath("$[0].clientDto.surname").value(SURNAME))
             .andExpect(jsonPath("$[0].clientDto.phoneNumber").value(PHONE_NUMBER))
             .andExpect(jsonPath("$[0].clientDto.email").value(EMAIL))
-            .andExpect(jsonPath("$[0].booksNames", hasSize(ONE)))
+            .andExpect(jsonPath("$[0].booksNames", hasSize(1)))
             .andExpect(jsonPath("$[0].issueDate").value(DATE_STRING))
             .andExpect(jsonPath("$[0].dueDate").value(DATE_STRING));
     }
@@ -132,7 +131,7 @@ class OrderControllerTest {
             .andExpect(jsonPath("$[0].clientDto.surname").value(SURNAME))
             .andExpect(jsonPath("$[0].clientDto.phoneNumber").value(PHONE_NUMBER))
             .andExpect(jsonPath("$[0].clientDto.email").value(EMAIL))
-            .andExpect(jsonPath("$[0].booksNames", hasSize(ONE)))
+            .andExpect(jsonPath("$[0].booksNames", hasSize(1)))
             .andExpect(jsonPath("$[0].issueDate").value(DATE_STRING))
             .andExpect(jsonPath("$[0].dueDate").value(DATE_STRING));
     }
@@ -170,7 +169,7 @@ class OrderControllerTest {
             .andExpect(jsonPath("$.clientDto.surname").value(SURNAME))
             .andExpect(jsonPath("$.clientDto.phoneNumber").value(PHONE_NUMBER))
             .andExpect(jsonPath("$.clientDto.email").value(EMAIL))
-            .andExpect(jsonPath("$.booksNames", hasSize(ONE)))
+            .andExpect(jsonPath("$.booksNames", hasSize(1)))
             .andExpect(jsonPath("$.issueDate").value(DATE_STRING))
             .andExpect(jsonPath("$.dueDate").value(DATE_STRING));
     }

@@ -15,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static dev.vdrenkov.slm.util.Constants.ZERO;
-
 @Service
 /**
  * BookService component.
@@ -69,7 +67,7 @@ public class BookService {
      * @return List of books.
      */
     public List<Book> getAllAvailableBooks() {
-        return bookRepository.findByQuantityGreaterThan(ZERO);
+        return bookRepository.findByQuantityGreaterThan(0);
     }
 
     /**
@@ -86,7 +84,7 @@ public class BookService {
      * @return List of books.
      */
     public List<Book> getAllBooksByAuthor(final int authorId) {
-        return bookRepository.findByAuthorIdAndQuantityGreaterThan(authorId, ZERO);
+        return bookRepository.findByAuthorIdAndQuantityGreaterThan(authorId, 0);
     }
 
     /**
@@ -125,7 +123,7 @@ public class BookService {
      */
     public Book decreaseBookQuantity(final int id) {
         final Book book = bookRepository.findByIdForUpdate(id).orElseThrow(BookNotFoundException::new);
-        if (book.getQuantity() <= ZERO) {
+        if (book.getQuantity() <= 0) {
             throw new IllegalStateException("Book with ID " + id + " is out of stock");
         }
 
