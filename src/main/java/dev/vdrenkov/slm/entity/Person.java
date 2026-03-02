@@ -20,13 +20,13 @@ public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     protected int id;
 
-    @Column(name = "NAME")
+    @Column(name = "name")
     protected String name;
 
-    @Column(name = "SURNAME")
+    @Column(name = "surname")
     protected String surname;
 
     /**

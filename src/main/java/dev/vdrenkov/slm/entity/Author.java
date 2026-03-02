@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @Entity
-@Table(name = "AUTHORS", uniqueConstraints = @UniqueConstraint(columnNames = { "name", "surname" }))
+@Table(name = "authors", uniqueConstraints = @UniqueConstraint(columnNames = { "name", "surname" }))
 public class Author extends Person {
 
     /**

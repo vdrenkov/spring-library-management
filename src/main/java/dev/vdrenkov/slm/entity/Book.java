@@ -23,26 +23,26 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "BOOKS")
+@Table(name = "books")
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private int id;
 
-    @Column(name = "NAME", unique = true)
+    @Column(name = "name", unique = true)
     private String name;
 
-    @Column(name = "PUBLISH_DATE")
+    @Column(name = "publish_date")
     private LocalDate publishDate;
 
     @ManyToOne
-    @JoinColumn(name = "AUTHOR_ID")
+    @JoinColumn(name = "author_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Author author;
 
-    @Column(name = "QUANTITY")
+    @Column(name = "quantity")
     private int quantity;
 
     /**

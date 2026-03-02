@@ -26,28 +26,28 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "ORDERS")
+@Table(name = "orders")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "CLIENT_ID")
+    @JoinColumn(name = "client_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Client client;
 
     @ManyToMany
-    @JoinTable(name = "ORDER_BOOKS", joinColumns = @JoinColumn(name = "ORDER_ID"),
-        inverseJoinColumns = @JoinColumn(name = "BOOK_ID"))
+    @JoinTable(name = "order_books", joinColumns = @JoinColumn(name = "order_id"),
+        inverseJoinColumns = @JoinColumn(name = "book_id"))
     private List<Book> books;
 
-    @Column(name = "ISSUE_DATE")
+    @Column(name = "issue_date")
     private LocalDate issueDate;
 
-    @Column(name = "DUE_DATE")
+    @Column(name = "due_date")
     private LocalDate dueDate;
 
     /**
