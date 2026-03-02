@@ -23,45 +23,50 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Service
 /**
  * UserService component.
  */
+@Service
 public class UserService {
-
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
+
     private static final String LIBRARIAN_ROLE = "LIBRARIAN";
+
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final JwtCookieUtil jwtCookieUtil;
     private final UserRepository userRepository;
     private final UserRoleService userRoleService;
-    private final UserMapper userMapper;
 
-    @Autowired
     /**
      * Handles UserService operation.
-     * @param authenticationManager Authentication manager dependency.
-     * @param passwordEncoder Password encoder dependency.
-     * @param jwtCookieUtil JWT cookie utility dependency.
-     * @param userRepository Repository dependency used by this component.
-     * @param userRoleService Service dependency used by this component.
-     * @param userMapper Mapper dependency used by this component.
+     *
+     * @param authenticationManager
+     *     Authentication manager dependency.
+     * @param passwordEncoder
+     *     Password encoder dependency.
+     * @param jwtCookieUtil
+     *     JWT cookie utility dependency.
+     * @param userRepository
+     *     Repository dependency used by this component.
+     * @param userRoleService
+     *     Service dependency used by this component.
      */
+    @Autowired
     public UserService(final AuthenticationManager authenticationManager, final PasswordEncoder passwordEncoder,
-        final JwtCookieUtil jwtCookieUtil, final UserRepository userRepository, final UserRoleService userRoleService,
-        final UserMapper userMapper) {
+        final JwtCookieUtil jwtCookieUtil, final UserRepository userRepository, final UserRoleService userRoleService) {
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.jwtCookieUtil = jwtCookieUtil;
         this.userRepository = userRepository;
         this.userRoleService = userRoleService;
-        this.userMapper = userMapper;
     }
 
     /**
      * Handles login operation.
-     * @param userRequest Request payload with input data.
+     *
+     * @param userRequest
+     *     Request payload with input data.
      * @return Resulting httpCookie value.
      */
     public HttpCookie login(final UserRequest userRequest) {
@@ -74,7 +79,9 @@ public class UserService {
 
     /**
      * Handles registerUser operation.
-     * @param userRequest Request payload with input data.
+     *
+     * @param userRequest
+     *     Request payload with input data.
      * @return Resulting httpCookie value.
      */
     public HttpCookie registerUser(final UserRequest userRequest) {
@@ -85,7 +92,9 @@ public class UserService {
 
     /**
      * Handles addUser operation.
-     * @param userRequest Request payload with input data.
+     *
+     * @param userRequest
+     *     Request payload with input data.
      */
     public void addUser(final UserRequest userRequest) {
         final String username = userRequest.getUsername();
@@ -101,6 +110,7 @@ public class UserService {
 
     /**
      * Handles getLibrarianRole operation.
+     *
      * @return List of userRoles.
      */
     public List<UserRole> getLibrarianRole() {
@@ -109,7 +119,9 @@ public class UserService {
 
     /**
      * Handles registerByAdmin operation.
-     * @param adminRequest Request payload with input data.
+     *
+     * @param adminRequest
+     *     Request payload with input data.
      * @return Resulting httpCookie value.
      */
     public HttpCookie registerByAdmin(final AdminRequest adminRequest) {
@@ -120,7 +132,9 @@ public class UserService {
 
     /**
      * Handles addUserByAdmin operation.
-     * @param adminRequest Request payload with input data.
+     *
+     * @param adminRequest
+     *     Request payload with input data.
      */
     public void addUserByAdmin(final AdminRequest adminRequest) {
         validateUsernameIsAvailable(adminRequest.getUsername());
@@ -135,7 +149,9 @@ public class UserService {
 
     /**
      * Handles validateUsernameIsAvailable operation.
-     * @param username Username value.
+     *
+     * @param username
+     *     Username value.
      */
     private void validateUsernameIsAvailable(final String username) {
         if (userRepository.existsByUsername(username)) {
@@ -145,7 +161,9 @@ public class UserService {
 
     /**
      * Handles getUserRoles operation.
-     * @param rolesIds Collection of target entity identifiers.
+     *
+     * @param rolesIds
+     *     Collection of target entity identifiers.
      * @return List of userRoles.
      */
     public List<UserRole> getUserRoles(final List<Integer> rolesIds) {
@@ -160,6 +178,7 @@ public class UserService {
 
     /**
      * Handles getAllUsers operation.
+     *
      * @return List of users.
      */
     public List<User> getAllUsers() {
@@ -169,15 +188,18 @@ public class UserService {
 
     /**
      * Handles getAllUsersDto operation.
+     *
      * @return List of user DTOs.
      */
     public List<UserDto> getAllUsersDto() {
-        return userMapper.mapUsersToUsersDto(getAllUsers());
+        return UserMapper.mapUsersToUsersDto(getAllUsers());
     }
 
     /**
      * Handles getUserById operation.
-     * @param id Identifier of the target entity.
+     *
+     * @param id
+     *     Identifier of the target entity.
      * @return Resulting user value.
      */
     public User getUserById(final int id) {
@@ -187,7 +209,9 @@ public class UserService {
 
     /**
      * Handles getUserDtoById operation.
-     * @param id Identifier of the target entity.
+     *
+     * @param id
+     *     Identifier of the target entity.
      * @return Resulting user DTO value.
      */
     public UserDto getUserDtoById(final int id) {

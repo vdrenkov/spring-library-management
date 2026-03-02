@@ -13,31 +13,31 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 /**
  * AuthorService component.
  */
+@Service
 public class AuthorService {
-
     private static final Logger log = LoggerFactory.getLogger(AuthorService.class);
 
     private final AuthorRepository authorRepository;
-    private final AuthorMapper authorMapper;
 
-    @Autowired
     /**
      * Handles AuthorService operation.
-     * @param authorRepository Repository dependency used by this component.
-     * @param authorMapper Mapper dependency used by this component.
+     *
+     * @param authorRepository
+     *     Repository dependency used by this component.
      */
-    public AuthorService(final AuthorRepository authorRepository, final AuthorMapper authorMapper) {
+    @Autowired
+    public AuthorService(final AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
-        this.authorMapper = authorMapper;
     }
 
     /**
      * Handles addAuthor operation.
-     * @param authorRequest Request payload with input data.
+     *
+     * @param authorRequest
+     *     Request payload with input data.
      * @return Resulting author value.
      */
     public Author addAuthor(final AuthorRequest authorRequest) {
@@ -49,6 +49,7 @@ public class AuthorService {
 
     /**
      * Handles getAllAuthors operation.
+     *
      * @return List of authors.
      */
     public List<Author> getAllAuthors() {
@@ -58,15 +59,18 @@ public class AuthorService {
 
     /**
      * Handles getAllAuthorsDto operation.
+     *
      * @return List of author DTOs.
      */
     public List<AuthorDto> getAllAuthorsDto() {
-        return authorMapper.mapAuthorsToAuthorsDto(getAllAuthors());
+        return AuthorMapper.mapAuthorsToAuthorsDto(getAllAuthors());
     }
 
     /**
      * Handles getAuthorById operation.
-     * @param id Identifier of the target entity.
+     *
+     * @param id
+     *     Identifier of the target entity.
      * @return Resulting author value.
      */
     public Author getAuthorById(final int id) {
@@ -76,7 +80,9 @@ public class AuthorService {
 
     /**
      * Handles getAuthorDtoById operation.
-     * @param id Identifier of the target entity.
+     *
+     * @param id
+     *     Identifier of the target entity.
      * @return Resulting author DTO value.
      */
     public AuthorDto getAuthorDtoById(final int id) {

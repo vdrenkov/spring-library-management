@@ -13,31 +13,31 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 /**
  * UserRoleService component.
  */
+@Service
 public class UserRoleService {
-
     private static final Logger log = LoggerFactory.getLogger(UserRoleService.class);
 
     private final UserRoleRepository userRepository;
-    private final UserRoleMapper userMapper;
 
-    @Autowired
     /**
      * Handles UserRoleService operation.
-     * @param userRepository Repository dependency used by this component.
-     * @param userMapper Mapper dependency used by this component.
+     *
+     * @param userRepository
+     *     Repository dependency used by this component.
      */
-    public UserRoleService(final UserRoleRepository userRepository, final UserRoleMapper userMapper) {
+    @Autowired
+    public UserRoleService(final UserRoleRepository userRepository) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
     }
 
     /**
      * Handles addUserRole operation.
-     * @param userRoleRequest Request payload with input data.
+     *
+     * @param userRoleRequest
+     *     Request payload with input data.
      * @return Resulting userRole value.
      */
     public UserRole addUserRole(final UserRoleRequest userRoleRequest) {
@@ -49,6 +49,7 @@ public class UserRoleService {
 
     /**
      * Handles getAllUserRoles operation.
+     *
      * @return List of userRoles.
      */
     public List<UserRole> getAllUserRoles() {
@@ -58,15 +59,18 @@ public class UserRoleService {
 
     /**
      * Handles getAllUserRolesDto operation.
+     *
      * @return List of userRole DTOs.
      */
     public List<UserRoleDto> getAllUserRolesDto() {
-        return userMapper.mapUserRolesToUserRolesDto(getAllUserRoles());
+        return UserRoleMapper.mapUserRolesToUserRolesDto(getAllUserRoles());
     }
 
     /**
      * Handles getUserRoleById operation.
-     * @param id Identifier of the target entity.
+     *
+     * @param id
+     *     Identifier of the target entity.
      * @return Resulting userRole value.
      */
     public UserRole getUserRoleById(final int id) {
@@ -76,7 +80,9 @@ public class UserRoleService {
 
     /**
      * Handles getUserRoleDtoById operation.
-     * @param id Identifier of the target entity.
+     *
+     * @param id
+     *     Identifier of the target entity.
      * @return Resulting userRole DTO value.
      */
     public UserRoleDto getUserRoleDtoById(final int id) {
@@ -85,7 +91,9 @@ public class UserRoleService {
 
     /**
      * Handles getUserRoleByRole operation.
-     * @param role Role value.
+     *
+     * @param role
+     *     Role value.
      * @return Resulting userRole value.
      */
     public UserRole getUserRoleByRole(final String role) {

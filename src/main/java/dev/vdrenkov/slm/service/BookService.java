@@ -15,34 +15,35 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
 /**
  * BookService component.
  */
+@Service
 public class BookService {
-
     private static final Logger log = LoggerFactory.getLogger(BookService.class);
 
     private final AuthorService authorService;
     private final BookRepository bookRepository;
-    private final BookMapper bookMapper;
 
-    @Autowired
     /**
      * Handles BookService operation.
-     * @param authorService Service dependency used by this component.
-     * @param bookRepository Repository dependency used by this component.
-     * @param bookMapper Mapper dependency used by this component.
+     *
+     * @param authorService
+     *     Service dependency used by this component.
+     * @param bookRepository
+     *     Repository dependency used by this component.
      */
-    public BookService(final AuthorService authorService, final BookRepository bookRepository, final BookMapper bookMapper) {
+    @Autowired
+    public BookService(final AuthorService authorService, final BookRepository bookRepository) {
         this.authorService = authorService;
         this.bookRepository = bookRepository;
-        this.bookMapper = bookMapper;
     }
 
     /**
      * Handles addBook operation.
-     * @param bookRequest Request payload with input data.
+     *
+     * @param bookRequest
+     *     Request payload with input data.
      * @return Resulting book value.
      */
     public Book addBook(final BookRequest bookRequest) {
@@ -55,6 +56,7 @@ public class BookService {
 
     /**
      * Handles getAllBooks operation.
+     *
      * @return List of books.
      */
     public List<Book> getAllBooks() {
@@ -64,6 +66,7 @@ public class BookService {
 
     /**
      * Handles getAllAvailableBooks operation.
+     *
      * @return List of books.
      */
     public List<Book> getAllAvailableBooks() {
@@ -72,15 +75,18 @@ public class BookService {
 
     /**
      * Handles getAllAvailableBooksDto operation.
+     *
      * @return List of book DTOs.
      */
     public List<BookDto> getAllAvailableBooksDto() {
-        return bookMapper.mapBooksToBooksDto(getAllAvailableBooks());
+        return BookMapper.mapBooksToBooksDto(getAllAvailableBooks());
     }
 
     /**
      * Handles getAllBooksByAuthor operation.
-     * @param authorId Identifier of the target entity.
+     *
+     * @param authorId
+     *     Identifier of the target entity.
      * @return List of books.
      */
     public List<Book> getAllBooksByAuthor(final int authorId) {
@@ -89,16 +95,20 @@ public class BookService {
 
     /**
      * Handles getAllBooksDtoByAuthor operation.
-     * @param authorId Identifier of the target entity.
+     *
+     * @param authorId
+     *     Identifier of the target entity.
      * @return List of book DTOs.
      */
     public List<BookDto> getAllBooksDtoByAuthor(final int authorId) {
-        return bookMapper.mapBooksToBooksDto(getAllBooksByAuthor(authorId));
+        return BookMapper.mapBooksToBooksDto(getAllBooksByAuthor(authorId));
     }
 
     /**
      * Handles getBookById operation.
-     * @param id Identifier of the target entity.
+     *
+     * @param id
+     *     Identifier of the target entity.
      * @return Resulting book value.
      */
     public Book getBookById(final int id) {
@@ -108,19 +118,23 @@ public class BookService {
 
     /**
      * Handles getBookDtoById operation.
-     * @param id Identifier of the target entity.
+     *
+     * @param id
+     *     Identifier of the target entity.
      * @return Resulting book DTO value.
      */
     public BookDto getBookDtoById(final int id) {
         return BookMapper.mapBookToBookDto(getBookById(id));
     }
 
-    @Transactional
     /**
      * Handles decreaseBookQuantity operation.
-     * @param id Identifier of the target entity.
+     *
+     * @param id
+     *     Identifier of the target entity.
      * @return Resulting book value.
      */
+    @Transactional
     public Book decreaseBookQuantity(final int id) {
         final Book book = bookRepository.findByIdForUpdate(id).orElseThrow(BookNotFoundException::new);
         if (book.getQuantity() <= 0) {

@@ -20,43 +20,43 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-@Service
 /**
  * OrderService component.
  */
+@Service
 public class OrderService {
-
     private static final Logger log = LoggerFactory.getLogger(OrderService.class);
+
     private final BookService bookService;
     private final ClientService clientService;
     private final OrderRepository orderRepository;
-    private final OrderMapper orderMapper;
-    private final LocalDateMapper localDateMapper;
 
-    @Autowired
     /**
      * Handles OrderService operation.
-     * @param bookService Service dependency used by this component.
-     * @param clientService Service dependency used by this component.
-     * @param orderRepository Repository dependency used by this component.
-     * @param orderMapper Mapper dependency used by this component.
-     * @param localDateMapper Mapper dependency used by this component.
+     *
+     * @param bookService
+     *     Service dependency used by this component.
+     * @param clientService
+     *     Service dependency used by this component.
+     * @param orderRepository
+     *     Repository dependency used by this component.
      */
-    public OrderService(final BookService bookService, final ClientService clientService, final OrderRepository orderRepository,
-        final OrderMapper orderMapper, final LocalDateMapper localDateMapper) {
+    @Autowired
+    public OrderService(final BookService bookService, final ClientService clientService,
+        final OrderRepository orderRepository) {
         this.bookService = bookService;
         this.clientService = clientService;
         this.orderRepository = orderRepository;
-        this.orderMapper = orderMapper;
-        this.localDateMapper = localDateMapper;
     }
 
-    @Transactional
     /**
      * Handles addOrder operation.
-     * @param orderRequest Request payload with input data.
+     *
+     * @param orderRequest
+     *     Request payload with input data.
      * @return Resulting order value.
      */
+    @Transactional
     public Order addOrder(final OrderRequest orderRequest) {
         if (orderRequest.getBooksIds().isEmpty()) {
             throw new IllegalArgumentException("At least one book ID is required to create an order");
@@ -79,18 +79,10 @@ public class OrderService {
     }
 
     /**
-     * Handles validateNoDuplicateBookIds operation.
-     * @param booksIds Collection of target entity identifiers.
-     */
-    private void validateNoDuplicateBookIds(final List<Integer> booksIds) {
-        if (new HashSet<>(booksIds).size() != booksIds.size()) {
-            throw new IllegalArgumentException("Duplicate book IDs are not allowed in a single order");
-        }
-    }
-
-    /**
      * Handles decreaseBooksQuantities operation.
-     * @param booksIds Collection of target entity identifiers.
+     *
+     * @param booksIds
+     *     Collection of target entity identifiers.
      */
     private void decreaseBooksQuantities(final List<Integer> booksIds) {
         for (final int bookId : booksIds) {
@@ -100,6 +92,7 @@ public class OrderService {
 
     /**
      * Handles getAllOrders operation.
+     *
      * @return List of orders.
      */
     public List<Order> getAllOrders() {
@@ -109,15 +102,18 @@ public class OrderService {
 
     /**
      * Handles getAllOrdersDto operation.
+     *
      * @return List of order DTOs.
      */
     public List<OrderDto> getAllOrdersDto() {
-        return orderMapper.mapOrdersToOrdersDto(getAllOrders());
+        return OrderMapper.mapOrdersToOrdersDto(getAllOrders());
     }
 
     /**
      * Handles getAllOrdersByClient operation.
-     * @param clientId Identifier of the target entity.
+     *
+     * @param clientId
+     *     Identifier of the target entity.
      * @return List of orders.
      */
     public List<Order> getAllOrdersByClient(final int clientId) {
@@ -126,17 +122,22 @@ public class OrderService {
 
     /**
      * Handles getAllOrdersDtoByClient operation.
-     * @param clientId Identifier of the target entity.
+     *
+     * @param clientId
+     *     Identifier of the target entity.
      * @return List of order DTOs.
      */
     public List<OrderDto> getAllOrdersDtoByClient(final int clientId) {
-        return orderMapper.mapOrdersToOrdersDto(getAllOrdersByClient(clientId));
+        return OrderMapper.mapOrdersToOrdersDto(getAllOrdersByClient(clientId));
     }
 
     /**
      * Handles getAllOrdersByDate operation.
-     * @param choice Option selector value.
-     * @param date Date value.
+     *
+     * @param choice
+     *     Option selector value.
+     * @param date
+     *     Date value.
      * @return List of orders.
      */
     public List<Order> getAllOrdersByDate(final int choice, final LocalDate date) {
@@ -154,27 +155,22 @@ public class OrderService {
 
     /**
      * Handles getAllOrdersDtoByDate operation.
-     * @param choice Option selector value.
-     * @param date Date value.
+     *
+     * @param choice
+     *     Option selector value.
+     * @param date
+     *     Date value.
      * @return List of order DTOs.
      */
     public List<OrderDto> getAllOrdersDtoByDate(final int choice, final String date) {
-        return orderMapper.mapOrdersToOrdersDto(getAllOrdersByDate(choice, LocalDateMapper.mapStringToDate(date)));
-    }
-
-    /**
-     * Handles validateOrderDateChoice operation.
-     * @param choice Option selector value.
-     */
-    private void validateOrderDateChoice(final int choice) {
-        if (choice < 1 || choice > 6) {
-            throw new IllegalArgumentException("Choice must be between 1 and 6");
-        }
+        return OrderMapper.mapOrdersToOrdersDto(getAllOrdersByDate(choice, LocalDateMapper.mapStringToDate(date)));
     }
 
     /**
      * Handles getOrderById operation.
-     * @param id Identifier of the target entity.
+     *
+     * @param id
+     *     Identifier of the target entity.
      * @return Resulting order value.
      */
     public Order getOrderById(final int id) {
@@ -184,21 +180,27 @@ public class OrderService {
 
     /**
      * Handles getOrderDtoById operation.
-     * @param id Identifier of the target entity.
+     *
+     * @param id
+     *     Identifier of the target entity.
      * @return Resulting order DTO value.
      */
     public OrderDto getOrderDtoById(final int id) {
         return OrderMapper.mapOrderToOrderDto(getOrderById(id));
     }
 
-    @Transactional
     /**
      * Handles extendOrderDueByDate operation.
-     * @param orderId Identifier of the target entity.
-     * @param choice Option selector value.
-     * @param period Extension period value.
+     *
+     * @param orderId
+     *     Identifier of the target entity.
+     * @param choice
+     *     Option selector value.
+     * @param period
+     *     Extension period value.
      * @return Resulting order DTO value.
      */
+    @Transactional
     public OrderDto extendOrderDueByDate(final int orderId, final int choice, final int period) {
         final Order order = getOrderById(orderId);
         final OrderDto oldOrder = OrderMapper.mapOrderToOrderDto(order);
@@ -221,5 +223,29 @@ public class OrderService {
         orderRepository.save(order);
         log.info("Order due date successfully updated");
         return oldOrder;
+    }
+
+    /**
+     * Handles validateNoDuplicateBookIds operation.
+     *
+     * @param booksIds
+     *     Collection of target entity identifiers.
+     */
+    private static void validateNoDuplicateBookIds(final List<Integer> booksIds) {
+        if (new HashSet<>(booksIds).size() != booksIds.size()) {
+            throw new IllegalArgumentException("Duplicate book IDs are not allowed in a single order");
+        }
+    }
+
+    /**
+     * Handles validateOrderDateChoice operation.
+     *
+     * @param choice
+     *     Option selector value.
+     */
+    private static void validateOrderDateChoice(final int choice) {
+        if (choice < 1 || choice > 6) {
+            throw new IllegalArgumentException("Choice must be between 1 and 6");
+        }
     }
 }
