@@ -80,7 +80,7 @@ public class UserRoleService {
      * @return Resulting userRole DTO value.
      */
     public UserRoleDto getUserRoleDtoById(final int id) {
-        return userMapper.mapUserRoleToUserRoleDto(getUserRoleById(id));
+        return UserRoleMapper.mapUserRoleToUserRoleDto(getUserRoleById(id));
     }
 
     /**

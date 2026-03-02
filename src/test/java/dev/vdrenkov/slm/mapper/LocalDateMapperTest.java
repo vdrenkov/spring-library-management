@@ -9,11 +9,9 @@ import static dev.vdrenkov.slm.util.Constants.LOCAL_DATE;
 
 class LocalDateMapperTest {
 
-    private final LocalDateMapper mapper = new LocalDateMapper();
-
     @Test
     void testMapStringToDate() {
-        final LocalDate response = mapper.mapStringToDate("2000-01-01");
+        final LocalDate response = LocalDateMapper.mapStringToDate("2000-01-01");
 
         Assertions.assertEquals(LOCAL_DATE.toString(), response.toString());
     }

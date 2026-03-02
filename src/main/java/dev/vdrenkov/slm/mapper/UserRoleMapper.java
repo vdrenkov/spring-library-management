@@ -10,38 +10,45 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@Component
 /**
  * UserRoleMapper component.
  */
+@Component
 public class UserRoleMapper {
+    private static final Logger log = LoggerFactory.getLogger(UserRoleMapper.class);
 
-  private static final Logger log = LoggerFactory.getLogger(UserRoleMapper.class);
-
-  /**
-   * Handles mapUserRolesToUserRolesDto operation.
-   * @param userRoles User role entities to map.
-   * @return List of userRole DTOs.
-   */
-  public List<UserRoleDto> mapUserRolesToUserRolesDto(final List<UserRole> userRoles) {
-    final List<UserRoleDto> userRolesDto = new ArrayList<>();
-
-    for (final UserRole userRole : userRoles) {
-      userRolesDto.add(mapUserRoleToUserRoleDto(userRole));
+    private UserRoleMapper() {
+        /* This utility class should not be instantiated */
     }
 
-    userRolesDto.sort(Comparator.comparing(UserRoleDto::getRole));
-    log.debug("Users' list mapped to users' DTOs list");
-    return userRolesDto;
-  }
+    /**
+     * Handles mapUserRolesToUserRolesDto operation.
+     *
+     * @param userRoles
+     *     User role entities to map.
+     * @return List of userRole DTOs.
+     */
+    public static List<UserRoleDto> mapUserRolesToUserRolesDto(final List<UserRole> userRoles) {
+        final List<UserRoleDto> userRolesDto = new ArrayList<>();
 
-  /**
-   * Handles mapUserRoleToUserRoleDto operation.
-   * @param userRole User role entity value.
-   * @return Resulting userRole DTO value.
-   */
-  public UserRoleDto mapUserRoleToUserRoleDto(final UserRole userRole) {
-    log.debug("User role mapped to user role DTO");
-    return new UserRoleDto(userRole.getRole());
-  }
+        for (final UserRole userRole : userRoles) {
+            userRolesDto.add(mapUserRoleToUserRoleDto(userRole));
+        }
+
+        userRolesDto.sort(Comparator.comparing(UserRoleDto::getRole));
+        log.debug("Users' list mapped to users' DTOs list");
+        return userRolesDto;
+    }
+
+    /**
+     * Handles mapUserRoleToUserRoleDto operation.
+     *
+     * @param userRole
+     *     User role entity value.
+     * @return Resulting userRole DTO value.
+     */
+    public static UserRoleDto mapUserRoleToUserRoleDto(final UserRole userRole) {
+        log.debug("User role mapped to user role DTO");
+        return new UserRoleDto(userRole.getRole());
+    }
 }

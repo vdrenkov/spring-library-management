@@ -10,18 +10,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AuthorMapperTest {
 
-    private final AuthorMapper mapper = new AuthorMapper();
-
     @Test
     void testMapAuthorsToAuthorsDto() {
-        final List<AuthorDto> authorsDto = mapper.mapAuthorsToAuthorsDto(AuthorFactory.getDefaultAuthorsList());
+        final List<AuthorDto> authorsDto = AuthorMapper.mapAuthorsToAuthorsDto(AuthorFactory.getDefaultAuthorsList());
 
         assertNotNull(authorsDto);
     }
 
     @Test
     void testMapAuthorToAuthorDto() {
-        final AuthorDto authorDto = mapper.mapAuthorToAuthorDto(AuthorFactory.getDefaultAuthor());
+        final AuthorDto authorDto = AuthorMapper.mapAuthorToAuthorDto(AuthorFactory.getDefaultAuthor());
 
         assertNotNull(authorDto);
     }

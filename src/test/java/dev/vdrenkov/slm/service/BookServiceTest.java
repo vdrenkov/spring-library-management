@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -69,7 +68,6 @@ class BookServiceTest {
     @Test
     void testGetAllAvailableBooksDto() {
         when(bookRepository.findByQuantityGreaterThan(anyInt())).thenReturn(BookFactory.getDefaultBooksList());
-        when(bookMapper.mapBooksToBooksDto(anyList())).thenReturn(BookFactory.getDefaultBooksDtoList());
 
         final List<BookDto> testList = bookService.getAllAvailableBooksDto();
 
@@ -90,7 +88,6 @@ class BookServiceTest {
     void testGetAllBooksDtoByAuthor() {
         when(bookRepository.findByAuthorIdAndQuantityGreaterThan(anyInt(), anyInt())).thenReturn(
             BookFactory.getDefaultBooksList());
-        when(bookMapper.mapBooksToBooksDto(anyList())).thenReturn(BookFactory.getDefaultBooksDtoList());
 
         final List<BookDto> testList = bookService.getAllBooksDtoByAuthor(ID);
 
@@ -109,7 +106,6 @@ class BookServiceTest {
     @Test
     void testGetBookDtoById() {
         when(bookRepository.findById(anyInt())).thenReturn(Optional.of(BookFactory.getDefaultBook()));
-        when(bookMapper.mapBookToBookDto(any())).thenReturn(BookFactory.getDefaultBookDto());
 
         final BookDto bookDto = bookService.getBookDtoById(ID);
 

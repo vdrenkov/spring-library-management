@@ -10,18 +10,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ClientMapperTest {
 
-    private final ClientMapper mapper = new ClientMapper();
-
     @Test
     void testMapClientsToClientsDto() {
-        final List<ClientDto> clientsDto = mapper.mapClientsToClientsDto(ClientFactory.getDefaultClientsList());
+        final List<ClientDto> clientsDto = ClientMapper.mapClientsToClientsDto(ClientFactory.getDefaultClientsList());
 
         assertNotNull(clientsDto);
     }
 
     @Test
     void testMapClientToClientDto() {
-        final ClientDto clientDto = mapper.mapClientToClientDto(ClientFactory.getDefaultClient());
+        final ClientDto clientDto = ClientMapper.mapClientToClientDto(ClientFactory.getDefaultClient());
 
         assertNotNull(clientDto);
     }

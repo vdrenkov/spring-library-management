@@ -19,7 +19,6 @@ import static dev.vdrenkov.slm.util.Constants.ID;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,7 +54,6 @@ class ClientServiceTest {
     @Test
     void testGetAllClientsDto() {
         when(clientRepository.findAll()).thenReturn(ClientFactory.getDefaultClientsList());
-        when(clientMapper.mapClientsToClientsDto(anyList())).thenReturn(ClientFactory.getDefaultClientsDtoList());
 
         final List<ClientDto> result = clientService.getAllClientsDto();
 
@@ -74,7 +72,6 @@ class ClientServiceTest {
     @Test
     void testGetClientDtoById() {
         when(clientRepository.findById(anyInt())).thenReturn(Optional.of(ClientFactory.getDefaultClient()));
-        when(clientMapper.mapClientToClientDto(any())).thenReturn(ClientFactory.getDefaultClientDto());
 
         final ClientDto result = clientService.getClientDtoById(ID);
 

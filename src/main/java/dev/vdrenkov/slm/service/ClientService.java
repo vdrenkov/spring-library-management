@@ -81,7 +81,7 @@ public class ClientService {
      * @return Resulting client DTO value.
      */
     public ClientDto getClientDtoById(final int id) {
-        return clientMapper.mapClientToClientDto(getClientById(id));
+        return ClientMapper.mapClientToClientDto(getClientById(id));
     }
 
     /**

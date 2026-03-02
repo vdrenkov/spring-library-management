@@ -159,7 +159,7 @@ public class OrderService {
      * @return List of order DTOs.
      */
     public List<OrderDto> getAllOrdersDtoByDate(final int choice, final String date) {
-        return orderMapper.mapOrdersToOrdersDto(getAllOrdersByDate(choice, localDateMapper.mapStringToDate(date)));
+        return orderMapper.mapOrdersToOrdersDto(getAllOrdersByDate(choice, LocalDateMapper.mapStringToDate(date)));
     }
 
     /**
@@ -188,7 +188,7 @@ public class OrderService {
      * @return Resulting order DTO value.
      */
     public OrderDto getOrderDtoById(final int id) {
-        return orderMapper.mapOrderToOrderDto(getOrderById(id));
+        return OrderMapper.mapOrderToOrderDto(getOrderById(id));
     }
 
     @Transactional
@@ -201,7 +201,7 @@ public class OrderService {
      */
     public OrderDto extendOrderDueByDate(final int orderId, final int choice, final int period) {
         final Order order = getOrderById(orderId);
-        final OrderDto oldOrder = orderMapper.mapOrderToOrderDto(order);
+        final OrderDto oldOrder = OrderMapper.mapOrderToOrderDto(order);
 
         final LocalDate dueDate = order.getDueDate();
 

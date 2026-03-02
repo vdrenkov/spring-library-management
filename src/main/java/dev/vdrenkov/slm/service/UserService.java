@@ -191,6 +191,6 @@ public class UserService {
      * @return Resulting user DTO value.
      */
     public UserDto getUserDtoById(final int id) {
-        return userMapper.mapUserToUserDto(getUserById(id));
+        return UserMapper.mapUserToUserDto(getUserById(id));
     }
 }

@@ -114,7 +114,7 @@ public class BookService {
      * @return Resulting book DTO value.
      */
     public BookDto getBookDtoById(final int id) {
-        return bookMapper.mapBookToBookDto(getBookById(id));
+        return BookMapper.mapBookToBookDto(getBookById(id));
     }
 
     @Transactional

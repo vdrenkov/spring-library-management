@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -56,7 +55,6 @@ class AuthorServiceTest {
     @Test
     void testGetAllAuthorsDto() {
         when(authorRepository.findAll()).thenReturn(AuthorFactory.getDefaultAuthorsList());
-        when(authorMapper.mapAuthorsToAuthorsDto(anyList())).thenReturn(AuthorFactory.getDefaultAuthorsDtoList());
 
         final List<AuthorDto> result = authorService.getAllAuthorsDto();
 
@@ -75,7 +73,6 @@ class AuthorServiceTest {
     @Test
     void testGetAuthorDtoById() {
         when(authorRepository.findById(anyInt())).thenReturn(Optional.of(AuthorFactory.getDefaultAuthor()));
-        when(authorMapper.mapAuthorToAuthorDto(any())).thenReturn(AuthorFactory.getDefaultAuthorDto());
 
         final AuthorDto result = authorService.getAuthorDtoById(ID);
 

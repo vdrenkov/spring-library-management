@@ -80,6 +80,6 @@ public class AuthorService {
      * @return Resulting author DTO value.
      */
     public AuthorDto getAuthorDtoById(final int id) {
-        return authorMapper.mapAuthorToAuthorDto(getAuthorById(id));
+        return AuthorMapper.mapAuthorToAuthorDto(getAuthorById(id));
     }
 }

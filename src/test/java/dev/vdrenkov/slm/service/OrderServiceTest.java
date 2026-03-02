@@ -30,8 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyList;
-import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -100,7 +98,7 @@ class OrderServiceTest {
 
     @Test
     void testGetAllOrdersDto() {
-        when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
+        when(orderRepository.findAll()).thenReturn(OrderFactory.getDefaultOrdersList());
 
         final List<OrderDto> result = orderService.getAllOrdersDto();
 
@@ -119,7 +117,6 @@ class OrderServiceTest {
     @Test
     void testGetAllOrdersDtoByClient() {
         when(orderRepository.findByClientId(anyInt())).thenReturn(OrderFactory.getDefaultOrdersList());
-        when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
 
         final List<OrderDto> result = orderService.getAllOrdersDtoByClient(ID);
 
@@ -142,10 +139,8 @@ class OrderServiceTest {
 
     @Test
     void testGetAllOrdersDtoByDate() {
-        when(localDateMapper.mapStringToDate(anyString())).thenReturn(LOCAL_DATE);
         when(orderRepository.findByIssueDateAfter(any(LocalDate.class))).thenReturn(
             OrderFactory.getDefaultOrdersList());
-        when(orderMapper.mapOrdersToOrdersDto(anyList())).thenReturn(OrderFactory.getDefaultOrdersDtoList());
 
         final List<OrderDto> result = orderService.getAllOrdersDtoByDate(CHOICE, DATE_STRING);
 
@@ -164,7 +159,6 @@ class OrderServiceTest {
     @Test
     void testGetOrderDtoById() {
         when(orderRepository.findById(anyInt())).thenReturn(Optional.of(OrderFactory.getDefaultOrder()));
-        when(orderMapper.mapOrderToOrderDto(any())).thenReturn(OrderFactory.getDefaultOrderDto());
 
         final OrderDto orderDto = orderService.getOrderDtoById(ID);
 
@@ -175,7 +169,6 @@ class OrderServiceTest {
     void testExtendOrderDueByDate_success() {
         when(orderRepository.findById(anyInt())).thenReturn(Optional.of(OrderFactory.getDefaultOrder()));
         when(orderRepository.save(any())).thenReturn(OrderFactory.getDefaultOrder());
-        when(orderMapper.mapOrderToOrderDto(any())).thenReturn(OrderFactory.getDefaultOrderDto());
 
         final OrderDto orderDto1 = orderService.extendOrderDueByDate(ID, 1, PERIOD);
         final OrderDto orderDto2 = orderService.extendOrderDueByDate(ID, 2, PERIOD);

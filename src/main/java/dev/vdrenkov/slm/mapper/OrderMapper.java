@@ -5,63 +5,58 @@ import dev.vdrenkov.slm.entity.Book;
 import dev.vdrenkov.slm.entity.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@Component
 /**
  * OrderMapper component.
  */
+@Component
 public class OrderMapper {
+    private static final Logger log = LoggerFactory.getLogger(OrderMapper.class);
 
-  private static final Logger log = LoggerFactory.getLogger(OrderMapper.class);
-
-  private final ClientMapper clientMapper;
-
-  @Autowired
-  /**
-   * Handles OrderMapper operation.
-   * @param clientMapper Mapper dependency used by this component.
-   */
-  public OrderMapper(final ClientMapper clientMapper) {
-    this.clientMapper = clientMapper;
-  }
-
-  /**
-   * Handles mapOrdersToOrdersDto operation.
-   * @param orders Order entities to map.
-   * @return List of order DTOs.
-   */
-  public List<OrderDto> mapOrdersToOrdersDto(final List<Order> orders) {
-    final List<OrderDto> ordersDto = new ArrayList<>();
-
-    for (final Order order : orders) {
-      ordersDto.add(mapOrderToOrderDto(order));
+    private OrderMapper() {
+        /* This utility class should not be instantiated */
     }
 
-    ordersDto.sort(Comparator.comparing(OrderDto::id));
-    log.debug("Orders' list mapped to orders' DTOs list");
-    return ordersDto;
-  }
+    /**
+     * Handles mapOrdersToOrdersDto operation.
+     *
+     * @param orders
+     *     Order entities to map.
+     * @return List of order DTOs.
+     */
+    public static List<OrderDto> mapOrdersToOrdersDto(final List<Order> orders) {
+        final List<OrderDto> ordersDto = new ArrayList<>();
 
-  /**
-   * Handles mapOrderToOrderDto operation.
-   * @param order Order entity value.
-   * @return Resulting order DTO value.
-   */
-  public OrderDto mapOrderToOrderDto(final Order order) {
-    final List<String> booksNames = new ArrayList<>();
+        for (final Order order : orders) {
+            ordersDto.add(mapOrderToOrderDto(order));
+        }
 
-    for (final Book book : order.getBooks()) {
-      booksNames.add(book.getName());
+        ordersDto.sort(Comparator.comparing(OrderDto::id));
+        log.debug("Orders' list mapped to orders' DTOs list");
+        return ordersDto;
     }
 
-    log.debug("Order mapped to order DTO");
-    return new OrderDto(order.getId(), clientMapper.mapClientToClientDto(order.getClient()),
-                        booksNames, order.getIssueDate(), order.getDueDate());
-  }
+    /**
+     * Handles mapOrderToOrderDto operation.
+     *
+     * @param order
+     *     Order entity value.
+     * @return Resulting order DTO value.
+     */
+    public static OrderDto mapOrderToOrderDto(final Order order) {
+        final List<String> booksNames = new ArrayList<>();
+
+        for (final Book book : order.getBooks()) {
+            booksNames.add(book.getName());
+        }
+
+        log.debug("Order mapped to order DTO");
+        return new OrderDto(order.getId(), ClientMapper.mapClientToClientDto(order.getClient()), booksNames,
+            order.getIssueDate(), order.getDueDate());
+    }
 }
