@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
-@NoArgsConstructor
-@Getter
 /**
  * ClientRequest component.
  */
+@NoArgsConstructor
+@Getter
 public class ClientRequest extends PersonRequest {
 
     @Pattern(regexp = "^\\d{9,10}$", message = "The phone number must consist of only 9 or 10 digits.")
@@ -23,10 +23,15 @@ public class ClientRequest extends PersonRequest {
 
     /**
      * Handles ClientRequest operation.
-     * @param name Name value.
-     * @param surname Surname value.
-     * @param phoneNumber Phone number value.
-     * @param email Email value.
+     *
+     * @param name
+     *     Name value.
+     * @param surname
+     *     Surname value.
+     * @param phoneNumber
+     *     Phone number value.
+     * @param email
+     *     Email value.
      */
     public ClientRequest(final String name, final String surname, final String phoneNumber, final String email) {
         super(name, surname);
@@ -34,12 +39,14 @@ public class ClientRequest extends PersonRequest {
         this.email = email;
     }
 
-    @Override
     /**
      * Handles equals operation.
-     * @param o Object compared with the current instance.
+     *
+     * @param o
+     *     Object compared with the current instance.
      * @return Boolean flag indicating whether the condition is satisfied.
      */
+    @Override
     public boolean equals(final Object o) {
         if (!(o instanceof final ClientRequest that))
             return false;
@@ -48,11 +55,12 @@ public class ClientRequest extends PersonRequest {
         return Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(email, that.email);
     }
 
-    @Override
     /**
      * Handles hashCode operation.
+     *
      * @return Numeric result of the operation.
      */
+    @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), phoneNumber, email);
     }

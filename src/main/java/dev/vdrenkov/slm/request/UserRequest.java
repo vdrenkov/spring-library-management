@@ -5,11 +5,11 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
-@Getter
 /**
  * UserRequest component.
  */
+@AllArgsConstructor
+@Getter
 public class UserRequest {
 
     @NotBlank(message = "The username cannot be blank")

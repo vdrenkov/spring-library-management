@@ -6,12 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
 /**
  * UserRoleRequest component.
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class UserRoleRequest {
 
     @Pattern(regexp = "^[A-Z_]+$", message = "The role should contain only capital letters and/or underscore/s.")

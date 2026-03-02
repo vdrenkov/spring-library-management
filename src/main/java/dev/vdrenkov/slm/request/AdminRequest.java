@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
 /**
  * AdminRequest component.
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class AdminRequest {
 
     @Pattern(regexp = "^[A-Za-z0-9_-]+$",

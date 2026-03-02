@@ -6,12 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
 /**
  * PersonRequest component.
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class PersonRequest {
 
     @Pattern(regexp = "^[A-Z][a-z. ]+$",

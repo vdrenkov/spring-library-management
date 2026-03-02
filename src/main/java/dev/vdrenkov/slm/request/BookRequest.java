@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
 /**
  * BookRequest component.
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class BookRequest {
 
     @Pattern(regexp = "^[A-Z0-9][A-Z0-9a-z .]*$",
