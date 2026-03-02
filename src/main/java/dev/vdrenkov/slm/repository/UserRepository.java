@@ -6,23 +6,27 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
 /**
  * UserRepository contract.
  */
+@Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-  /**
-   * Handles findByUsername operation.
-   * @param username Username value.
-   * @return Optional containing the requested user.
-   */
-  Optional<User> findByUsername(String username);
+    /**
+     * Handles findByUsername operation.
+     *
+     * @param username
+     *     Username value.
+     * @return Optional containing the requested user.
+     */
+    Optional<User> findByUsername(String username);
 
-  /**
-   * Handles existsByUsername operation.
-   * @param username Username value.
-   * @return Boolean flag indicating whether the condition is satisfied.
-   */
-  boolean existsByUsername(String username);
+    /**
+     * Handles existsByUsername operation.
+     *
+     * @param username
+     *     Username value.
+     * @return Boolean flag indicating whether the condition is satisfied.
+     */
+    boolean existsByUsername(String username);
 }
