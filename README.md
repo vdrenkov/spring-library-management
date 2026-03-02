@@ -48,7 +48,7 @@ logs/                   # Log output destination (configured in properties)
 
 - Java 25
 - Maven 3.9+
-- PostgreSQL running locally (default config expects `localhost:7070/SpringLibraryManagement`)
+- PostgreSQL running locally (default config expects `localhost:5432/SpringLibraryManagement`)
 - Optional: Postman for API exploration (`src/main/resources/SpringLibraryManagement.postman_collection.json`)
 
 ## Configuration
@@ -59,18 +59,18 @@ The default configuration lives in `src/main/resources/application.properties`:
 - `spring.jpa.hibernate.ddl-auto=update` is intentionally kept for this project long-term to auto-evolve schema during development/demo deployment.
 - `spring.jpa.open-in-view=false` disables Open Session in View for stateless API behavior.
 - Hibernate dialect auto-detected from the JDBC driver (no explicit `hibernate.dialect` override configured).
-- `jwt.secret` provides the signing key for tokens (use a strong 64+ character secret for HS512) and is required at a startup.
+- `jwt.secret` provides the signing key for tokens (use a strong 64+ character secret for HS512) and is required at startup.
 - `jwt.cookie.secure` and `jwt.cookie.same-site` control cookie hardening options.
 - `logging.file.name=logs/log.log` routes logs to the `/logs` folder.
 - `app.bootstrap.roles=true` auto-creates `ADMIN` and `LIBRARIAN` roles if missing.
-- `app.bootstrap.admin.username` / `app.bootstrap.admin.password` optionally create an initial admin user at a startup.
+- `app.bootstrap.admin.username` / `app.bootstrap.admin.password` optionally create an initial admin user at startup.
 
 `JWT_SECRET` and `SPRING_DATASOURCE_PASSWORD` are mandatory environment variables.
 
 Do not commit real credentials. Override sensitive values with environment variables, or a profile-specific properties file instead of editing source directly:
 
 ```bash
-set SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:7070/SpringLibraryManagement
+set SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/SpringLibraryManagement
 set SPRING_DATASOURCE_USERNAME=postgres
 set SPRING_DATASOURCE_PASSWORD=<your-password>
 set JWT_SECRET=<64+-char-secret>
@@ -116,7 +116,7 @@ Use the bundled `DDL_Scripts.sql` when you prefer explicit schema management or 
   - **ADMIN** – full access to user/role management and all catalogue operations (including deletions).
   - **LIBRARIAN** – CRUD access to authors, books, clients and orders (except DELETE and admin endpoints).
 
-Roles (`ADMIN`, `LIBRARIAN`) are auto-bootstrapped on a startup. To bootstrap the first admin automatically, set:
+Roles (`ADMIN`, `LIBRARIAN`) are auto-bootstrapped at startup. To bootstrap the first admin automatically, set:
 
 ```bash
 set APP_BOOTSTRAP_ADMIN_USERNAME=admin
