@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,10 @@ import java.util.Arrays;
 
 import static dev.vdrenkov.slm.util.Constants.JWT_COOKIE_NAME;
 
-@Component
 /**
  * JwtRequestFilter component.
  */
+@Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
@@ -31,26 +32,33 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtTokenUtil tokenUtil;
     private final JwtUserDetailsService userDetailsService;
 
-    @Autowired
     /**
      * Handles JwtRequestFilter operation.
-     * @param tokenUtil JWT token utility dependency.
-     * @param userDetailsService Service dependency used by this component.
+     *
+     * @param tokenUtil
+     *     JWT token utility dependency.
+     * @param userDetailsService
+     *     Service dependency used by this component.
      */
+    @Autowired
     public JwtRequestFilter(final JwtTokenUtil tokenUtil, final JwtUserDetailsService userDetailsService) {
         this.tokenUtil = tokenUtil;
         this.userDetailsService = userDetailsService;
     }
 
-    @Override
     /**
      * Handles doFilterInternal operation.
-     * @param request Request payload with input data.
-     * @param response HTTP servlet response.
-     * @param chain Filter chain for request processing.
+     *
+     * @param request
+     *     Request payload with input data.
+     * @param response
+     *     HTTP servlet response.
+     * @param chain
+     *     Filter chain for request processing.
      */
-    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain)
-        throws ServletException, IOException {
+    @Override
+    protected void doFilterInternal(final HttpServletRequest request, final @NonNull HttpServletResponse response,
+        final @NonNull FilterChain chain) throws ServletException, IOException {
         final String token = getJwtToken(request.getCookies());
         String username = null;
 
@@ -80,10 +88,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     /**
      * Handles getJwtToken operation.
-     * @param cookies Request cookies.
+     *
+     * @param cookies
+     *     Request cookies.
      * @return JWT token value.
      */
-    private String getJwtToken(final Cookie[] cookies) {
+    private static String getJwtToken(final Cookie[] cookies) {
         if (cookies != null) {
             return Arrays
                 .stream(cookies)
