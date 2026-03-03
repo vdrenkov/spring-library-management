@@ -2,6 +2,7 @@ package dev.vdrenkov.slm.configuration;
 
 import dev.vdrenkov.slm.controller.AuthorController;
 import dev.vdrenkov.slm.controller.ClientController;
+import dev.vdrenkov.slm.controller.CsrfController;
 import dev.vdrenkov.slm.controller.UserController;
 import dev.vdrenkov.slm.dto.ClientDto;
 import dev.vdrenkov.slm.jwt.JwtRequestFilter;
@@ -30,13 +31,16 @@ import java.util.Collections;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = { AuthorController.class, ClientController.class, UserController.class })
+@WebMvcTest(controllers = { AuthorController.class, ClientController.class, UserController.class, CsrfController.class })
 @Import({ WebSecurityConfiguration.class, WebSecurityConfigurationTest.SecurityFilterConfig.class })
 class WebSecurityConfigurationTest {
 
@@ -69,8 +73,17 @@ class WebSecurityConfigurationTest {
         final String json = objectMapper.writeValueAsString(new UserRequest("librarian", "password123"));
 
         mockMvc
-            .perform(post("/login").contentType(MediaType.APPLICATION_JSON).content(json))
+            .perform(post("/login").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(json))
             .andExpect(status().isOk());
+    }
+
+    @Test
+    void testCsrf_publicEndpoint_accessibleWithoutAuthentication() throws Exception {
+        mockMvc
+            .perform(get("/csrf"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.token").isNotEmpty())
+            .andExpect(header().string("Set-Cookie", org.hamcrest.Matchers.containsString("XSRF-TOKEN=")));
     }
 
     @Test
@@ -90,7 +103,8 @@ class WebSecurityConfigurationTest {
     @Test
     void testDeleteClient_withLibrarian_forbidden() throws Exception {
         mockMvc
-            .perform(delete("/clients/1").with(user("librarian").authorities(new SimpleGrantedAuthority("LIBRARIAN"))))
+            .perform(delete("/clients/1").with(csrf())
+                .with(user("librarian").authorities(new SimpleGrantedAuthority("LIBRARIAN"))))
             .andExpect(status().isForbidden());
     }
 
@@ -99,7 +113,8 @@ class WebSecurityConfigurationTest {
         when(clientService.deleteClient(anyInt())).thenReturn(new ClientDto(1, "N", "S", "0888888888", "n@s.com"));
 
         mockMvc
-            .perform(delete("/clients/1").with(user("admin").authorities(new SimpleGrantedAuthority("ADMIN"))))
+            .perform(delete("/clients/1").with(csrf())
+                .with(user("admin").authorities(new SimpleGrantedAuthority("ADMIN"))))
             .andExpect(status().isNoContent());
     }
 

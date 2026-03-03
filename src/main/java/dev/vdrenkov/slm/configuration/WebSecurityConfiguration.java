@@ -9,12 +9,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import static dev.vdrenkov.slm.util.Constants.JWT_COOKIE_NAME;
 
@@ -28,7 +28,7 @@ public class WebSecurityConfiguration {
     private static final String ADMIN = "ADMIN";
     private static final String LIBRARIAN = "LIBRARIAN";
 
-    private static final String[] AUTH_PATH = { "/login", "/register"
+    private static final String[] AUTH_PATH = { "/csrf", "/login", "/register"
     };
 
     private static final String[] ADMIN_LIST = { "/admins/**", "/users", "/users/**", "/roles", "/roles/**",
@@ -53,7 +53,7 @@ public class WebSecurityConfiguration {
     @Bean
     SecurityFilterChain securityFilterChain(final HttpSecurity httpSecurity) {
         httpSecurity
-            .csrf(AbstractHttpConfigurer::disable)
+            .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(AUTH_PATH)
                 .permitAll()

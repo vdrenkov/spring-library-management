@@ -108,10 +108,11 @@ Use the bundled `DDL_Scripts.sql` when you prefer explicit schema management or 
 ## Authentication & Roles
 
 - `POST /register` self-registers a LIBRARIAN user.
+- `GET /csrf` returns a CSRF token and sets the `XSRF-TOKEN` cookie for subsequent state-changing requests.
 - `POST /login` authenticates a user and issues a JWT stored in an HttpOnly cookie named `Cookie`; include it on subsequent requests.
 - `POST /admins/register` lets an ADMIN create additional ADMIN or LIBRARIAN accounts without changing the caller's current session.
 - `POST /logout` clears the JWT cookie.
-- CSRF is disabled to keep the API stateless and client-friendly for Postman/SPA usage.
+- CSRF is enabled with `CookieCsrfTokenRepository`; send `X-XSRF-TOKEN` with POST/PUT/DELETE calls using the token from `/csrf` (or the `XSRF-TOKEN` cookie).
 - Authorities:
   - **ADMIN** – full access to user/role management and all catalogue operations (including deletions).
   - **LIBRARIAN** – CRUD access to authors, books, clients and orders (except DELETE and admin endpoints).
@@ -127,6 +128,7 @@ set APP_BOOTSTRAP_ADMIN_PASSWORD=<strong-password>
 
 | Method | Path                                                    | Description                                                 | Access           |
 |--------|---------------------------------------------------------|-------------------------------------------------------------|------------------|
+| GET    | `/csrf`                                                 | Get CSRF token for state-changing requests                  | Public           |
 | POST   | `/login`                                                | Authenticate an existing user and receive JWT cookie        | Public           |
 | POST   | `/register`                                             | Self-register a librarian account                           | Public           |
 | POST   | `/admins/register`                                      | Register a user with roles (ADMIN creates others, no login) | ADMIN            |
@@ -158,7 +160,7 @@ set APP_BOOTSTRAP_ADMIN_PASSWORD=<strong-password>
 - Extend due date: `1` add days, `2` add weeks, `3` add months.
 - Unsupported HTTP methods return `405 Method Not Allowed`.
 
-Import the Postman collection for ready-made requests (`src/main/resources/SpringLibraryManagement.postman_collection.json`). Remember to capture the `Cookie` header returned by authentication calls.
+Import the Postman collection for ready-made requests (`src/main/resources/SpringLibraryManagement.postman_collection.json`). Run `GetCsrfToken` first, then use the returned token for POST/PUT/DELETE requests together with the authentication cookie.
 
 ## Testing
 
