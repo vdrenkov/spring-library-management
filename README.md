@@ -1,4 +1,4 @@
-# Spring Library Management
+# Biblium
 
 RESTful Spring Boot service for running a small library catalogue and lending workflow. The project was built for
 personal learning and portfolio purposes and showcases role-based access, DTO-driven APIs, and layered design.
@@ -26,7 +26,7 @@ personal learning and portfolio purposes and showcases role-based access, DTO-dr
 ## Project Layout
 
 ```
-src/main/java/dev/vdrenkov/slm/
+src/main/java/dev/vdrenkov/biblium/
   configuration/        # Security filter chain & password encoder
   controller/           # REST controllers for authors, books, clients, orders, users, roles
   dto/                  # Response DTO records
@@ -41,7 +41,7 @@ src/main/java/dev/vdrenkov/slm/
 src/main/resources/
   application.properties
   DDL_Scripts.sql       # Optional schema bootstrap
-  SpringLibraryManagement.postman_collection.json
+  Biblium.postman_collection.json
 logs/                   # Log output destination (configured in properties)
 ```
 
@@ -49,8 +49,8 @@ logs/                   # Log output destination (configured in properties)
 
 - Java 25
 - Maven 3.9+
-- PostgreSQL running locally (default config expects `localhost:5432/SpringLibraryManagement`)
-- Optional: Postman for API exploration (`src/main/resources/SpringLibraryManagement.postman_collection.json`)
+- PostgreSQL running locally (default config expects `localhost:5432/Biblium`)
+- Optional: Postman for API exploration (`src/main/resources/Biblium.postman_collection.json`)
 
 ## Configuration
 
@@ -74,7 +74,7 @@ Do not commit real credentials. Override sensitive values with environment varia
 file instead of editing source directly:
 
 ```bash
-set SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/SpringLibraryManagement
+set SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/Biblium
 set SPRING_DATASOURCE_USERNAME=postgres
 set SPRING_DATASOURCE_PASSWORD=<your-password>
 set JWT_SECRET=<64+-char-secret>
@@ -96,7 +96,7 @@ Use the bundled `DDL_Scripts.sql` when you prefer explicit schema management or 
 
 1. Create the database (first run only):
    ```sql
-   CREATE DATABASE "SpringLibraryManagement";
+   CREATE DATABASE "Biblium";
    ```
 2. (Optional) Execute `src/main/resources/DDL_Scripts.sql` to pre-create all API tables.
 3. Build the project:
@@ -171,7 +171,7 @@ set APP_BOOTSTRAP_ADMIN_PASSWORD=<strong-password>
 - Unsupported HTTP methods return `405 Method Not Allowed`.
 
 Import the Postman collection for ready-made requests (
-`src/main/resources/SpringLibraryManagement.postman_collection.json`). Run `GetCsrfToken` first, then use the returned
+`src/main/resources/Biblium.postman_collection.json`). Run `GetCsrfToken` first, then use the returned
 token for POST/PUT/DELETE requests together with the authentication cookie.
 
 ## Testing

@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>dev.vdrenkov</groupId>
-    <artifactId>spring-library-management</artifactId>
+    <artifactId>biblium</artifactId>
     <version>1.6.0-SNAPSHOT</version>
 
     <properties>
