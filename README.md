@@ -1,6 +1,7 @@
 # Spring Library Management
 
-RESTful Spring Boot service for running a small library catalogue and lending workflow. The project was built for personal learning and portfolio purposes and showcases role-based access, DTO-driven APIs, and layered design.
+RESTful Spring Boot service for running a small library catalogue and lending workflow. The project was built for
+personal learning and portfolio purposes and showcases role-based access, DTO-driven APIs, and layered design.
 
 ## Features
 
@@ -56,10 +57,12 @@ logs/                   # Log output destination (configured in properties)
 The default configuration lives in `src/main/resources/application.properties`:
 
 - `spring.datasource.*` points to a PostgreSQL instance.
-- `spring.jpa.hibernate.ddl-auto=update` is intentionally kept for this project long-term to auto-evolve schema during development/demo deployment.
+- `spring.jpa.hibernate.ddl-auto=update` is intentionally kept for this project long-term to auto-evolve schema during
+  development/demo deployment.
 - `spring.jpa.open-in-view=false` disables Open Session in View for stateless API behavior.
 - Hibernate dialect auto-detected from the JDBC driver (no explicit `hibernate.dialect` override configured).
-- `jwt.secret` provides the signing key for tokens (use a strong 64+ character secret for HS512) and is required at startup.
+- `jwt.secret` provides the signing key for tokens (use a strong 64+ character secret for HS512) and is required at
+  startup.
 - `jwt.cookie.secure` and `jwt.cookie.same-site` control cookie hardening options.
 - `logging.file.name=logs/log.log` routes logs to the `/logs` folder.
 - `app.bootstrap.roles=true` auto-creates `ADMIN` and `LIBRARIAN` roles if missing.
@@ -67,7 +70,8 @@ The default configuration lives in `src/main/resources/application.properties`:
 
 `JWT_SECRET` and `SPRING_DATASOURCE_PASSWORD` are mandatory environment variables.
 
-Do not commit real credentials. Override sensitive values with environment variables, or a profile-specific properties file instead of editing source directly:
+Do not commit real credentials. Override sensitive values with environment variables, or a profile-specific properties
+file instead of editing source directly:
 
 ```bash
 set SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/SpringLibraryManagement
@@ -109,13 +113,16 @@ Use the bundled `DDL_Scripts.sql` when you prefer explicit schema management or 
 
 - `POST /register` self-registers a LIBRARIAN user.
 - `GET /csrf` returns a CSRF token and sets the `XSRF-TOKEN` cookie for subsequent state-changing requests.
-- `POST /login` authenticates a user and issues a JWT stored in an HttpOnly cookie named `Cookie`; include it on subsequent requests.
-- `POST /admins/register` lets an ADMIN create additional ADMIN or LIBRARIAN accounts without changing the caller's current session.
+- `POST /login` authenticates a user and issues a JWT stored in an HttpOnly cookie named `Cookie`; include it on
+  subsequent requests.
+- `POST /admins/register` lets an ADMIN create additional ADMIN or LIBRARIAN accounts without changing the caller’s
+  current session.
 - `POST /logout` clears the JWT cookie.
-- CSRF is enabled with `CookieCsrfTokenRepository`; send `X-XSRF-TOKEN` with POST/PUT/DELETE calls using the token from `/csrf` (or the `XSRF-TOKEN` cookie).
+- CSRF is enabled with `CookieCsrfTokenRepository`; send `X-XSRF-TOKEN` with POST/PUT/DELETE calls using the token from
+  `/csrf` (or the `XSRF-TOKEN` cookie).
 - Authorities:
-  - **ADMIN** – full access to user/role management and all catalogue operations (including deletions).
-  - **LIBRARIAN** – CRUD access to authors, books, clients and orders (except DELETE and admin endpoints).
+    - **ADMIN** – full access to user/role management and all catalogue operations (including deletions).
+    - **LIBRARIAN** – CRUD access to authors, books, clients and orders (except DELETE and admin endpoints).
 
 Roles (`ADMIN`, `LIBRARIAN`) are auto-bootstrapped at startup. To bootstrap the first admin automatically, set:
 
@@ -158,11 +165,14 @@ set APP_BOOTSTRAP_ADMIN_PASSWORD=<strong-password>
 
 `choice` query parameters drive filter/extend behaviour:
 
-- Orders by date: `1` issue date equals, `2` issue before, `3` issue after, `4` due equals, `5` due before, `6` due after.
+- Orders by date: `1` issue date equals, `2` issue before, `3` issue after, `4` due equals, `5` due before, `6` due
+  after.
 - Extend due date: `1` add days, `2` add weeks, `3` add months.
 - Unsupported HTTP methods return `405 Method Not Allowed`.
 
-Import the Postman collection for ready-made requests (`src/main/resources/SpringLibraryManagement.postman_collection.json`). Run `GetCsrfToken` first, then use the returned token for POST/PUT/DELETE requests together with the authentication cookie.
+Import the Postman collection for ready-made requests (
+`src/main/resources/SpringLibraryManagement.postman_collection.json`). Run `GetCsrfToken` first, then use the returned
+token for POST/PUT/DELETE requests together with the authentication cookie.
 
 ## Testing
 
@@ -172,12 +182,15 @@ Run the automated test suite with:
 mvn test
 ```
 
-The suite uses JUnit 5 (Jupiter), Mockito JUnit Jupiter, and Spring's test utilities to cover controller endpoints, service logic, DTO mappers, exception handling, and security access rules.
+The suite uses JUnit 5 (Jupiter), Mockito JUnit Jupiter, and Spring’s test utilities to cover controller endpoints,
+service logic, DTO mappers, exception handling, and security access rules.
 
 ## Logging
 
-Application logs are written to `logs/log.log` (rotation handled by Spring Boot/Logback defaults). Adjust `logging.file.name` or log levels in `application.properties` as needed.
+Application logs are written to `logs/log.log` (rotation handled by Spring Boot/Logback defaults). Adjust
+`logging.file.name` or log levels in `application.properties` as needed.
 
 ## Notes
 
-This codebase is part of a private learning portfolio. Feel free to adapt it for experimentation, but it is not licensed for commercial redistribution.
+This codebase is part of a private learning portfolio. Feel free to adapt it for experimentation, but it is not licensed
+for commercial redistribution.

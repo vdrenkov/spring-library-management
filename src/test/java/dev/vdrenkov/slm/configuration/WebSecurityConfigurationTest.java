@@ -40,7 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = { AuthorController.class, ClientController.class, UserController.class, CsrfController.class })
+@WebMvcTest(
+    controllers = { AuthorController.class, ClientController.class, UserController.class, CsrfController.class })
 @Import({ WebSecurityConfiguration.class, WebSecurityConfigurationTest.SecurityFilterConfig.class })
 class WebSecurityConfigurationTest {
 
@@ -103,7 +104,8 @@ class WebSecurityConfigurationTest {
     @Test
     void testDeleteClient_withLibrarian_forbidden() throws Exception {
         mockMvc
-            .perform(delete("/clients/1").with(csrf())
+            .perform(delete("/clients/1")
+                .with(csrf())
                 .with(user("librarian").authorities(new SimpleGrantedAuthority("LIBRARIAN"))))
             .andExpect(status().isForbidden());
     }
@@ -113,8 +115,8 @@ class WebSecurityConfigurationTest {
         when(clientService.deleteClient(anyInt())).thenReturn(new ClientDto(1, "N", "S", "0888888888", "n@s.com"));
 
         mockMvc
-            .perform(delete("/clients/1").with(csrf())
-                .with(user("admin").authorities(new SimpleGrantedAuthority("ADMIN"))))
+            .perform(
+                delete("/clients/1").with(csrf()).with(user("admin").authorities(new SimpleGrantedAuthority("ADMIN"))))
             .andExpect(status().isNoContent());
     }
 

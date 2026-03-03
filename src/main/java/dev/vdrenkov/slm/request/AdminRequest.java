@@ -32,6 +32,6 @@ public class AdminRequest {
 
     @NotEmpty(message = "At least one role ID is required")
     @NotNull(message = "The roles' IDs cannot be null")
-    private List<@NotNull(message = "Role ID cannot be null")
-    @Positive(message = "Role ID must be a positive digit") Integer> rolesIds;
+    private List<@NotNull(message = "Role ID cannot be null") @Positive(
+        message = "Role ID must be a positive digit") Integer> rolesIds;
 }
