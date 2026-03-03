@@ -105,6 +105,7 @@ public class OrderService {
      *
      * @return List of order DTOs.
      */
+    @Transactional(readOnly = true)
     public List<OrderDto> getAllOrdersDto() {
         return OrderMapper.mapOrdersToOrdersDto(getAllOrders());
     }
@@ -127,6 +128,7 @@ public class OrderService {
      *     Identifier of the target entity.
      * @return List of order DTOs.
      */
+    @Transactional(readOnly = true)
     public List<OrderDto> getAllOrdersDtoByClient(final int clientId) {
         return OrderMapper.mapOrdersToOrdersDto(getAllOrdersByClient(clientId));
     }
@@ -162,6 +164,7 @@ public class OrderService {
      *     Date value.
      * @return List of order DTOs.
      */
+    @Transactional(readOnly = true)
     public List<OrderDto> getAllOrdersDtoByDate(final int choice, final String date) {
         return OrderMapper.mapOrdersToOrdersDto(getAllOrdersByDate(choice, LocalDateMapper.mapStringToDate(date)));
     }
@@ -185,6 +188,7 @@ public class OrderService {
      *     Identifier of the target entity.
      * @return Resulting order DTO value.
      */
+    @Transactional(readOnly = true)
     public OrderDto getOrderDtoById(final int id) {
         return OrderMapper.mapOrderToOrderDto(getOrderById(id));
     }
