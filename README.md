@@ -14,7 +14,7 @@ RESTful Spring Boot service for running a small library catalogue and lending wo
 
 ## Tech Stack
 
-- Java 25 (LTS)
+- Java 25
 - Spring Boot 4.0.3 (Web, Data JPA, Validation, Security)
 - Spring Framework 7 / Jakarta EE (`jakarta.*` namespaces)
 - Hibernate ORM 7 & PostgreSQL
@@ -131,7 +131,8 @@ set APP_BOOTSTRAP_ADMIN_PASSWORD=<strong-password>
 | GET    | `/csrf`                                                 | Get CSRF token for state-changing requests                  | Public           |
 | POST   | `/login`                                                | Authenticate an existing user and receive JWT cookie        | Public           |
 | POST   | `/register`                                             | Self-register a librarian account                           | Public           |
-| POST   | `/admins/register`                                      | Register a user with roles (ADMIN creates others, no login) | ADMIN            |
+| POST   | `/admins/register`                                      | Register a user with roles (without changing current login) | ADMIN            |
+| POST   | `/logout`                                               | Clear JWT authentication cookie                             | Authenticated    |
 | GET    | `/authors`                                              | List authors                                                | ADMIN, LIBRARIAN |
 | POST   | `/authors`                                              | Create author                                               | ADMIN, LIBRARIAN |
 | GET    | `/authors/{id}`                                         | Get author details                                          | ADMIN, LIBRARIAN |
@@ -147,6 +148,7 @@ set APP_BOOTSTRAP_ADMIN_PASSWORD=<strong-password>
 | GET    | `/orders`                                               | List orders                                                 | ADMIN, LIBRARIAN |
 | GET    | `/clients/{clientId}/orders`                            | Orders placed by client                                     | ADMIN, LIBRARIAN |
 | GET    | `/orders?choice={1-6}&date={yyyy-MM-dd}`                | Filter orders by issue/due date rule                        | ADMIN, LIBRARIAN |
+| GET    | `/orders/{id}`                                          | Get order details                                           | ADMIN, LIBRARIAN |
 | PUT    | `/orders/{id}?choice={1-3}&period={n}&returnOld={bool}` | Extend due date by days, weeks, or months                   | ADMIN, LIBRARIAN |
 | GET    | `/users`                                                | List users                                                  | ADMIN            |
 | GET    | `/users/{id}`                                           | User details                                                | ADMIN            |
