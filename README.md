@@ -49,7 +49,7 @@ logs/                   # Log output destination (configured in properties)
 
 - Java 25
 - Maven 3.9+
-- PostgreSQL running locally (default config expects `localhost:5432/Biblium`)
+- PostgreSQL running locally (default config expects `localhost:5432/biblium`)
 - Optional: Postman for API exploration (`src/main/resources/Biblium.postman_collection.json`)
 
 ## Configuration
@@ -74,7 +74,7 @@ Do not commit real credentials. Override sensitive values with environment varia
 file instead of editing source directly:
 
 ```bash
-set SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/Biblium
+set SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/biblium
 set SPRING_DATASOURCE_USERNAME=postgres
 set SPRING_DATASOURCE_PASSWORD=<your-password>
 set JWT_SECRET=<64+-char-secret>
@@ -96,7 +96,7 @@ Use the bundled `DDL_Scripts.sql` when you prefer explicit schema management or 
 
 1. Create the database (first run only):
    ```sql
-   CREATE DATABASE "Biblium";
+   CREATE DATABASE biblium;
    ```
 2. (Optional) Execute `src/main/resources/DDL_Scripts.sql` to pre-create all API tables.
 3. Build the project:
