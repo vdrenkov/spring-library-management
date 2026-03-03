@@ -28,6 +28,7 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.util.Collections;
 
+import static dev.vdrenkov.biblium.util.Constants.JWT_COOKIE_NAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -68,7 +69,7 @@ class WebSecurityConfigurationTest {
 
     @Test
     void testLogin_publicEndpoint_accessibleWithoutAuthentication() throws Exception {
-        final HttpCookie cookie = ResponseCookie.from("Cookie", "jwt-token").httpOnly(true).path("/").build();
+        final HttpCookie cookie = ResponseCookie.from(JWT_COOKIE_NAME, "jwt-token").httpOnly(true).path("/").build();
         when(userService.login(any(UserRequest.class))).thenReturn(cookie);
 
         final String json = objectMapper.writeValueAsString(new UserRequest("librarian", "password123"));

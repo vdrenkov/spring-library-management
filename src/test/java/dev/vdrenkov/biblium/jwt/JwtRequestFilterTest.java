@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collections;
 
+import static dev.vdrenkov.biblium.util.Constants.JWT_COOKIE_NAME;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.verify;
@@ -46,7 +47,7 @@ class JwtRequestFilterTest {
     @Test
     void testDoFilterInternal_validToken_setsAuthentication() throws Exception {
         final MockHttpServletRequest request = new MockHttpServletRequest();
-        request.setCookies(new Cookie("Cookie", "jwt-token"));
+        request.setCookies(new Cookie(JWT_COOKIE_NAME, "jwt-token"));
         final MockHttpServletResponse response = new MockHttpServletResponse();
 
         when(jwtTokenUtil.getUsernameFromToken("jwt-token")).thenReturn("librarian");
@@ -74,7 +75,7 @@ class JwtRequestFilterTest {
     @Test
     void testDoFilterInternal_invalidToken_doesNotAuthenticate() throws Exception {
         final MockHttpServletRequest request = new MockHttpServletRequest();
-        request.setCookies(new Cookie("Cookie", "jwt-token"));
+        request.setCookies(new Cookie(JWT_COOKIE_NAME, "jwt-token"));
         final MockHttpServletResponse response = new MockHttpServletResponse();
 
         when(jwtTokenUtil.getUsernameFromToken("jwt-token")).thenReturn("librarian");

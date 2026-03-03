@@ -113,7 +113,7 @@ Use the bundled `DDL_Scripts.sql` when you prefer explicit schema management or 
 
 - `POST /register` self-registers a LIBRARIAN user.
 - `GET /csrf` returns a CSRF token and sets the `XSRF-TOKEN` cookie for subsequent state-changing requests.
-- `POST /login` authenticates a user and issues a JWT stored in an HttpOnly cookie named `Cookie`; include it on
+- `POST /login` authenticates a user and issues a JWT stored in an HttpOnly cookie named `BIBLIUM_AUTH`; include it on
   subsequent requests.
 - `POST /admins/register` lets an ADMIN create additional ADMIN or LIBRARIAN accounts without changing the caller’s
   current session.

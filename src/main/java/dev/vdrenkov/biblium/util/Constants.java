@@ -78,7 +78,7 @@ public final class Constants {
     /**
      * JWT HTTP cookie name.
      */
-    public static final String JWT_COOKIE_NAME = "Cookie";
+    public static final String JWT_COOKIE_NAME = "BIBLIUM_AUTH";
 
     /**
      * Handles Constants operation.

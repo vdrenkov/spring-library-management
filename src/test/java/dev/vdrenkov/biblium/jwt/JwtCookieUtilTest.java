@@ -7,6 +7,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpCookie;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import static dev.vdrenkov.biblium.util.Constants.JWT_COOKIE_NAME;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -27,7 +28,7 @@ class JwtCookieUtilTest {
         final HttpCookie cookie = jwtCookieUtil.createJWTCookie(userDetails);
         final String cookieHeader = cookie.toString();
 
-        assertTrue(cookieHeader.contains("Cookie=jwt-token"));
+        assertTrue(cookieHeader.contains(JWT_COOKIE_NAME + "=jwt-token"));
         assertTrue(cookieHeader.contains("Path=/"));
         assertTrue(cookieHeader.contains("HttpOnly"));
         assertTrue(cookieHeader.contains("Secure"));

@@ -22,6 +22,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.Collections;
 
 import static dev.vdrenkov.biblium.util.Constants.ID;
+import static dev.vdrenkov.biblium.util.Constants.JWT_COOKIE_NAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -51,19 +52,19 @@ class UserControllerTest {
 
     @Test
     void testLogin_returnsOkAndCookie() throws Exception {
-        final HttpCookie cookie = ResponseCookie.from("Cookie", "jwt-token").httpOnly(true).path("/").build();
+        final HttpCookie cookie = ResponseCookie.from(JWT_COOKIE_NAME, "jwt-token").httpOnly(true).path("/").build();
         when(userService.login(any(UserRequest.class))).thenReturn(cookie);
         final String json = new ObjectMapper().writeValueAsString(new UserRequest("librarian", "password123"));
 
         mockMvc
             .perform(post("/login").contentType(MediaType.APPLICATION_JSON).content(json))
             .andExpect(status().isOk())
-            .andExpect(header().string("Set-Cookie", org.hamcrest.Matchers.containsString("Cookie=jwt-token")));
+            .andExpect(header().string("Set-Cookie", org.hamcrest.Matchers.containsString(JWT_COOKIE_NAME + "=jwt-token")));
     }
 
     @Test
     void testRegister_returnsCreatedAndCookie() throws Exception {
-        final HttpCookie cookie = ResponseCookie.from("Cookie", "jwt-token").httpOnly(true).path("/").build();
+        final HttpCookie cookie = ResponseCookie.from(JWT_COOKIE_NAME, "jwt-token").httpOnly(true).path("/").build();
         when(userService.registerUser(any(UserRequest.class))).thenReturn(cookie);
         final String json = new ObjectMapper().writeValueAsString(new UserRequest("librarian", "password123"));
 
