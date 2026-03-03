@@ -122,12 +122,10 @@ public class UserService {
      *
      * @param adminRequest
      *     Request payload with input data.
-     * @return Resulting httpCookie value.
+     * @return Newly created user entity.
      */
-    public HttpCookie registerByAdmin(final AdminRequest adminRequest) {
-        addUserByAdmin(adminRequest);
-
-        return login(new UserRequest(adminRequest.getUsername(), adminRequest.getPassword()));
+    public User registerByAdmin(final AdminRequest adminRequest) {
+        return addUserByAdmin(adminRequest);
     }
 
     /**
@@ -135,8 +133,9 @@ public class UserService {
      *
      * @param adminRequest
      *     Request payload with input data.
+     * @return Newly created user entity.
      */
-    public void addUserByAdmin(final AdminRequest adminRequest) {
+    public User addUserByAdmin(final AdminRequest adminRequest) {
         validateUsernameIsAvailable(adminRequest.getUsername());
 
         final String password = passwordEncoder.encode(adminRequest.getPassword());
@@ -144,7 +143,7 @@ public class UserService {
         final User user = new User(adminRequest.getUsername(), password, getUserRoles(adminRequest.getRolesIds()));
 
         log.info("Trying to add a new admin");
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     /**

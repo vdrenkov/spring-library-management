@@ -2,6 +2,7 @@ package dev.vdrenkov.slm.service;
 
 import dev.vdrenkov.slm.entity.User;
 import dev.vdrenkov.slm.entity.UserRole;
+import dev.vdrenkov.slm.jwt.JwtCookieUtil;
 import dev.vdrenkov.slm.repository.UserRepository;
 import dev.vdrenkov.slm.request.AdminRequest;
 import dev.vdrenkov.slm.request.UserRequest;
@@ -11,6 +12,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,6 +33,12 @@ class UserServiceTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private AuthenticationManager authenticationManager;
+
+    @Mock
+    private JwtCookieUtil jwtCookieUtil;
 
     @Mock
     private UserRepository userRepository;
@@ -83,5 +92,22 @@ class UserServiceTest {
         assertEquals("admin2", savedUser.getUsername());
         assertEquals("encoded-password", savedUser.getPassword());
         assertEquals(2, savedUser.getUserRoles().size());
+    }
+
+    @Test
+    void testRegisterByAdmin_createsUserWithoutAuthenticationSideEffects() {
+        final UserRole adminRole = new UserRole(1, "ADMIN");
+        final AdminRequest request = new AdminRequest("admin2", "password123", List.of(1));
+        final User savedUser = new User(10, "admin2", "encoded-password", List.of(adminRole));
+
+        when(userRepository.existsByUsername("admin2")).thenReturn(false);
+        when(passwordEncoder.encode("password123")).thenReturn("encoded-password");
+        when(userRoleService.getUserRoleById(1)).thenReturn(adminRole);
+        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+
+        final User result = userService.registerByAdmin(request);
+
+        assertEquals(10, result.getId());
+        verifyNoInteractions(authenticationManager, jwtCookieUtil);
     }
 }

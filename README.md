@@ -109,7 +109,7 @@ Use the bundled `DDL_Scripts.sql` when you prefer explicit schema management or 
 
 - `POST /register` self-registers a LIBRARIAN user.
 - `POST /login` authenticates a user and issues a JWT stored in an HttpOnly cookie named `Cookie`; include it on subsequent requests.
-- `POST /admins/register` lets an ADMIN create an additional ADMIN or LIBRARIAN accounts.
+- `POST /admins/register` lets an ADMIN create additional ADMIN or LIBRARIAN accounts without changing the caller's current session.
 - `POST /logout` clears the JWT cookie.
 - CSRF is disabled to keep the API stateless and client-friendly for Postman/SPA usage.
 - Authorities:
@@ -129,7 +129,7 @@ set APP_BOOTSTRAP_ADMIN_PASSWORD=<strong-password>
 |--------|---------------------------------------------------------|-------------------------------------------------------------|------------------|
 | POST   | `/login`                                                | Authenticate an existing user and receive JWT cookie        | Public           |
 | POST   | `/register`                                             | Self-register a librarian account                           | Public           |
-| POST   | `/admins/register`                                      | Register a user with roles (ADMIN creates others)           | ADMIN            |
+| POST   | `/admins/register`                                      | Register a user with roles (ADMIN creates others, no login) | ADMIN            |
 | GET    | `/authors`                                              | List authors                                                | ADMIN, LIBRARIAN |
 | POST   | `/authors`                                              | Create author                                               | ADMIN, LIBRARIAN |
 | GET    | `/authors/{id}`                                         | Get author details                                          | ADMIN, LIBRARIAN |

@@ -1,6 +1,7 @@
 package dev.vdrenkov.slm.controller;
 
 import dev.vdrenkov.slm.dto.UserDto;
+import dev.vdrenkov.slm.entity.User;
 import dev.vdrenkov.slm.handler.GlobalExceptionHandler;
 import dev.vdrenkov.slm.request.AdminRequest;
 import dev.vdrenkov.slm.request.UserRequest;
@@ -72,16 +73,16 @@ class UserControllerTest {
     }
 
     @Test
-    void testRegisterAdmin_returnsCreatedAndCookie() throws Exception {
-        final HttpCookie cookie = ResponseCookie.from("Cookie", "jwt-token").httpOnly(true).path("/").build();
-        when(userService.registerByAdmin(any(AdminRequest.class))).thenReturn(cookie);
+    void testRegisterAdmin_returnsCreatedAndLocation() throws Exception {
+        when(userService.registerByAdmin(any(AdminRequest.class))).thenReturn(new User(1, "admin", "encoded", null));
         final String json = """
             {"username":"admin","password":"password123","rolesIds":[1]}
             """;
 
         mockMvc
             .perform(post("/admins/register").contentType(MediaType.APPLICATION_JSON).content(json))
-            .andExpect(status().isCreated());
+            .andExpect(status().isCreated())
+            .andExpect(header().string("Location", "/users/1"));
     }
 
     @Test

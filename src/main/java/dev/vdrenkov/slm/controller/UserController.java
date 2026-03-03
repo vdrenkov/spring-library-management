@@ -1,6 +1,7 @@
 package dev.vdrenkov.slm.controller;
 
 import dev.vdrenkov.slm.dto.UserDto;
+import dev.vdrenkov.slm.entity.User;
 import dev.vdrenkov.slm.request.AdminRequest;
 import dev.vdrenkov.slm.request.UserRequest;
 import dev.vdrenkov.slm.service.UserService;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -82,10 +85,14 @@ public class UserController {
      */
     @PostMapping(ADMIN_PATH + "/register")
     public ResponseEntity<Void> registerAdmin(@RequestBody @Valid final AdminRequest request) {
-        final HttpCookie cookie = userService.registerByAdmin(request);
+        final User user = userService.registerByAdmin(request);
+        final URI location = UriComponentsBuilder
+            .fromUriString(USER_PATH + "/{id}")
+            .buildAndExpand(user.getId())
+            .toUri();
         log.info("An admin register request submitted");
 
-        return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
+        return ResponseEntity.created(location).build();
     }
 
     /**
