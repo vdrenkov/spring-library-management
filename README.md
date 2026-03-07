@@ -40,7 +40,7 @@ src/main/java/dev/vdrenkov/biblium/
   util/                 # Shared constants
 src/main/resources/
   application.properties
-  DDL_Scripts.sql       # Optional schema bootstrap
+  db/changelog/         # Liquibase changelogs
   Biblium.postman_collection.json
 logs/                   # Log output destination (configured in properties)
 ```
@@ -57,8 +57,8 @@ logs/                   # Log output destination (configured in properties)
 The default configuration lives in `src/main/resources/application.properties`:
 
 - `spring.datasource.*` points to a PostgreSQL instance.
-- `spring.jpa.hibernate.ddl-auto=update` is intentionally kept for this project long-term to auto-evolve schema during
-  development/demo deployment.
+- `spring.jpa.hibernate.ddl-auto=validate` keeps Hibernate in schema-validation mode.
+- Liquibase applies the managed schema from `src/main/resources/db/changelog/db.changelog-master.yaml`.
 - `spring.jpa.open-in-view=false` disables Open Session in View for stateless API behavior.
 - Hibernate dialect auto-detected from the JDBC driver (no explicit `hibernate.dialect` override configured).
 - `jwt.secret` provides the signing key for tokens (use a strong 64+ character secret for HS512) and is required at
@@ -90,20 +90,17 @@ For local HTTP development only, you can explicitly relax the cookie secure flag
 set JWT_COOKIE_SECURE=false
 ```
 
-Use the bundled `DDL_Scripts.sql` when you prefer explicit schema management or need to recreate tables from scratch.
-
 ## Getting Started
 
 1. Create the database (first run only):
    ```sql
    CREATE DATABASE biblium;
    ```
-2. (Optional) Execute `src/main/resources/DDL_Scripts.sql` to pre-create all API tables.
-3. Build the project:
+2. Build the project:
    ```bash
    mvn clean package
    ```
-4. Start the service:
+3. Start the service:
    ```bash
    mvn spring-boot:run
    ```
@@ -184,6 +181,13 @@ mvn test
 
 The suite uses JUnit 5 (Jupiter), Mockito JUnit Jupiter, and Spring’s test utilities to cover controller endpoints,
 service logic, DTO mappers, exception handling, and security access rules.
+
+## Database Migrations
+
+- Liquibase is the single source of truth for schema management.
+- The initial schema lives in `src/main/resources/db/changelog/changes/001-init-schema.sql`.
+- Hibernate validates the schema on startup instead of mutating it.
+- For the cleanest first run, point the app at a fresh `biblium` database and let Liquibase apply the schema.
 
 ## Logging
 

@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-init-schema
+      author: vdrenkov
+      validCheckSum:
+        - 9:831de2951281d79b429715667b6c0bc4
+      changes:
+        - sqlFile:
+            path: db/changelog/changes/001-init-schema.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: false
