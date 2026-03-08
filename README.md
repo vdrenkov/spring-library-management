@@ -19,6 +19,7 @@ personal learning and portfolio purposes and showcases role-based access, DTO-dr
 - Spring Boot 4.0.3 (Web, Data JPA, Validation, Security)
 - Spring Framework 7 / Jakarta EE (`jakarta.*` namespaces)
 - Hibernate ORM 7 & PostgreSQL
+- Liquibase for managed schema migrations
 - JSON Web Tokens via `jjwt` 0.13.0
 - Maven
 - JUnit 5, Mockito JUnit Jupiter, Spring Test, MockMvc
