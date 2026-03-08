@@ -46,6 +46,16 @@ src/main/resources/
 logs/                   # Log output destination (configured in properties)
 ```
 
+## Architecture
+
+- Layered Spring Boot service with separated controller, service, repository, mapper, and entity packages.
+- Controllers define the REST contract, validate request payloads, and translate HTTP interactions into application use cases.
+- Services contain the borrowing, catalogue, client-management, authentication, and role-management business rules.
+- Repositories isolate persistence concerns through Spring Data JPA on top of PostgreSQL.
+- Manual mappers keep DTO conversion explicit and predictable at the API boundary.
+- Spring Security provides stateless JWT cookie authentication, CSRF protection, and role-based authorization.
+- Liquibase manages schema changes, while Hibernate validates mappings at startup instead of mutating the database.
+
 ## Prerequisites
 
 - Java 25
