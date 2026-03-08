@@ -19,7 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static dev.vdrenkov.biblium.util.Constants.JWT_COOKIE_NAME;
+import static dev.vdrenkov.biblium.jwt.JwtConstants.JWT_COOKIE_NAME;
 
 /**
  * JwtRequestFilter component.
@@ -104,3 +104,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         return null;
     }
 }
+

@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collections;
 
-import static dev.vdrenkov.biblium.util.Constants.JWT_COOKIE_NAME;
+import static dev.vdrenkov.biblium.jwt.JwtConstants.JWT_COOKIE_NAME;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.verify;
@@ -88,3 +88,4 @@ class JwtRequestFilterTest {
         verify(filterChain).doFilter(request, response);
     }
 }
+

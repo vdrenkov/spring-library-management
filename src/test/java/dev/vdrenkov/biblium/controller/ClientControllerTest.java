@@ -1,7 +1,7 @@
 package dev.vdrenkov.biblium.controller;
 
 import dev.vdrenkov.biblium.service.ClientService;
-import dev.vdrenkov.biblium.util.ClientFactory;
+import dev.vdrenkov.biblium.util.factory.ClientFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,11 +13,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import tools.jackson.databind.ObjectMapper;
 
-import static dev.vdrenkov.biblium.util.Constants.EMAIL;
-import static dev.vdrenkov.biblium.util.Constants.ID;
-import static dev.vdrenkov.biblium.util.Constants.NAME;
-import static dev.vdrenkov.biblium.util.Constants.PHONE_NUMBER;
-import static dev.vdrenkov.biblium.util.Constants.SURNAME;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.EMAIL;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.ID;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.NAME;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.PHONE_NUMBER;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.SURNAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -94,3 +94,4 @@ class ClientControllerTest {
             .andExpect(jsonPath("$.email").value(EMAIL));
     }
 }
+

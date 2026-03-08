@@ -7,8 +7,8 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import static dev.vdrenkov.biblium.util.Constants.JWT_COOKIE_NAME;
-import static dev.vdrenkov.biblium.util.Constants.JWT_TOKEN_VALIDITY;
+import static dev.vdrenkov.biblium.jwt.JwtConstants.JWT_COOKIE_NAME;
+import static dev.vdrenkov.biblium.jwt.JwtConstants.JWT_TOKEN_VALIDITY;
 
 /**
  * JwtCookieUtil component.
@@ -59,3 +59,4 @@ public class JwtCookieUtil {
             .build();
     }
 }
+

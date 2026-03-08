@@ -1,4 +1,4 @@
-package dev.vdrenkov.biblium.util;
+package dev.vdrenkov.biblium.util.factory;
 
 import dev.vdrenkov.biblium.dto.AuthorDto;
 import dev.vdrenkov.biblium.entity.Author;
@@ -7,9 +7,9 @@ import dev.vdrenkov.biblium.request.AuthorRequest;
 import java.util.Collections;
 import java.util.List;
 
-import static dev.vdrenkov.biblium.util.Constants.ID;
-import static dev.vdrenkov.biblium.util.Constants.NAME;
-import static dev.vdrenkov.biblium.util.Constants.SURNAME;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.ID;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.NAME;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.SURNAME;
 
 /**
  * Test factory for creating default {@link Author}, {@link AuthorDto}, and {@link AuthorRequest} instances.
@@ -68,3 +68,4 @@ public final class AuthorFactory {
         return new AuthorRequest(NAME, SURNAME);
     }
 }
+

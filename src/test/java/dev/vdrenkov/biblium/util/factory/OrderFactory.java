@@ -1,4 +1,4 @@
-package dev.vdrenkov.biblium.util;
+package dev.vdrenkov.biblium.util.factory;
 
 import dev.vdrenkov.biblium.dto.OrderDto;
 import dev.vdrenkov.biblium.entity.Order;
@@ -7,8 +7,8 @@ import dev.vdrenkov.biblium.request.OrderRequest;
 import java.util.Collections;
 import java.util.List;
 
-import static dev.vdrenkov.biblium.util.Constants.ID;
-import static dev.vdrenkov.biblium.util.Constants.LOCAL_DATE;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.ID;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.LOCAL_DATE;
 
 /**
  * Test factory for creating default {@link Order}, {@link OrderDto}, and {@link OrderRequest} instances.
@@ -69,3 +69,4 @@ public final class OrderFactory {
         return new OrderRequest(ID, BookFactory.getDefaultBooksIdsList());
     }
 }
+

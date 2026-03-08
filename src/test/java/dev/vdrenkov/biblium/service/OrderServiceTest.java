@@ -6,9 +6,9 @@ import dev.vdrenkov.biblium.mapper.LocalDateMapper;
 import dev.vdrenkov.biblium.mapper.OrderMapper;
 import dev.vdrenkov.biblium.repository.OrderRepository;
 import dev.vdrenkov.biblium.request.OrderRequest;
-import dev.vdrenkov.biblium.util.BookFactory;
-import dev.vdrenkov.biblium.util.ClientFactory;
-import dev.vdrenkov.biblium.util.OrderFactory;
+import dev.vdrenkov.biblium.util.factory.BookFactory;
+import dev.vdrenkov.biblium.util.factory.ClientFactory;
+import dev.vdrenkov.biblium.util.factory.OrderFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,11 +20,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static dev.vdrenkov.biblium.util.Constants.CHOICE;
-import static dev.vdrenkov.biblium.util.Constants.DATE_STRING;
-import static dev.vdrenkov.biblium.util.Constants.ID;
-import static dev.vdrenkov.biblium.util.Constants.LOCAL_DATE;
-import static dev.vdrenkov.biblium.util.Constants.PERIOD;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.CHOICE;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.DATE_STRING;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.ID;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.LOCAL_DATE;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.PERIOD;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -185,3 +185,4 @@ class OrderServiceTest {
         assertThrows(IllegalArgumentException.class, () -> orderService.extendOrderDueByDate(ID, 99, PERIOD));
     }
 }
+

@@ -1,7 +1,7 @@
 package dev.vdrenkov.biblium.mapper;
 
 import dev.vdrenkov.biblium.dto.OrderDto;
-import dev.vdrenkov.biblium.util.OrderFactory;
+import dev.vdrenkov.biblium.util.factory.OrderFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

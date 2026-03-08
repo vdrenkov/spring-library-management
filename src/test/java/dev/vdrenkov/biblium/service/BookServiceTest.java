@@ -4,8 +4,8 @@ import dev.vdrenkov.biblium.dto.BookDto;
 import dev.vdrenkov.biblium.entity.Book;
 import dev.vdrenkov.biblium.mapper.BookMapper;
 import dev.vdrenkov.biblium.repository.BookRepository;
-import dev.vdrenkov.biblium.util.AuthorFactory;
-import dev.vdrenkov.biblium.util.BookFactory;
+import dev.vdrenkov.biblium.util.factory.AuthorFactory;
+import dev.vdrenkov.biblium.util.factory.BookFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static dev.vdrenkov.biblium.util.Constants.ID;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.ID;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -132,3 +132,4 @@ class BookServiceTest {
         assertThrows(IllegalStateException.class, () -> bookService.decreaseBookQuantity(ID));
     }
 }
+

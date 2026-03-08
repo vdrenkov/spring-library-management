@@ -1,4 +1,4 @@
-package dev.vdrenkov.biblium.util;
+package dev.vdrenkov.biblium.util.factory;
 
 import dev.vdrenkov.biblium.dto.ClientDto;
 import dev.vdrenkov.biblium.entity.Client;
@@ -7,11 +7,11 @@ import dev.vdrenkov.biblium.request.ClientRequest;
 import java.util.Collections;
 import java.util.List;
 
-import static dev.vdrenkov.biblium.util.Constants.EMAIL;
-import static dev.vdrenkov.biblium.util.Constants.ID;
-import static dev.vdrenkov.biblium.util.Constants.NAME;
-import static dev.vdrenkov.biblium.util.Constants.PHONE_NUMBER;
-import static dev.vdrenkov.biblium.util.Constants.SURNAME;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.EMAIL;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.ID;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.NAME;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.PHONE_NUMBER;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.SURNAME;
 
 /**
  * Test factory for creating default {@link Client}, {@link ClientDto}, and {@link ClientRequest} instances.
@@ -70,3 +70,4 @@ public final class ClientFactory {
         return new ClientRequest(NAME, SURNAME, PHONE_NUMBER, EMAIL);
     }
 }
+

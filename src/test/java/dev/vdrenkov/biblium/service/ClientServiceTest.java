@@ -4,7 +4,7 @@ import dev.vdrenkov.biblium.dto.ClientDto;
 import dev.vdrenkov.biblium.entity.Client;
 import dev.vdrenkov.biblium.mapper.ClientMapper;
 import dev.vdrenkov.biblium.repository.ClientRepository;
-import dev.vdrenkov.biblium.util.ClientFactory;
+import dev.vdrenkov.biblium.util.factory.ClientFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static dev.vdrenkov.biblium.util.Constants.ID;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.ID;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -78,3 +78,4 @@ class ClientServiceTest {
         assertNotNull(result.getName());
     }
 }
+

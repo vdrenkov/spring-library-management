@@ -1,7 +1,7 @@
 package dev.vdrenkov.biblium.mapper;
 
 import dev.vdrenkov.biblium.dto.AuthorDto;
-import dev.vdrenkov.biblium.util.AuthorFactory;
+import dev.vdrenkov.biblium.util.factory.AuthorFactory;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

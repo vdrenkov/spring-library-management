@@ -1,7 +1,7 @@
 package dev.vdrenkov.biblium.controller;
 
 import dev.vdrenkov.biblium.service.BookService;
-import dev.vdrenkov.biblium.util.BookFactory;
+import dev.vdrenkov.biblium.util.factory.BookFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,10 +13,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import tools.jackson.databind.ObjectMapper;
 
-import static dev.vdrenkov.biblium.util.Constants.ID;
-import static dev.vdrenkov.biblium.util.Constants.NAME;
-import static dev.vdrenkov.biblium.util.Constants.QUANTITY;
-import static dev.vdrenkov.biblium.util.Constants.SURNAME;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.ID;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.NAME;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.QUANTITY;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.SURNAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -109,3 +109,4 @@ class BookControllerTest {
             .andExpect(jsonPath("$.quantity").value(QUANTITY));
     }
 }
+

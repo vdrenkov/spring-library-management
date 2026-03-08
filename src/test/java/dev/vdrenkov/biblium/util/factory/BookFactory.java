@@ -1,4 +1,4 @@
-package dev.vdrenkov.biblium.util;
+package dev.vdrenkov.biblium.util.factory;
 
 import dev.vdrenkov.biblium.dto.BookDto;
 import dev.vdrenkov.biblium.entity.Book;
@@ -7,11 +7,11 @@ import dev.vdrenkov.biblium.request.BookRequest;
 import java.util.Collections;
 import java.util.List;
 
-import static dev.vdrenkov.biblium.util.Constants.BOOKS_NAMES_LIST_VALUE;
-import static dev.vdrenkov.biblium.util.Constants.ID;
-import static dev.vdrenkov.biblium.util.Constants.LOCAL_DATE;
-import static dev.vdrenkov.biblium.util.Constants.NAME;
-import static dev.vdrenkov.biblium.util.Constants.QUANTITY;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.BOOKS_NAMES_LIST_VALUE;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.ID;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.LOCAL_DATE;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.NAME;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.QUANTITY;
 
 /**
  * Test factory for creating default {@link Book}, {@link BookDto}, and {@link BookRequest} instances.
@@ -88,3 +88,4 @@ public final class BookFactory {
         return Collections.singletonList(1);
     }
 }
+

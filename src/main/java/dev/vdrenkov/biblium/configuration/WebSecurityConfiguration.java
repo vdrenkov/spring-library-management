@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
-import static dev.vdrenkov.biblium.util.Constants.JWT_COOKIE_NAME;
+import static dev.vdrenkov.biblium.jwt.JwtConstants.JWT_COOKIE_NAME;
 
 /**
  * WebSecurityConfiguration component.
@@ -99,3 +99,4 @@ public class WebSecurityConfiguration {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
+

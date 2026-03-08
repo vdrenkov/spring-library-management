@@ -7,7 +7,7 @@ import dev.vdrenkov.biblium.exception.ClientNotFoundException;
 import dev.vdrenkov.biblium.exception.OrderNotFoundException;
 import dev.vdrenkov.biblium.request.OrderRequest;
 import dev.vdrenkov.biblium.service.OrderService;
-import dev.vdrenkov.biblium.util.BookFactory;
+import dev.vdrenkov.biblium.util.factory.BookFactory;
 import jakarta.validation.UnexpectedTypeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,9 +25,9 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.time.format.DateTimeParseException;
 
-import static dev.vdrenkov.biblium.util.Constants.CHOICE;
-import static dev.vdrenkov.biblium.util.Constants.CHOICE_STRING;
-import static dev.vdrenkov.biblium.util.Constants.ID;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.CHOICE;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.CHOICE_STRING;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.ID;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -204,3 +204,4 @@ class GlobalExceptionHandlerTest {
             .andExpect(jsonPath(ROOT, is("Something went wrong")));
     }
 }
+

@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static dev.vdrenkov.biblium.util.Constants.JWT_TOKEN_VALIDITY;
+import static dev.vdrenkov.biblium.jwt.JwtConstants.JWT_TOKEN_VALIDITY;
 
 /**
  * JwtTokenUtil component.
@@ -150,3 +150,4 @@ public class JwtTokenUtil implements Serializable {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }
+

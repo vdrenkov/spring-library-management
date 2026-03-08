@@ -21,8 +21,8 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.util.Collections;
 
-import static dev.vdrenkov.biblium.util.Constants.ID;
-import static dev.vdrenkov.biblium.util.Constants.JWT_COOKIE_NAME;
+import static dev.vdrenkov.biblium.jwt.JwtConstants.JWT_COOKIE_NAME;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.ID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -58,7 +58,8 @@ class UserControllerTest {
         mockMvc
             .perform(post("/login").contentType(MediaType.APPLICATION_JSON).content(json))
             .andExpect(status().isOk())
-            .andExpect(header().string("Set-Cookie", org.hamcrest.Matchers.containsString(JWT_COOKIE_NAME + "=jwt-token")));
+            .andExpect(
+                header().string("Set-Cookie", org.hamcrest.Matchers.containsString(JWT_COOKIE_NAME + "=jwt-token")));
     }
 
     @Test
@@ -111,3 +112,4 @@ class UserControllerTest {
             .andExpect(status().isBadRequest());
     }
 }
+

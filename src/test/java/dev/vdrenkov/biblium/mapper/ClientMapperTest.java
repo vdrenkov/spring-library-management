@@ -1,7 +1,7 @@
 package dev.vdrenkov.biblium.mapper;
 
 import dev.vdrenkov.biblium.dto.ClientDto;
-import dev.vdrenkov.biblium.util.ClientFactory;
+import dev.vdrenkov.biblium.util.factory.ClientFactory;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

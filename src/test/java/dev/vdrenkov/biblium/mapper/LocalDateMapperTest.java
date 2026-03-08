@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static dev.vdrenkov.biblium.util.Constants.LOCAL_DATE;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.LOCAL_DATE;
 
 class LocalDateMapperTest {
 
@@ -16,3 +16,4 @@ class LocalDateMapperTest {
         Assertions.assertEquals(LOCAL_DATE.toString(), response.toString());
     }
 }
+

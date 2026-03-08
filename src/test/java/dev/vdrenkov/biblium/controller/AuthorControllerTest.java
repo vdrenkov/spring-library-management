@@ -1,7 +1,7 @@
 package dev.vdrenkov.biblium.controller;
 
 import dev.vdrenkov.biblium.service.AuthorService;
-import dev.vdrenkov.biblium.util.AuthorFactory;
+import dev.vdrenkov.biblium.util.factory.AuthorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,9 +15,9 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.util.Collections;
 
-import static dev.vdrenkov.biblium.util.Constants.ID;
-import static dev.vdrenkov.biblium.util.Constants.NAME;
-import static dev.vdrenkov.biblium.util.Constants.SURNAME;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.ID;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.NAME;
+import static dev.vdrenkov.biblium.util.constant.TestConstants.SURNAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -89,3 +89,4 @@ class AuthorControllerTest {
             .andExpect(jsonPath("$.surname").value(SURNAME));
     }
 }
+

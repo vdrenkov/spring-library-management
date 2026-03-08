@@ -1,7 +1,7 @@
 package dev.vdrenkov.biblium.mapper;
 
 import dev.vdrenkov.biblium.dto.BookDto;
-import dev.vdrenkov.biblium.util.BookFactory;
+import dev.vdrenkov.biblium.util.factory.BookFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
