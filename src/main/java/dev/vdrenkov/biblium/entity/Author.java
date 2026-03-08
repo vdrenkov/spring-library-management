@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "authors", uniqueConstraints = @UniqueConstraint(columnNames = { "name", "surname" }))
 public class Author extends Person {
-
     /**
      * Handles Author operation.
      *

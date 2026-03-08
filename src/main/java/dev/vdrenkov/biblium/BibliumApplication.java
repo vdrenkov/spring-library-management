@@ -12,7 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class BibliumApplication {
-
     /**
      * Prevents instantiation of this bootstrap class.
      */
@@ -26,7 +25,7 @@ public class BibliumApplication {
      * @param args
      *     Command-line arguments passed at startup.
      */
-    public static void main(final String[] args) {
+    static void main(final String[] args) {
         SpringApplication.run(BibliumApplication.class, args);
     }
 }

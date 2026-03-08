@@ -4,7 +4,6 @@ package dev.vdrenkov.biblium.dto;
  * AuthorDto component.
  */
 public class AuthorDto extends PersonDto {
-
     /**
      * Handles AuthorDto operation.
      *

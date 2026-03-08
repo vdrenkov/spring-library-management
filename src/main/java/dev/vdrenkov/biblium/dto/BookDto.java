@@ -17,5 +17,4 @@ import java.time.LocalDate;
  *     Available quantity.
  */
 public record BookDto(int id, String name, LocalDate publishDate, AuthorDto authorDto, int quantity) {
-
 }

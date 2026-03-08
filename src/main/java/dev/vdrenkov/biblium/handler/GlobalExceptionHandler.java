@@ -33,7 +33,6 @@ import java.time.format.DateTimeParseException;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
     private static final String CAUGHT_EXCEPTION = "Caught exception: ";
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 

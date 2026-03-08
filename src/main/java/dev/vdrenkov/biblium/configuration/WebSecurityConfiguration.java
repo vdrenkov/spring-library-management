@@ -24,7 +24,6 @@ import static dev.vdrenkov.biblium.util.Constants.JWT_COOKIE_NAME;
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfiguration {
-
     private static final String ADMIN = "ADMIN";
     private static final String LIBRARIAN = "LIBRARIAN";
 

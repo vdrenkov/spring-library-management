@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 public class AuthorRequest extends PersonRequest {
-
     /**
      * Handles AuthorRequest operation.
      *

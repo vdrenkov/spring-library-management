@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 class BookControllerTest {
-
     private static final String URI = "/books";
 
     private MockMvc mockMvc;

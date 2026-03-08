@@ -123,6 +123,7 @@ class WebSecurityConfigurationTest {
 
     @TestConfiguration
     static class SecurityFilterConfig {
+
         @Bean
         JwtRequestFilter jwtRequestFilter(final JwtTokenUtil jwtTokenUtil,
             final JwtUserDetailsService jwtUserDetailsService) {

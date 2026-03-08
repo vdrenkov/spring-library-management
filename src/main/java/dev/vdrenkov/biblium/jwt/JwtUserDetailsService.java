@@ -19,7 +19,6 @@ import java.util.List;
  */
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
-
     private final UserRepository userRepository;
 
     /**
@@ -41,7 +40,7 @@ public class JwtUserDetailsService implements UserDetailsService {
      * @return Loaded user details instance.
      */
     @Override
-    public UserDetails loadUserByUsername(final @NonNull String username) throws UsernameNotFoundException {
+    public @NonNull UserDetails loadUserByUsername(final @NonNull String username) throws UsernameNotFoundException {
         final User user = userRepository
             .findByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException("No such user found in the database"));

@@ -15,7 +15,6 @@ import static dev.vdrenkov.biblium.util.Constants.JWT_TOKEN_VALIDITY;
  */
 @Component
 public class JwtCookieUtil {
-
     private static final String COOKIE_PATH = "/";
 
     private final JwtTokenUtil tokenUtil;

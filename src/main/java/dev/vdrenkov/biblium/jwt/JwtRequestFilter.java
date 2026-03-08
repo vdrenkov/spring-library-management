@@ -26,7 +26,6 @@ import static dev.vdrenkov.biblium.util.Constants.JWT_COOKIE_NAME;
  */
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-
     private final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);
 
     private final JwtTokenUtil tokenUtil;

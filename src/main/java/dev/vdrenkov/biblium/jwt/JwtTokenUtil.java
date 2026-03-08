@@ -23,6 +23,7 @@ import static dev.vdrenkov.biblium.util.Constants.JWT_TOKEN_VALIDITY;
  */
 @Component
 public class JwtTokenUtil implements Serializable {
+
     @Serial
     private static final long serialVersionUID = -2482501454063314717L;
 
